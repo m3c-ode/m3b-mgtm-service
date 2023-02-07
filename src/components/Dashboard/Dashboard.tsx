@@ -52,15 +52,7 @@ const Dashboard: React.FC = ({ children }: Props) => {
                 <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={headerItems} />
             </Header>
             <Layout>
-                <Sider width={200} style={{ background: colorBgContainer }}>
-                    {/* TODO: CustomSider/Navigation */}
-                    {/* <Menu
-                        mode="inline"
-                        defaultSelectedKeys={['1']}
-                        defaultOpenKeys={['sub1']}
-                        style={{ height: '100%', borderRight: 0 }}
-                        items={navItems}
-                    /> */}
+                <Sider width={210} style={{ background: colorBgContainer }}>
                     <CustomNavigation />
                 </Sider>
                 <Layout style={{ padding: '0 24px 24px' }}>

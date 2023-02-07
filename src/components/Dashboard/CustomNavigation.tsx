@@ -6,6 +6,7 @@ import { TbTruckDelivery, TbFileInvoice } from 'react-icons/tb';
 import { MdOutlineProductionQuantityLimits } from 'react-icons/md';
 import { GiHops } from 'react-icons/gi';
 import styles from './styles.module.scss';
+import Link from 'next/link';
 
 type Props = {};
 
@@ -17,49 +18,40 @@ const CustomNavigation = (props: Props) => {
     const navigationItems: MenuProps['items'] = [
         {
             key: 1,
-            label: 'Beers',
+            label: (<Link href={`/dashboard`}>Beers</Link>),
             // icon: <IoBeerOutline />,
             icon: React.createElement(IoBeerOutline),
         },
         {
             key: 2,
-            label: 'Delivery',
-            // icon: <IoBeerOutline />,
+            // label: 'Deliveries',
+            label: (<Link href={`/deliveries`}>Deliveries</Link>),
             icon: React.createElement(TbTruckDelivery),
         },
         {
             key: 3,
-            label: 'Orders',
-            // icon: <IoBeerOutline />,
+            label: (<Link href={`/orders`}>Orders</Link>),
             icon: React.createElement(MdOutlineProductionQuantityLimits),
         },
         {
             key: 4,
-            label: 'Ingredients/Products',
-            // icon: <IoBeerOutline />,
+            label: (<Link href={`/products`}>Ingredients/Products</Link>),
             icon: React.createElement(GiHops),
         },
         {
             key: 5,
-            label: 'Invoices',
-            // icon: <IoBeerOutline />,
+            label: (<Link href={`/invoices`}>Invoices</Link>),
             icon: React.createElement(TbFileInvoice),
         },
 
     ];
-
+    // TODO: adjust items with pathname/queryparam?
     return (
-        <div>
-            <p className={styles.NavTitle}>Navigation</p>
+        <div className={styles.SideNav}>
+            <p className={styles.SideNavTitle}>Navigation</p>
             <Divider style={{
-                width: '80%', minWidth: '80%', textAlign: 'center', justifyContent: 'center', alignItems: 'center',
-                justifyItems: 'center',
-                justifySelf: 'center',
-                alignSelf: 'center',
-                alignContent: 'center',
+                width: '80%', minWidth: '80%',
                 margin: '12px auto',
-
-
 
             }} />
             <Menu
