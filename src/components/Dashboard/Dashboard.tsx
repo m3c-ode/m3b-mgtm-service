@@ -5,15 +5,16 @@ import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { Footer } from 'antd/es/layout/layout';
 import Divider from 'antd/es/divider';
 import Link from 'next/link';
+import CustomNavigation from './CustomNavigation';
 
 const { Header, Content, Sider } = Layout;
 
-const items1: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
+const headerItems: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
     key,
     label: `nav ${key}`,
 }));
 
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
+const navItems: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
     (icon, index) => {
         const key = String(index + 1) as string;
 
@@ -45,19 +46,22 @@ const Dashboard: React.FC = ({ children }: Props) => {
 
     return (
         <Layout>
+            {/* TODO: CustomHeader */}
             <Header className="header">
                 <div className="logo" />
-                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={items1} />
+                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={headerItems} />
             </Header>
             <Layout>
                 <Sider width={200} style={{ background: colorBgContainer }}>
-                    <Menu
+                    {/* TODO: CustomSider/Navigation */}
+                    {/* <Menu
                         mode="inline"
                         defaultSelectedKeys={['1']}
                         defaultOpenKeys={['sub1']}
                         style={{ height: '100%', borderRight: 0 }}
-                        items={items2}
-                    />
+                        items={navItems}
+                    /> */}
+                    <CustomNavigation />
                 </Sider>
                 <Layout style={{ padding: '0 24px 24px' }}>
                     {/* TODO: breadcrumb generator */}
