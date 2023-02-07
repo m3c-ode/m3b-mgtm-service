@@ -1,10 +1,15 @@
-import Head from 'next/head'
-import clientPromise from '../lib/mongodb'
-import { InferGetServerSidePropsType } from 'next'
+import Head from 'next/head';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import clientPromise from '../../lib/mongodb';
+import utilStyles from '../styles/utils.module.css';
+import Image from 'next/image';
+import Link from 'next/link';
 
-export async function getServerSideProps(context) {
+const APP_NAME = 'm3b - management system';
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    await clientPromise
+    await clientPromise;
     // `await clientPromise` will use the default database passed in the MONGODB_URI
     // However you can use another database (e.g. myDatabase) by replacing the `await clientPromise` with the following code:
     //
@@ -16,75 +21,59 @@ export async function getServerSideProps(context) {
 
     return {
       props: { isConnected: true },
-    }
+    };
   } catch (e) {
-    console.error(e)
+    console.error(e);
     return {
       props: { isConnected: false },
-    }
+    };
   }
-}
+};
 
+
+// Landing page. Short introduction and login page
 export default function Home({
   isConnected,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <div className="container">
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>{APP_NAME}</title>
+        <link rel="icon" href="/images/logom3b.png" />
       </Head>
 
-      <main>
-        <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js with MongoDB!</a>
-        </h1>
+      <Image
+        src={'/../public/images/logom3b.png'}
+        alt='logo'
+        width={144}
+        height={144}
+        priority
+      />
+      <h1 className={utilStyles.heading2Xl}>{APP_NAME}</h1>
 
-        {isConnected ? (
-          <h2 className="subtitle">You are connected to MongoDB</h2>
-        ) : (
-          <h2 className="subtitle">
-            You are NOT connected to MongoDB. Check the <code>README.md</code>{' '}
-            for instructions.
-          </h2>
-        )}
 
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
+      <section className={utilStyles.headingLg}>
+        <p>Welcome to m3.beer management system</p>
+        <p>Using this platform, you'll be able</p>
+        <ul>
+          <li>Check your inventory</li>
+          <li>Manage your stock</li>
+          <li>Manage your products</li>
+        </ul>
+      </section>
 
-        <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+      {isConnected ? (
+        <h2 className="description">You are connected to MongoDB</h2>
+      ) : (
+        <h2 className="description">
+          You are NOT connected to MongoDB. Check the <code>README.md</code>{' '}
+          for instructions.
+        </h2>
+      )}
 
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="card"
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+      <div className="accessButton">
+        <Link href={'/dashboard'}>Login / Access your Dashboard</Link>
+      </div>
 
       <footer>
         <a
@@ -97,7 +86,7 @@ export default function Home({
         </a>
       </footer>
 
-      <style jsx>{`
+      {/* <style jsx>{`
         .container {
           min-height: 100vh;
           padding: 0 0.5rem;
@@ -230,22 +219,8 @@ export default function Home({
             flex-direction: column;
           }
         }
-      `}</style>
+      `}</style> */}
 
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
     </div>
-  )
+  );
 }
