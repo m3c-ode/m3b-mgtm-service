@@ -6,6 +6,7 @@ import { Footer } from 'antd/es/layout/layout';
 import Divider from 'antd/es/divider';
 import Link from 'next/link';
 import CustomNavigation from './CustomNavigation';
+import CustomHeader from './CustomHeader';
 
 const { Header, Content, Sider } = Layout;
 
@@ -13,26 +14,6 @@ const headerItems: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
     key,
     label: `nav ${key}`,
 }));
-
-const navItems: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-    (icon, index) => {
-        const key = String(index + 1) as string;
-
-        return {
-            key: `sub${key}`,
-            icon: React.createElement(icon),
-            label: `subnav ${key}`,
-
-            children: new Array(4).fill(null).map((_, j) => {
-                const subKey = index * 4 + j + 1;
-                return {
-                    key: subKey,
-                    label: `option${subKey}`,
-                };
-            }),
-        };
-    },
-);
 
 
 type Props = {
@@ -47,10 +28,12 @@ const Dashboard: React.FC = ({ children }: Props) => {
     return (
         <Layout>
             {/* TODO: CustomHeader */}
-            <Header className="header">
+            {/* <Header className="something">
                 <div className="logo" />
+
                 <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={headerItems} />
-            </Header>
+            </Header> */}
+            <CustomHeader />
             <Layout>
                 <Sider width={210} style={{ background: colorBgContainer }}>
                     <CustomNavigation />

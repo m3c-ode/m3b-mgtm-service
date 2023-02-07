@@ -47,8 +47,8 @@ const CustomNavigation = (props: Props) => {
     ];
     // TODO: adjust items with pathname/queryparam?
     return (
-        <div className={styles.SideNav}>
-            <p className={styles.SideNavTitle}>Navigation</p>
+        <div className={styles.sideNav}>
+            <p className={styles.sideNavTitle}>Navigation</p>
             <Divider style={{
                 width: '80%', minWidth: '80%',
                 margin: '12px auto',
