@@ -38,9 +38,6 @@ const CustomHeader = (props: Props) => {
     return (
         <Header className={styles.header}>
             <div className={styles.topLeft}>
-
-                {/* <div className={styles.logo} /> */}
-                {/* <Image src="images/logom3b" /> */}
                 <Image
                     className={styles.logo}
                     src={'/../public/images/logom3b.png'}
@@ -48,7 +45,7 @@ const CustomHeader = (props: Props) => {
                     width={40}
                     height={40}
                 />
-                {/* TODO: Button with a modal pop-up? */}
+                {/* TODO: Button with a modal pop-up for settings edit */}
                 <AiOutlineSetting
                     style={{
                         fontSize: '2rem',
@@ -59,7 +56,7 @@ const CustomHeader = (props: Props) => {
                 />
             </div>
             <div className={styles.topRight}>
-                {/* TODO: add a search bar? */}
+                {/* TODO: add a search bar feature? */}
                 <div className={styles.userName}>
                     user@example.ca
                 </div>
@@ -73,7 +70,6 @@ const CustomHeader = (props: Props) => {
                 />
                 <Menu
                     style={{ display: 'flex', flexDirection: 'row', maxWidth: '40px' }}
-
                     overflowedIndicator={<AiOutlineMenu style={{
                         fontSize: '1.5rem',
                         top: '5px',

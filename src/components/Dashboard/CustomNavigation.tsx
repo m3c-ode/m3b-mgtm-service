@@ -1,12 +1,13 @@
 import { Divider, Menu, MenuProps } from 'antd';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { IoBeerOutline } from 'react-icons/io5';
+import { IoBeerOutline, IoPeopleOutline } from 'react-icons/io5';
 import { TbTruckDelivery, TbFileInvoice } from 'react-icons/tb';
 import { MdOutlineProductionQuantityLimits } from 'react-icons/md';
 import { GiHops } from 'react-icons/gi';
 import styles from './styles.module.scss';
 import Link from 'next/link';
+
 
 type Props = {};
 
@@ -42,6 +43,11 @@ const CustomNavigation = (props: Props) => {
             key: 5,
             label: (<Link href={`/invoices`}>Invoices</Link>),
             icon: React.createElement(TbFileInvoice),
+        },
+        {
+            key: 6,
+            label: (<Link href={`/invoices`}>Clients</Link>),
+            icon: React.createElement(IoPeopleOutline),
         },
 
     ];

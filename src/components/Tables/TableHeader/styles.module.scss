@@ -1,0 +1,26 @@
+.tableHeaderContainer {
+    display: flex;
+    justify-content: space-between;
+    // color: rgba(63, 169, 188, 0.512)
+}
+
+.tableTitle {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.tableNewButton {
+    color: white;
+    background-color: #3fa9bc;
+    padding: 0.25rem 0.75rem;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    height: 2rem;
+    margin: auto 0;
+
+    &:hover {
+        text-decoration: none;
+        color: whitesmoke;
+        opacity: .9;
+    }
+}

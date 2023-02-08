@@ -1,0 +1,28 @@
+.tableButton {
+    text-decoration: none !important;
+
+    // color: green;
+    &:hover {
+        color: whitesmoke;
+    }
+}
+
+.updateButton {
+
+    // background-color: red;
+    // transition: all 1s;
+    .ant-btn-text {
+        &:hover {
+            background-color: red;
+            border-color: pink;
+            color: pink
+        }
+    }
+
+    &:hover {
+        background-color: #3fa9bc !important;
+        // border-color: pink;
+        color: white !important;
+        // transition: 
+    }
+}

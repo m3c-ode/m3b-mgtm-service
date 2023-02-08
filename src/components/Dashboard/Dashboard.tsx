@@ -42,6 +42,7 @@ const Dashboard: React.FC = ({ children }: Props) => {
                     {/* TODO: breadcrumb generator */}
                     <Breadcrumb style={{ margin: '16px 0' }}>
                         <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
+                        <Breadcrumb.Item>Beers</Breadcrumb.Item>
                     </Breadcrumb>
                     <Content
                         style={{
@@ -51,7 +52,6 @@ const Dashboard: React.FC = ({ children }: Props) => {
                             background: colorBgContainer,
                         }}
                     >
-                        Content
                         {children}
                     </Content>
                 </Layout>
