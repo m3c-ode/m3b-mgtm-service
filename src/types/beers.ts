@@ -12,6 +12,8 @@ export type BeerData = {
     abv?: number,
     ibu?: number,
     description?: string,
+    company?: string,
+    brewer?: string,
     status: BeersStatusEnum,
     brewedOn: string | Date,
     availableOn: string | Date,
@@ -25,6 +27,7 @@ export type BeerData = {
     };
 };
 
+
 export enum BeersStylesEnum {
     Lager = 'Lager',
     PaleAle = 'Pale Ale',
@@ -35,7 +38,7 @@ export enum BeersStylesEnum {
     Sour = 'Sour',
     Saison = 'Saison',
     Belgian = 'Belgian',
-
+    // key = "key"
 }
 
 export enum BeersStatusEnum {
