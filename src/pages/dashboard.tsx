@@ -6,6 +6,7 @@ import BeersTable from '../components/Tables/BeersTable';
 import TableHeader from '../components/Tables/TableHeader';
 import { BeerData, BeersStatusEnum, BeersStylesEnum } from '../types/beers';
 import { IoAddOutline } from 'react-icons/io5';
+import { beerData } from '../seed';
 
 
 
@@ -13,38 +14,6 @@ type Props = {};
 
 const Page: NextPage = (props: Props) => {
 
-    const beerData: BeerData[] = [
-        {
-            id: '1',
-            style: BeersStylesEnum.Lager,
-            brewedOn: '2020-01-01',
-            availableOn: '2020-01-14',
-            status: BeersStatusEnum.Ready,
-            qty: {
-                total: 1000
-            }
-        },
-        {
-            id: '2',
-            style: BeersStylesEnum.PaleAle,
-            brewedOn: '2020-01-01',
-            availableOn: '2020-01-14',
-            status: BeersStatusEnum.Fermenting,
-            qty: {
-                total: 2000
-            }
-        },
-        {
-            id: '3',
-            style: BeersStylesEnum.Stout,
-            brewedOn: '2020-01-01',
-            availableOn: '2020-01-14',
-            status: BeersStatusEnum.Conditioning,
-            qty: {
-                total: 1000
-            }
-        },
-    ];
 
     const TableTitle = () =>
         <TableHeader
