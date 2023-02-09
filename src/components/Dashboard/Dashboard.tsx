@@ -7,6 +7,7 @@ import Divider from 'antd/es/divider';
 import Link from 'next/link';
 import CustomNavigation from './CustomNavigation';
 import CustomHeader from './CustomHeader';
+import { Toaster } from 'react-hot-toast';
 
 const { Header, Content, Sider } = Layout;
 
@@ -33,6 +34,7 @@ const Dashboard: React.FC = ({ children }: Props) => {
 
                 <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={headerItems} />
             </Header> */}
+            <Toaster />
             <CustomHeader />
             <Layout>
                 <Sider width={210} style={{ background: colorBgContainer }}>
@@ -50,6 +52,11 @@ const Dashboard: React.FC = ({ children }: Props) => {
                             margin: 0,
                             minHeight: 280,
                             background: colorBgContainer,
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '2rem',
+                            overflow: 'auto',
                         }}
                     >
                         {children}
