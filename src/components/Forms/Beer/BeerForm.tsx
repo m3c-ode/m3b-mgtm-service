@@ -4,12 +4,14 @@ import toast from 'react-hot-toast';
 import Dashboard from '../../Dashboard';
 import FormNavigationButtons from '../Navigation';
 import BeerInfoFields from './BeerInfoFields';
-import RecipeFields from './RecipeFields';
+import GrainFields from './GrainFields';
+import HopsFields from './HopsFields';
 import styles from './styles.module.scss';
 
 const { Step } = Steps;
 
-const BeerCreationSteps = ['General', 'Recipe'];
+const BeerCreationSteps = ['General', 'Recipe - Grains', 'Recipe - Hops'];
+
 
 type Props = {};
 
@@ -101,7 +103,8 @@ const BeerForm = (props: Props) => {
                     </div>
                     <div className={styles.formContent}>
                         {stepIndex === 0 && <BeerInfoFields />}
-                        {stepIndex === 1 && <RecipeFields />}
+                        {stepIndex === 1 && <GrainFields form={stepForm} />}
+                        {stepIndex === 2 && <HopsFields />}
                     </div>
                     <div className={styles.navButtons}>
                         <FormNavigationButtons

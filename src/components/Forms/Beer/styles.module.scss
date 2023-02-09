@@ -1,6 +1,6 @@
 .createBeerForm {
     // height: 80%;
-    width: 90%;
+    width: 95%;
     // margin: 0 10%;
 
     >h2 {
@@ -40,4 +40,42 @@
     flex-direction: row;
     align-items: center !important;
     justify-content: space-between !important;
+    // flex-wrap: wrap;
+}
+
+.hopItems {
+    display: flex;
+    flex-direction: row;
+    // align-items: center !important;
+    // justify-content: space-between !important;
+    gap: 1rem;
+
+    @media (max-width: 1100px) {
+
+        flex-wrap: wrap;
+    }
+}
+
+.hopStringInput {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 70%;
+
+    @media (max-width: 1100px) {
+
+        width: 100%;
+    }
+}
+
+.hopNumberInput {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 40%;
+
+    @media (max-width: 1100px) {
+        justify-content: space-between;
+        width: 100%;
+    }
 }

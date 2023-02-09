@@ -77,10 +77,10 @@ const BeerInfoFields = (props: Props) => {
 
                         label="Available On"
                         name="availableOn"
-                        initialValue={dayjs()}
+                        initialValue={dayjs().add(4, 'week')}
                         rules={[{ required: true, message: 'Please input available on date!' }]}
                     >
-                        <DatePicker defaultValue={dayjs().add(4, 'week')} format={'YYYY/MM/DD'} placeholder={dayjs().add(4, 'week').format('YYYY/MM/DD')} />
+                        <DatePicker /* defaultValue={dayjs().add(4, 'week')} */ format={'YYYY/MM/DD'} placeholder={dayjs().add(4, 'week').format('YYYY/MM/DD')} />
                     </Form.Item>
                 </Col>
                 <Col span={8}>
