@@ -31,38 +31,33 @@ const GrainFields = ({ form }: Props) => {
 
     const [totalGrain, setTotalGrain] = useState(0);
 
-    const getTotalGrain = () => {
+    const getTotalWeight = (index?: number) => {
         let currentGrains: {
             weight: number,
             type: string,
         }[] = form.getFieldValue("grains") || [];
-        // } = form.getFieldValue("grains")
-        console.log("🚀 ~ file: GrainFields.tsx:134 ~ GrainFields ~ currentGrains", currentGrains);
-
-        let total = currentGrains.reduce((acc: number, item) => {
-            console.log("🚀 ~ file: GrainFields.tsx:134 ~ acc ~ item", item);
-            console.log("🚀 ~ file: GrainFields.tsx:136 ~ acc ~ acc", acc);
-            return acc + item.weight;
-        }, 0);
-        console.log("🚀 ~ file: GrainFields.tsx:134 ~ GrainFields ~ total", total);
-        setTotalGrain(total);
+        if (index && !currentGrains[index]) return;
+        if (!index) {
+            let total = currentGrains.reduce((acc: number, item) => {
+                return acc + item.weight;
+            }, 0);
+            setTotalGrain(total);
+            return;
+        } else {
+            let deletedRow = currentGrains[index] ? currentGrains[index].weight : 0;
+            setTotalGrain(totalGrain - deletedRow);
+        }
     };
     return (
         <>
-            {/* <Row> */}
-            {/* <Col span={11} style={{ marginRight: '10px' }} > */}
             <h3>Grain Bill</h3>
-            {/* <div className={styles.grainsLabels}>
-                <span className={styles.grainsLabel} style={{ width: '25%', maxWidth: '140px' }}>Weight</span>
-                <span className={styles.grainsLabel} style={{ width: '70%' }}>Type</span>
-            </div> */}
             <Form.List
                 name="grains"
                 rules={[
                     {
                         validator: async (_, grains) => {
                             if (!grains || grains.length < 1) {
-                                return Promise.reject(new Error('At least 1 type fo grain is required'));
+                                return Promise.reject(new Error('At least 1 type of grain is required'));
 
                             }
                         },
@@ -73,32 +68,20 @@ const GrainFields = ({ form }: Props) => {
 
                 {(fields, { add, remove }) => (
                     <>
-                        {fields.map(({ key, fieldKey, name }, index) => (
-                            // <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                        {fields.map(({ key, name }, index) => (
                             <>
-                                {/* <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="start"> */}
                                 <div className={styles.grainItems}>
 
                                     <Form.Item
-                                        // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                                        // wrapperCol={{ span: 8 }}
-                                        // {...formItemLayout}
                                         label={index === 0 ? 'Weight' : ''}
-                                        // labelCol={(index === 0 ? { span: 24 } : { span: 0, offset: 4 })}
-                                        // wrapperCol={{ span: 8 }}
                                         name={[name, 'weight']}
                                         rules={[{ required: true, message: 'Missing weight' }]}
                                         style={{ width: '25%', maxWidth: '115px' }}
-                                    // getValueProps
-
-
                                     >
-                                        <InputNumber /* onChange={getTotalGrain} */ step={0.01} style={{ width: '70%' }} placeholder="5" />
+                                        <InputNumber onChange={() => getTotalWeight()} step={0.01} style={{ width: '70%' }} placeholder="5" />
                                     </Form.Item>
                                     <Form.Item
-                                        // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
                                         label={index === 0 ? 'Type' : ''}
-                                        // wrapperCol={{ span: 48 }}
                                         name={[name, 'type']}
                                         rules={[{ required: true, message: 'Missing type of grain name' }]}
                                         style={{ width: '75%' }}
@@ -107,67 +90,93 @@ const GrainFields = ({ form }: Props) => {
                                             style={{ width: '100%' }}
                                             placeholder="Canadian Pilsner" />
                                     </Form.Item>
-                                    {/* {index >= 1 && */}
                                     <AiOutlineMinusCircle
                                         style={{
-                                            // position: 'relative', top: 'rem', 
                                             fontSize: '1rem',
-                                            // marginTop: '5px',
-                                            // marginLeft: '5px',
-                                            // marginBottom: '25px',
                                             margin: '0 2rem 25px 5px',
-                                            // paddingLeft: '5px',
                                             visibility: index == 0 ? 'hidden' : 'visible'
 
 
                                         }}
                                         onClick={() => {
-                                            getTotalGrain();
+                                            getTotalWeight(name);
                                             remove(name);
                                         }} />
-                                    {/* } */}
-                                    {/* </Space> */}
                                 </div>
                             </>
                         ))}
                         <Form.Item>
                             <Button type="dashed" onClick={(e: any) => {
-                                getTotalGrain();
+                                getTotalWeight();
                                 add();
                             }} block icon={<AiOutlinePlusCircle />}>
                                 Add Grains
                             </Button>
                         </Form.Item>
                         <Form.Item
-                            label="Total"
+                            label="Total Weight"
+                            name="totalGrain"
+                            // rules={[{ required: true, message: 'Missing total weight' }]}
                             // wrapperCol={{ span: 4 }}
                             labelAlign='left'
-                            labelCol={{ span: 2 }}
+                            labelCol={{ span: 3 }}
                         >
-                            {Math.round(totalGrain * 100) / 100} lbs
+                            <span>{Math.round(totalGrain * 100) / 100} lbs</span>
                         </Form.Item>
+                        <Divider style={{ margin: '1rem 0' }} />
+                        <h3>Other</h3>
+                        <Row
+                            style={{
+                                gap: '1rem',
+                                justifyContent: 'space-around'
+
+                            }}
+                        >
+                            <Form.Item
+                                label="Expected OG"
+                                name="expectedOG"
+                                // rules={[{ required: true, message: 'Missing expected OG' }]}
+                                // wrapperCol={{ span: 4 }}
+                                labelAlign='left'
+                                labelCol={{ span: 12 }}
+                            >
+                                <InputNumber step={0.001} placeholder={'1.050'} />
+                            </Form.Item>
+                            <Form.Item
+                                label="Expected FG"
+                                name="expectedFG"
+                                // wrapperCol={{ span: 4 }}
+                                labelAlign='left'
+                                labelCol={{ span: 12 }}
+                            >
+                                <InputNumber step={0.001} placeholder={'1.015'} />
+                            </Form.Item>
+                            <Form.Item
+                                label="Expected ABV"
+                                name="expectedABV"
+                                // wrapperCol={{ span: 4 }}
+                                labelAlign='left'
+                                labelCol={{ span: 12 }}
+                            >
+                                <InputNumber step={0.001} placeholder={'5.0'} /> <span>%</span>
+                            </Form.Item>
+                            <Form.Item
+                                label="Yeast"
+                                name="yeast"
+                                // wrapperCol={{ span: 4 }}
+                                labelAlign='left'
+                                labelCol={{ span: 5 }}
+                            >
+                                <Input placeholder={'Lalbrew SF04'} />
+                            </Form.Item>
+                        </Row>
+                        <Divider style={{ margin: '1rem 0' }} />
+
 
                     </>
                 )
                 }
             </Form.List>
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-                {/* <Button htmlType="button" onClick={onReset}>
-                    Reset
-                </Button> */}
-            </Form.Item>
-
-            {/* </Col> */}
-            {/* <Divider type={'vertical'} /> */}
-
-            {/* <Col span={11} offset={0} > */}
-
-            {/* </Col> */}
-            {/* </Row> */}
-
         </>
     );
 };

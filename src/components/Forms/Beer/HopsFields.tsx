@@ -1,11 +1,33 @@
-import { Button, Col, Divider, Form, Input, InputNumber, Row, Space } from 'antd';
-import React from 'react';
+import { Button, Col, Divider, Form, FormInstance, Input, InputNumber, Row, Space } from 'antd';
+import React, { useState } from 'react';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import styles from './styles.module.scss';
 
-type Props = {};
+type Props = {
+    form: FormInstance,
+};
 
-const HopsFields = (props: Props) => {
+const HopsFields = ({ form }: Props) => {
+
+    const [totalHops, setTotalHops] = useState(0);
+
+    const getTotalWeight = (index?: number) => {
+        let currentHops: {
+            weight: number,
+            type: string,
+        }[] = form.getFieldValue("hops") || [];
+        if (index && !currentHops[index]) return;
+        if (!index) {
+            let total = currentHops.reduce((acc: number, item) => {
+                return acc + item.weight;
+            }, 0);
+            setTotalHops(total);
+            return;
+        } else {
+            let deletedRow = currentHops[index] ? currentHops[index].weight : 0;
+            setTotalHops(totalHops - deletedRow);
+        }
+    };
     return (
         <>
             <h3>Hops and Schedule</h3>
@@ -80,12 +102,14 @@ const HopsFields = (props: Props) => {
                                         <Form.Item
                                             // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
                                             // wrapperCol={{ span: 48 }}
-                                            label={'Weight (lbs)'}
+                                            label={'Weight (oz)'}
                                             name={[name, 'weight']}
                                             rules={[{ required: true, message: 'Missing weight of hops' }]}
                                             style={{ width: '25%', minWidth: '110px' }}
                                         >
-                                            <InputNumber step={0.01} style={{ width: '70%' }} placeholder="5" />
+                                            <InputNumber
+                                                onChange={() => getTotalWeight()}
+                                                step={0.01} style={{ width: '70%' }} placeholder="5" />
                                         </Form.Item>
                                         <Form.Item
                                             // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
@@ -114,22 +138,42 @@ const HopsFields = (props: Props) => {
                                                 // marginTop: '5px',
                                                 // marginLeft: '5px',
                                                 // marginBottom: '25px',
-                                                margin: '41px 2rem 25px 5px',
+                                                margin: '41px 0 25px 0',
+                                                // padding: '1px',
+                                                minWidth: '30px',
+
                                                 // paddingLeft: '5px',
                                                 visibility: index == 0 ? 'hidden' : 'visible'
 
 
                                             }}
-                                            onClick={() => remove(name)} />
+                                            onClick={() => {
+                                                getTotalWeight(name);
+                                                remove(name);
+                                            }} />
                                         {/* </Space> */}
                                     </div>
                                 </div>
                             </>
                         ))}
                         <Form.Item>
-                            <Button type="dashed" onClick={() => add()} block icon={<AiOutlinePlusCircle />}>
-                                Add Grains
+                            <Button type="dashed" onClick={() => {
+                                console.log(form.getFieldValue("hops"));
+                                add();
+                            }
+                            } block icon={<AiOutlinePlusCircle />}>
+                                Add Hops
                             </Button>
+                        </Form.Item>
+                        <Form.Item
+                            label="Total Weight"
+                            name="totalHops"
+                            // rules={[{ required: true, message: 'Missing total weight' }]}
+                            // wrapperCol={{ span: 4 }}
+                            labelAlign='left'
+                            labelCol={{ span: 3 }}
+                        >
+                            <span>{Math.round(totalHops * 100) / 100} oz</span>
                         </Form.Item>
                     </>
                 )}

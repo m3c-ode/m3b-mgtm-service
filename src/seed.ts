@@ -1,6 +1,6 @@
 import { BeerData, BeersStylesEnum, BeersStatusEnum } from "./types/beers";
 
-export const beerData: BeerData[] = [
+export let beerData: BeerData[] = [
     {
         id: '1',
         style: BeersStylesEnum.Lager,

@@ -14,6 +14,7 @@ type Props = {};
 
 const Page: NextPage = (props: Props) => {
 
+    console.log("🚀 ~ file: dashboard.tsx:10 ~ beerData", beerData);
 
     const TableTitle = () =>
         <TableHeader

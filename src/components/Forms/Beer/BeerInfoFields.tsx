@@ -74,7 +74,6 @@ const BeerInfoFields = (props: Props) => {
                 <Col span={8}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-
                         label="Available On"
                         name="availableOn"
                         initialValue={dayjs().add(4, 'week')}

@@ -1,12 +1,14 @@
 import { Divider, Form, Steps } from 'antd';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import { BeerData, BeersStatusEnum } from '../../../types/beers';
 import Dashboard from '../../Dashboard';
 import FormNavigationButtons from '../Navigation';
 import BeerInfoFields from './BeerInfoFields';
 import GrainFields from './GrainFields';
 import HopsFields from './HopsFields';
 import styles from './styles.module.scss';
+import { beerData } from '../../../seed';
 
 const { Step } = Steps;
 
@@ -58,6 +60,25 @@ const BeerForm = (props: Props) => {
     // status will be automatically filled on creation
     const onFinish = (values: any) => {
         console.log('on finish', values);
+        const formData = stepForm.getFieldsValue(true);
+        console.log("🚀 ~ file: BeerForm.tsx:62 ~ onFinish ~ formData", formData);
+        // const currentBeerList = beerData;
+        const data: BeerData = {
+            id: (beerData.length + 1).toString(),
+            name: formData.name,
+            description: formData.description,
+            style: formData.style,
+            status: BeersStatusEnum.Projected,
+            brewedOn: formData.brewedOn.format('YYYY-MM-DD'),
+            availableOn: formData.availableOn.format('YYYY-MM-DD'),
+            qty: {
+                total: formData.qty,
+            }
+            // hops: formData.hops,
+            // grains: formData.grains
+        };
+        beerData.push(data);
+        console.log("🚀 ~ file: BeerForm.tsx:79 ~ onFinish ~ beerData", beerData);
 
     };
 
@@ -104,7 +125,7 @@ const BeerForm = (props: Props) => {
                     <div className={styles.formContent}>
                         {stepIndex === 0 && <BeerInfoFields />}
                         {stepIndex === 1 && <GrainFields form={stepForm} />}
-                        {stepIndex === 2 && <HopsFields />}
+                        {stepIndex === 2 && <HopsFields form={stepForm} />}
                     </div>
                     <div className={styles.navButtons}>
                         <FormNavigationButtons
