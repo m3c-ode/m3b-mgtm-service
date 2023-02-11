@@ -1,15 +1,13 @@
 import React from 'react';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import { Footer } from 'antd/es/layout/layout';
-import Divider from 'antd/es/divider';
+import { Divider } from 'antd';
 import Link from 'next/link';
 import CustomNavigation from './CustomNavigation';
 import CustomHeader from './CustomHeader';
 import { Toaster } from 'react-hot-toast';
 
-const { Header, Content, Sider } = Layout;
+const { Header, Content, Sider, Footer } = Layout;
 
 const headerItems: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
     key,

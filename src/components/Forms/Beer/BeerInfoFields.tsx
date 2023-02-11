@@ -88,7 +88,6 @@ const BeerInfoFields = (props: Props) => {
 
                         label="Projected Volume (L)"
                         name="qty"
-                        // initialValue={new Date()}
                         rules={[{ required: true, message: 'Please input expected volume!' }]}
                     >
                         <InputNumber min={0} />

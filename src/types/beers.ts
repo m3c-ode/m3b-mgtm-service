@@ -7,13 +7,13 @@ export type BeersTableProps = {
 
 export type BeerData = {
     id: string,
-    style: BeersStylesEnum;
     name?: string,
-    abv?: number,
-    ibu?: number,
     description?: string,
     company?: string,
     brewer?: string,
+    style: BeersStylesEnum;
+    abv?: number,
+    ibu?: number,
     status: BeersStatusEnum,
     brewedOn: string | Date,
     availableOn: string | Date,

@@ -73,76 +73,79 @@ const BeerForm = (props: Props) => {
             availableOn: formData.availableOn.format('YYYY-MM-DD'),
             qty: {
                 total: formData.qty,
-            }
-            // hops: formData.hops,
-            // grains: formData.grains
+            },
+            abv: formData.abv,
+            ibu: formData.ibu,
         };
-        beerData.push(data);
-        console.log("🚀 ~ file: BeerForm.tsx:79 ~ onFinish ~ beerData", beerData);
-
+        // hops: formData.hops,
+        // grains: formData.grains
     };
+    beerData.push(data);
+    console.log("🚀 ~ file: BeerForm.tsx:79 ~ onFinish ~ beerData", beerData);
 
-    const onReset = () => {
-        stepForm.resetFields();
-    };
+};
 
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
+const onReset = () => {
+    stepForm.resetFields();
+};
+
+const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+};
 
 
-    return (
-        <Dashboard>
-            <Form
-                form={stepForm}
-                name="createBeerForm"
-                labelCol={{ span: 24 }}
-                wrapperCol={{ span: 24 }}
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-                autoComplete="off"
-                className={styles.createBeerForm}
-            // layout="vertical"
-            >
-                <h2>Create New Beer</h2>
-                <Divider />
-                {/* Step form
+return (
+    <Dashboard>
+        <Form
+            form={stepForm}
+            name="createBeerForm"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+            className={styles.createBeerForm}
+        // layout="vertical"
+        >
+            <h2>Create New Beer</h2>
+            <Divider />
+            {/* Step form
                 1-  General Info
                 2 - Recipe info
                  */}
-                <div className={styles.formWrapper}>
-                    <div className={styles.progressBar}>
-                        <Steps current={stepIndex}>
-                            {BeerCreationSteps.map((step, index) => (
-                                <Step
-                                    key={index}
-                                    title={step}
-                                />
-                            ))}
-                        </Steps>
-                    </div>
-                    <div className={styles.formContent}>
-                        {stepIndex === 0 && <BeerInfoFields />}
-                        {stepIndex === 1 && <GrainFields form={stepForm} />}
-                        {stepIndex === 2 && <HopsFields form={stepForm} />}
-                    </div>
-                    <div className={styles.navButtons}>
-                        <FormNavigationButtons
-                            // sendToStart={createAnotherPackage}
-                            stepsLength={BeerCreationSteps.length}
-                            stepIndex={stepIndex}
-                            prevStep={prevStep}
-                            nextStep={nextStep}
-                        />
-                    </div>
+            <div className={styles.formWrapper}>
+                <div className={styles.progressBar}>
+                    <Steps current={stepIndex}>
+                        {BeerCreationSteps.map((step, index) => (
+                            <Step
+                                key={index}
+                                title={step}
+                            />
+                        ))}
+                    </Steps>
                 </div>
+                <div className={styles.formContent}>
+                    {stepIndex === 0 && <BeerInfoFields />}
+                    {stepIndex === 1 && <GrainFields form={stepForm} />}
+                    {stepIndex === 2 && <HopsFields form={stepForm} />}
+                </div>
+                <div className={styles.navButtons}>
+                    <FormNavigationButtons
+                        // sendToStart={createAnotherPackage}
+                        stepsLength={BeerCreationSteps.length}
+                        stepIndex={stepIndex}
+                        prevStep={prevStep}
+                        nextStep={nextStep}
+                    />
+                </div>
+            </div>
 
-            </Form>
+        </Form>
 
 
-        </Dashboard >
-    );
+    </Dashboard >
+);
 };
 
 export default BeerForm;

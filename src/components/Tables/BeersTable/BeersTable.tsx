@@ -23,12 +23,12 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
         console.log("🚀 ~ file: BeersTable.tsx:22 ~ handleDelete ~ data", data);
         console.log("before splice", beerData);
         // data.splice(index, 1);
-        // beerData.splice(index, 1);
         console.log("🚀 after splice", beerData);
         // setCurrentData(data);
 
         // const newData = currentData.splice(index, 1);
         const newData = beerData.filter((item) => item.id !== id);
+        beerData.splice(parseInt(id) - 1, 1);
 
         setCurrentData(newData);
     };
@@ -43,6 +43,11 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
             title: 'Style',
             dataIndex: 'style',
             key: 'style',
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
         },
         {
             title: 'Status',
