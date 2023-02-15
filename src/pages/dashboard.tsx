@@ -31,23 +31,6 @@ const Page: NextPage = (props: Props) => {
             />}
         />;
 
-    // Create dummy data list on load
-    useEffect(() => {
-        const createDummyData = async () => {
-            try {
-                const response = await axios.post("/api/beers", beerData);
-                console.log('New beers added successfully!');
-                console.log(response.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        createDummyData();
-    }, []);
-
-
-
-
     return (
         <>
             {/* TODO: Authentication: if logged in, show dashboard, otherwise, home/login page */}
