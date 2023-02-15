@@ -5,7 +5,7 @@ import { getBeerData, getLocalBeersId } from '../../../../lib/beers';
 import EditBeerForm from '../../../components/Forms/Beer/EditBeerForm';
 import { BeerData } from '../../../types/beers';
 
-// Generates `/posts/1` and `/posts/2`
+// Generates `/beers/1` and `/beers/2`
 export const getStaticPaths: GetStaticPaths = () => {
     const paths = getLocalBeersId();
     return {

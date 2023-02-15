@@ -40,4 +40,43 @@ export let beerData: BeerData[] = [
             total: 1000
         }
     },
+    {
+        id: '4',
+        name: 'IPA',
+        style: BeersStylesEnum.IPA,
+        brewedOn: new Date('2022-01-01'),
+        availableOn: new Date('2022-01-15'),
+        status: BeersStatusEnum.Fermenting,
+        abv: 6.5,
+        ibu: 65,
+        qty: {
+            total: 555
+        }
+    },
+    {
+        id: '5',
+        name: 'Whitney',
+        style: BeersStylesEnum.Wheat,
+        brewedOn: new Date('2022-06-01'),
+        availableOn: new Date('2022-06-15'),
+        status: BeersStatusEnum.Unavailable,
+        abv: 4.5,
+        ibu: 25,
+        qty: {
+            total: 0
+        }
+    },
+    {
+        id: '6',
+        name: 'Jean Phi-phi',
+        style: BeersStylesEnum.Pilsner,
+        brewedOn: '2020-01-01',
+        availableOn: '2020-01-14',
+        status: BeersStatusEnum.Ready,
+        abv: 5.5,
+        ibu: 35,
+        qty: {
+            total: 1200
+        }
+    },
 ];

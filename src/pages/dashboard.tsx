@@ -1,12 +1,13 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Dashboard from '../components/Dashboard';
 import BeersTable from '../components/Tables/BeersTable';
 import TableHeader from '../components/Tables/TableHeader';
 import { BeerData, BeersStatusEnum, BeersStylesEnum } from '../types/beers';
 import { IoAddOutline } from 'react-icons/io5';
 import { beerData } from '../seed';
+import axios from 'axios';
 
 
 
@@ -29,6 +30,23 @@ const Page: NextPage = (props: Props) => {
                 }}
             />}
         />;
+
+    // Create dummy data list on load
+    useEffect(() => {
+        const createDummyData = async () => {
+            try {
+                const response = await axios.post("/api/beers", beerData);
+                console.log('New beers added successfully!');
+                console.log(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        createDummyData();
+    }, []);
+
+
+
 
     return (
         <>

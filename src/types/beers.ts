@@ -38,6 +38,9 @@ export enum BeersStylesEnum {
     Sour = 'Sour',
     Saison = 'Saison',
     Belgian = 'Belgian',
+    Englsih = 'English Ale',
+    ESB = 'ESB',
+    Wheat = 'Wheat Ale',
     // key = "key"
 }
 

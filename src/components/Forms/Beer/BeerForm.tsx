@@ -9,6 +9,8 @@ import GrainFields from './GrainFields';
 import HopsFields from './HopsFields';
 import styles from './styles.module.scss';
 import { beerData } from '../../../seed';
+import { useRouter } from 'next/router';
+import { createBeer } from '../../../pages/api/services';
 
 const { Step } = Steps;
 
@@ -18,6 +20,8 @@ const BeerCreationSteps = ['General', 'Recipe - Grains', 'Recipe - Hops'];
 type Props = {};
 
 const BeerForm = (props: Props) => {
+    const router = useRouter();
+
     const [stepForm] = Form.useForm();
 
     const [currentStep, setCurrentStep] = useState(BeerCreationSteps[0]);
@@ -58,7 +62,7 @@ const BeerForm = (props: Props) => {
     };
 
     // status will be automatically filled on creation
-    const onFinish = (values: any) => {
+    const onFinish = async (values: any) => {
         console.log('on finish', values);
         const formData = stepForm.getFieldsValue(true);
         console.log("🚀 ~ file: BeerForm.tsx:62 ~ onFinish ~ formData", formData);
@@ -79,73 +83,81 @@ const BeerForm = (props: Props) => {
         };
         // hops: formData.hops,
         // grains: formData.grains
+
+        // local
+        // beerData.push(data);
+
+        console.log("🚀 ~ file: BeerForm.tsx:79 ~ onFinish ~ beerData", beerData);
+
+        // with MongoDB
+        const beerRes = await createBeer(data);
+        console.log("🚀 ~ file: BeerForm.tsx:93 ~ onFinish ~ beerRes", beerRes);
+        toast.success('Beer created successfully');
+        router.push('/dashboard');
     };
-    beerData.push(data);
-    console.log("🚀 ~ file: BeerForm.tsx:79 ~ onFinish ~ beerData", beerData);
-
-};
-
-const onReset = () => {
-    stepForm.resetFields();
-};
-
-const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-};
 
 
-return (
-    <Dashboard>
-        <Form
-            form={stepForm}
-            name="createBeerForm"
-            labelCol={{ span: 24 }}
-            wrapperCol={{ span: 24 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-            className={styles.createBeerForm}
-        // layout="vertical"
-        >
-            <h2>Create New Beer</h2>
-            <Divider />
-            {/* Step form
+    const onReset = () => {
+        stepForm.resetFields();
+    };
+
+    const onFinishFailed = (errorInfo: any) => {
+        console.log('Failed:', errorInfo);
+    };
+
+
+    return (
+        <Dashboard>
+            <Form
+                form={stepForm}
+                name="createBeerForm"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                autoComplete="off"
+                className={styles.createBeerForm}
+            // layout="vertical"
+            >
+                <h2>Create New Beer</h2>
+                <Divider />
+                {/* Step form
                 1-  General Info
                 2 - Recipe info
                  */}
-            <div className={styles.formWrapper}>
-                <div className={styles.progressBar}>
-                    <Steps current={stepIndex}>
-                        {BeerCreationSteps.map((step, index) => (
-                            <Step
-                                key={index}
-                                title={step}
-                            />
-                        ))}
-                    </Steps>
+                <div className={styles.formWrapper}>
+                    <div className={styles.progressBar}>
+                        <Steps current={stepIndex}>
+                            {BeerCreationSteps.map((step, index) => (
+                                <Step
+                                    key={index}
+                                    title={step}
+                                />
+                            ))}
+                        </Steps>
+                    </div>
+                    <div className={styles.formContent}>
+                        {stepIndex === 0 && <BeerInfoFields />}
+                        {stepIndex === 1 && <GrainFields form={stepForm} />}
+                        {stepIndex === 2 && <HopsFields form={stepForm} />}
+                    </div>
+                    <div className={styles.navButtons}>
+                        <FormNavigationButtons
+                            // sendToStart={createAnotherPackage}
+                            stepsLength={BeerCreationSteps.length}
+                            stepIndex={stepIndex}
+                            prevStep={prevStep}
+                            nextStep={nextStep}
+                        />
+                    </div>
                 </div>
-                <div className={styles.formContent}>
-                    {stepIndex === 0 && <BeerInfoFields />}
-                    {stepIndex === 1 && <GrainFields form={stepForm} />}
-                    {stepIndex === 2 && <HopsFields form={stepForm} />}
-                </div>
-                <div className={styles.navButtons}>
-                    <FormNavigationButtons
-                        // sendToStart={createAnotherPackage}
-                        stepsLength={BeerCreationSteps.length}
-                        stepIndex={stepIndex}
-                        prevStep={prevStep}
-                        nextStep={nextStep}
-                    />
-                </div>
-            </div>
 
-        </Form>
+            </Form>
 
 
-    </Dashboard >
-);
+        </Dashboard >
+    );
 };
 
 export default BeerForm;

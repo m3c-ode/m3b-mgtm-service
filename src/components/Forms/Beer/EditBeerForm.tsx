@@ -1,6 +1,8 @@
 import { Form, Divider, Input, Select, Col, DatePicker, InputNumber, Row, Switch, Checkbox, Button } from 'antd';
 import dayjs from 'dayjs';
+import router from 'next/router';
 import React, { useState } from 'react';
+import { beerData } from '../../../seed';
 import { BeerData, BeersStylesEnum } from '../../../types/beers';
 import Dashboard from '../../Dashboard';
 import styles from './styles.module.scss';
@@ -21,7 +23,7 @@ const EditBeerForm = ({ data }: Props) => {
     // console.log('router query', router.query);
 
     // extract data
-    const { name, description, style, status, abv, ibu, brewedOn, availableOn, qty } = data;
+    const { id, name, description, style, status, abv, ibu, brewedOn, availableOn, qty } = data;
     // console.log("🚀 ~ file: [id].tsx:19 ~ Beer ~ params", params);
 
     const switchMode = ({ disabled }: { disabled: boolean; }) => {
@@ -30,7 +32,27 @@ const EditBeerForm = ({ data }: Props) => {
     };
 
     const onFinish = (values: any) => {
-        console.log(values);
+        console.log("edit form values", values);
+        const data: BeerData = {
+            id: id,
+            name: values.name,
+            description: values.description,
+            style: values.style,
+            status: values.status,
+
+            brewedOn: values.brewedOn.format('YYYY-MM-DD'),
+            availableOn: values.availableOn.format('YYYY-MM-DD'),
+            qty: {
+                total: values.qty,
+            },
+            abv: values.abv,
+            ibu: values.ibu,
+        };
+        // hops: formData.hops,
+        // grains: formData.grains
+        beerData[beerData.findIndex((beer) => id === beer.id)] = data;
+        console.log("🚀 ~ file: BeerForm.tsx:79 ~ onFinish ~ beerData", beerData);
+        router.push('/dashboard');
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -96,10 +118,29 @@ const EditBeerForm = ({ data }: Props) => {
                         ))}
                     </Select>
                 </Form.Item>
+                <Form.Item
+                    label="Status"
+                    name="status"
+                    initialValue={status}
+                    rules={[{ required: true, message: 'Please input beer status!' }]}
+                >
+                    <Select>
+                        {Object.values(BeersStylesEnum).map((value, index) => (
+
+                            <Option
+                                key={index}
+                                value={value}
+                            >
+                                {value}
+                            </Option>
+                        ))}
+                    </Select>
+                </Form.Item>
                 <Row>
                     <Col span={8}>
                         <Form.Item
-                            labelCol={{ span: 24 }}
+                            labelCol={{ span: 9 }}
+                            wrapperCol={{ span: 10 }}
                             // labelAlign=
                             label="Brewed On"
                             name="brewedOn"
@@ -113,7 +154,8 @@ const EditBeerForm = ({ data }: Props) => {
                     </Col>
                     <Col span={8}>
                         <Form.Item
-                            labelCol={{ span: 24 }}
+                            labelCol={{ span: 9 }}
+                            wrapperCol={{ span: 10 }}
                             label="Available On"
                             name="availableOn"
                             initialValue={dayjs(availableOn)}
@@ -126,8 +168,9 @@ const EditBeerForm = ({ data }: Props) => {
                     </Col>
                     <Col span={8}>
                         <Form.Item
-                            labelCol={{ span: 24 }}
-                            label="Total Volume (L)"
+                            labelCol={{ span: 9 }}
+                            wrapperCol={{ span: 10 }}
+                            label="Total Vol. (L)"
                             name="qty"
                             initialValue={qty.total}
                             rules={[{ required: true, message: 'Please input total volume!' }]}
@@ -139,7 +182,8 @@ const EditBeerForm = ({ data }: Props) => {
                 <Row>
                     <Col span={8}>
                         <Form.Item
-                            labelCol={{ span: 24 }}
+                            labelCol={{ span: 9 }}
+                            wrapperCol={{ span: 10 }}
                             label="ABV"
                             name="abv"
                             initialValue={abv}
@@ -150,7 +194,8 @@ const EditBeerForm = ({ data }: Props) => {
                     </Col>
                     <Col span={8}>
                         <Form.Item
-                            labelCol={{ span: 24 }}
+                            labelCol={{ span: 9 }}
+                            wrapperCol={{ span: 10 }}
                             label="IBU"
                             name="ibu"
                             initialValue={ibu}
@@ -161,7 +206,7 @@ const EditBeerForm = ({ data }: Props) => {
                     </Col>
                 </Row>
 
-                <Form.Item>
+                <Form.Item style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '2.5rem' }}>
                     <Button type="primary" htmlType="submit">
                         Save
                     </Button>

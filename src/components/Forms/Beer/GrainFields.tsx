@@ -154,11 +154,11 @@ const GrainFields = ({ form }: Props) => {
                             <Form.Item
                                 label="Expected ABV"
                                 name="expectedABV"
-                                // wrapperCol={{ span: 4 }}
+                                // wrapperCol={{ span: 1 }}
                                 labelAlign='left'
                                 labelCol={{ span: 12 }}
                             >
-                                <InputNumber step={0.001} placeholder={'5.0'} /> <span>%</span>
+                                <InputNumber step={0.001} placeholder={'5.0'} /><span>%</span>
                             </Form.Item>
                             <Form.Item
                                 label="Yeast"
