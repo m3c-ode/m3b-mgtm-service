@@ -69,15 +69,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 res.status(500).json({ message: 'Error updating beer' });
             }
             break;
-        //     case 'DELETE':
-        //         try {
-        //             const { id } = req.query;
-        //             await collection.deleteOne({ _id }, {}});
-        //         res.status(204).send('');
-        // } catch (error) {
-        //     res.status(500).json({ message: 'Error deleting product' });
-        // }
-        // break;
+        case 'DELETE':
+            try {
+                const [_id] = req.query.params as string[];
+                const beer = await collection.deleteOne({ _id: new ObjectId(_id) });
+                console.log("🚀 ~ file: [[...params]].ts:76 ~ handler ~ beer", beer);
+                res.json(beer);
+            } catch (error) {
+                res.status(500).json({ message: 'Error deleting product' });
+            }
+            break;
         default:
             // res.status(405).end();
             res.status(405).json({ message: 'Method not allowed' });

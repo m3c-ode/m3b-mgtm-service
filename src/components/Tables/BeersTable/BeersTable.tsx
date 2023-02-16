@@ -8,6 +8,9 @@ import Dashboard from '../../Dashboard';
 import styles from '../styles.module.scss';
 import utilStyles from '../utilStyle.module.css';
 import { beerData } from '../../../seed';
+import { deleteBeer, getAllBeers } from '../../../pages/api/services';
+import { ObjectId } from 'mongodb';
+import toast from 'react-hot-toast';
 
 
 // type BeersTableProps = {}
@@ -31,6 +34,26 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
         beerData.splice(parseInt(id) - 1, 1);
 
         setCurrentData(newData);
+    };
+
+    const handleDeleteDb = async (id: string | ObjectId) => {
+        try {
+            const delRes = await deleteBeer(id);
+
+            // reloads the window
+            // window.location.reload();
+
+            // try with updating state data
+            const res = await getAllBeers();
+            const beerData = res.data;
+            setCurrentData(beerData);
+
+        } catch (error: any) {
+            console.log("🚀 ~ file: BeersTable.tsx:43 ~ handleDeleteDb ~ error", error);
+            toast.error('Error deleting beer');
+
+            throw new Error(error).message;
+        }
     };
 
     const columns: ColumnsType<BeerData> = [
@@ -136,7 +159,7 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
 
                     </Button>
                     {/* <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(parseInt(record.id) - 1)}> */}
-                    <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record._id)}>
+                    <Popconfirm title="Are you sure?" onConfirm={() => handleDeleteDb(record._id)}>
                         <Button
                             type="primary"
                             danger
