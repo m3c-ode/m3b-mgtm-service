@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export type BeersTableProps = {
     data: BeerData[];
     isLoading: boolean;
@@ -5,8 +7,12 @@ export type BeersTableProps = {
 
 };
 
-export type BeerData = {
-    id: string,
+export type BeerData = NewBeerData & {
+    _id: string | ObjectId;
+};
+
+export type NewBeerData = {
+    id?: string,
     name?: string,
     description?: string,
     company?: string,

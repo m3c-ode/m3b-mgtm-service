@@ -2,8 +2,10 @@ import { Form, Divider, Input, Select, Col, DatePicker, InputNumber, Row, Switch
 import dayjs from 'dayjs';
 import router from 'next/router';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+import { updateBeerData } from '../../../pages/api/services';
 import { beerData } from '../../../seed';
-import { BeerData, BeersStylesEnum } from '../../../types/beers';
+import { BeerData, BeersStatusEnum, BeersStylesEnum } from '../../../types/beers';
 import Dashboard from '../../Dashboard';
 import styles from './styles.module.scss';
 const { TextArea } = Input;
@@ -23,7 +25,7 @@ const EditBeerForm = ({ data }: Props) => {
     // console.log('router query', router.query);
 
     // extract data
-    const { id, name, description, style, status, abv, ibu, brewedOn, availableOn, qty } = data;
+    const { _id, name, description, style, status, abv, ibu, brewedOn, availableOn, qty } = data;
     // console.log("🚀 ~ file: [id].tsx:19 ~ Beer ~ params", params);
 
     const switchMode = ({ disabled }: { disabled: boolean; }) => {
@@ -31,10 +33,10 @@ const EditBeerForm = ({ data }: Props) => {
         setIsFormDisabled(disabled);
     };
 
-    const onFinish = (values: any) => {
+    const onFinish = async (values: any) => {
         console.log("edit form values", values);
         const data: BeerData = {
-            id: id,
+            _id: _id,
             name: values.name,
             description: values.description,
             style: values.style,
@@ -48,11 +50,28 @@ const EditBeerForm = ({ data }: Props) => {
             abv: values.abv,
             ibu: values.ibu,
         };
+        console.log("🚀 ~ file: EditBeerForm.tsx:52 ~ onFinish ~ beer update data", data);
         // hops: formData.hops,
         // grains: formData.grains
-        beerData[beerData.findIndex((beer) => id === beer.id)] = data;
-        console.log("🚀 ~ file: BeerForm.tsx:79 ~ onFinish ~ beerData", beerData);
-        router.push('/dashboard');
+
+        // local change
+        // beerData[beerData.findIndex((beer) => _id === beer._id)] = data;
+        // console.log("🚀 ~ file: BeerForm.tsx:79 ~ onFinish ~ beerData", beerData);
+
+        // DB change
+        try {
+            const beerUpdateRes = await updateBeerData(_id, data);
+            console.log("🚀 ~ file: EditBeerForm.tsx:60 ~ onFinish ~ beerUpdateRes", beerUpdateRes);
+            toast.success('Beer updated successfully');
+            router.push('/dashboard');
+
+        } catch (error) {
+            console.log("🚀 ~ file: EditBeerForm.tsx:66 ~ onFinish ~ edit error", error);
+            toast.error('Beer update failed');
+
+        }
+        // if (beerUpdateRes) {
+        // }
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -125,7 +144,7 @@ const EditBeerForm = ({ data }: Props) => {
                     rules={[{ required: true, message: 'Please input beer status!' }]}
                 >
                     <Select>
-                        {Object.values(BeersStylesEnum).map((value, index) => (
+                        {Object.values(BeersStatusEnum).map((value, index) => (
 
                             <Option
                                 key={index}

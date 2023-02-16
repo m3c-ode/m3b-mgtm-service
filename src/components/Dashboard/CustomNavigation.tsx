@@ -5,6 +5,7 @@ import { IoBeerOutline, IoPeopleOutline } from 'react-icons/io5';
 import { TbTruckDelivery, TbFileInvoice } from 'react-icons/tb';
 import { MdOutlineProductionQuantityLimits } from 'react-icons/md';
 import { GiHops } from 'react-icons/gi';
+import { AiOutlineProfile } from 'react-icons/ai';
 import styles from './styles.module.scss';
 import Link from 'next/link';
 
@@ -24,6 +25,22 @@ const CustomNavigation = (props: Props) => {
             icon: React.createElement(IoBeerOutline),
         },
         {
+            key: 7,
+            label: (<Link href={`/dashboard`}>Recipes</Link>),
+            // icon: <IoBeerOutline />,
+            icon: React.createElement(AiOutlineProfile),
+        },
+        {
+            key: 4,
+            label: (<Link href={`/products`}>Ingredients/Products</Link>),
+            icon: React.createElement(GiHops),
+        },
+        {
+            key: 6,
+            label: (<Link href={`/clients`}>Clients</Link>),
+            icon: React.createElement(IoPeopleOutline),
+        },
+        {
             key: 2,
             // label: 'Deliveries',
             label: (<Link href={`/deliveries`}>Deliveries</Link>),
@@ -35,19 +52,9 @@ const CustomNavigation = (props: Props) => {
             icon: React.createElement(MdOutlineProductionQuantityLimits),
         },
         {
-            key: 4,
-            label: (<Link href={`/products`}>Ingredients/Products</Link>),
-            icon: React.createElement(GiHops),
-        },
-        {
             key: 5,
             label: (<Link href={`/invoices`}>Invoices</Link>),
             icon: React.createElement(TbFileInvoice),
-        },
-        {
-            key: 6,
-            label: (<Link href={`/invoices`}>Clients</Link>),
-            icon: React.createElement(IoPeopleOutline),
         },
 
     ];

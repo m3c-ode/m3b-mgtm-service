@@ -34,20 +34,20 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
     };
 
     const columns: ColumnsType<BeerData> = [
+        /*         {
+                    title: 'ID',
+                    dataIndex: 'id',
+                    key: 'id',
+                }, */
         {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
         },
         {
             title: 'Style',
             dataIndex: 'style',
             key: 'style',
-        },
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
         },
         {
             title: 'Status',
@@ -59,10 +59,12 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
             dataIndex: 'brewedOn',
             key: 'brewedOn',
             render: (value, record) => {
-                console.log("🚀 ~ file: BeersTable.tsx:36 ~ value", value);
-                console.log('type of available', typeof value);
+                // console.log("🚀 ~ file: BeersTable.tsx:36 ~ value", value);
+                // console.log('type of available', typeof value);
                 if (typeof value === 'string') {
-                    return value;
+                    if (value.includes("T")) {
+                        return value.split("T")[0];
+                    } else return value;
                 } else {
                     return new Date(value).toISOString().split('T')[0];
                 }
@@ -73,14 +75,18 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
             dataIndex: 'availableOn',
             key: 'availableOn',
             render: (value, record) => {
-                console.log("🚀 ~ file: BeersTable.tsx:47 ~ value", value);
-                console.log('type of available', typeof value);
+                // console.log("🚀 ~ file: BeersTable.tsx:47 ~ value", value);
+                // console.log('type of available', typeof value);
                 if (typeof value === 'string') {
-                    return value;
+                    if (value.includes("T")) {
+                        return value.split("T")[0];
+                    } else return value;
                 } else {
                     return new Date(value).toISOString().split('T')[0];
                 }
-            }
+            },
+            sorter: (a, b) => new Date(b.availableOn).valueOf() - new Date(a.availableOn).valueOf(),
+
         },
         {
             title: 'Tot. Quantity',
@@ -126,11 +132,11 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
                     >
                         <Link
                             className={styles.tableButton}
-                            href={`/beers/${record.id}`}>Update Info</Link>
+                            href={`/beers/${record._id}`}>Update Info</Link>
 
                     </Button>
                     {/* <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(parseInt(record.id) - 1)}> */}
-                    <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record.id)}>
+                    <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record._id)}>
                         <Button
                             type="primary"
                             danger

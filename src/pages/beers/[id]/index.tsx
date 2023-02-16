@@ -1,13 +1,13 @@
 import { Form } from 'antd';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import React from 'react';
-import { getBeerData, getLocalBeersId } from '../../../../lib/beers';
+import { getBeerData, getDbBeersId } from '../../../../lib/beers';
 import EditBeerForm from '../../../components/Forms/Beer/EditBeerForm';
-import { BeerData } from '../../../types/beers';
+import type { BeerData } from '../../../types/beers';
 
 // Generates `/beers/1` and `/beers/2`
-export const getStaticPaths: GetStaticPaths = () => {
-    const paths = getLocalBeersId();
+export const getStaticPaths: GetStaticPaths = async () => {
+    const paths = await getDbBeersId();
     return {
         paths,
         // TODO: double check this
@@ -18,10 +18,10 @@ export const getStaticPaths: GetStaticPaths = () => {
 };
 
 // `getStaticPaths` requires using `getStaticProps`
-export const getStaticProps: GetStaticProps<{ beerData: BeerData; }> = (context) => {
+export const getStaticProps: GetStaticProps<{ beerData: BeerData; }> = async (context) => {
     console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
     const beerId = context.params!.id as string;;
-    const beerData = getBeerData(beerId);
+    const beerData = await getBeerData(beerId);
     return {
         // Passed to the page component as props
         props: { beerData },

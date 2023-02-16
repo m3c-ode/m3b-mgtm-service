@@ -1,7 +1,7 @@
 import { Divider, Form, Steps } from 'antd';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-import { BeerData, BeersStatusEnum } from '../../../types/beers';
+import { BeerData, BeersStatusEnum, NewBeerData } from '../../../types/beers';
 import Dashboard from '../../Dashboard';
 import FormNavigationButtons from '../Navigation';
 import BeerInfoFields from './BeerInfoFields';
@@ -67,7 +67,7 @@ const BeerForm = (props: Props) => {
         const formData = stepForm.getFieldsValue(true);
         console.log("🚀 ~ file: BeerForm.tsx:62 ~ onFinish ~ formData", formData);
         // const currentBeerList = beerData;
-        const data: BeerData = {
+        const data: NewBeerData = {
             id: (beerData.length + 1).toString(),
             name: formData.name,
             description: formData.description,

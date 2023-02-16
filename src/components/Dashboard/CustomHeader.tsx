@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dropdown, Layout, Menu, MenuProps } from 'antd';
+import { Dropdown, Layout, Menu, MenuProps, Tooltip } from 'antd';
 import Image from 'next/image';
 import styles from './styles.module.scss';
 import { AiOutlineMenu, AiOutlineSetting, AiOutlineBell, AiOutlineUserSwitch, AiOutlineUser } from 'react-icons/ai';
@@ -46,14 +46,16 @@ const CustomHeader = (props: Props) => {
                     height={40}
                 />
                 {/* TODO: Button with a modal pop-up for settings edit */}
-                <AiOutlineSetting
-                    style={{
-                        fontSize: '2rem',
-                        color: 'white',
-                        padding: '5px',
-                        cursor: 'pointer',
-                    }}
-                />
+                <Tooltip title="Will pop-up a modal with current settings">
+                    <AiOutlineSetting
+                        style={{
+                            fontSize: '2rem',
+                            color: 'white',
+                            padding: '5px',
+                            cursor: 'pointer',
+                        }}
+                    />
+                </Tooltip>
             </div>
             <div className={styles.topRight}>
                 {/* TODO: add a search bar feature? */}
