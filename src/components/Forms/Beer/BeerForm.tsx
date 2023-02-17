@@ -67,7 +67,7 @@ const BeerForm = (props: Props) => {
         console.log("🚀 ~ file: BeerForm.tsx:62 ~ onFinish ~ formData", formData);
         // const currentBeerList = beerData;
         const data: NewBeerData = {
-            id: (beerData.length + 1).toString(),
+            // id: (beerData.length + 1).toString(),
             name: formData.name,
             description: formData.description,
             style: formData.style,
@@ -85,8 +85,8 @@ const BeerForm = (props: Props) => {
 
         // local
         // beerData.push(data);
+        // console.log("🚀 ~ file: BeerForm.tsx:79 ~ onFinish ~ beerData", beerData);
 
-        console.log("🚀 ~ file: BeerForm.tsx:79 ~ onFinish ~ beerData", beerData);
 
         // with MongoDB
         const beerRes = await createBeer(data);
