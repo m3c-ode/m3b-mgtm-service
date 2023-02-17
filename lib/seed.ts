@@ -1,4 +1,4 @@
-import { BeerData, BeersStylesEnum, BeersStatusEnum } from "./types/beers";
+import { BeerData, BeersStylesEnum, BeersStatusEnum } from "../src/types/beers";
 
 export let beerData: BeerData[] = [
     {

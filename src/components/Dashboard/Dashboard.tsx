@@ -6,6 +6,8 @@ import Link from 'next/link';
 import CustomNavigation from './CustomNavigation';
 import CustomHeader from './CustomHeader';
 import { Toaster } from 'react-hot-toast';
+import { useRouter } from 'next/router';
+import { capitalize } from '../../../lib/functions';
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -24,6 +26,18 @@ const Dashboard: React.FC = ({ children }: Props) => {
         token: { colorBgContainer },
     } = theme.useToken();
 
+    const router = useRouter();
+    const { pathname } = router;
+    console.log("🚀 ~ file: Dashboard.tsx:30 ~ pathname", pathname);
+
+    // TODO: could add href
+    const getPathDetails = (pathname: string) => {
+        const paths = pathname.split("/").filter(p => p.length > 0);
+        console.log("🚀 ~ file: Dashboard.tsx:34 ~ getPathDetails ~ paths", paths);
+        return paths.map(path => capitalize(path));
+    };
+    const breadcrumbs = getPathDetails(pathname);
+
     return (
         <Layout>
             {/* TODO: CustomHeader */}
@@ -41,8 +55,11 @@ const Dashboard: React.FC = ({ children }: Props) => {
                 <Layout style={{ padding: '0 24px 24px' }}>
                     {/* TODO: breadcrumb generator */}
                     <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
-                        <Breadcrumb.Item>Beers</Breadcrumb.Item>
+                        {/* <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
+                        <Breadcrumb.Item>Beers</Breadcrumb.Item> */}
+                        {breadcrumbs.map((path, index) => (
+                            <Breadcrumb.Item key={index}>{path}</Breadcrumb.Item>
+                        ))}
                     </Breadcrumb>
                     <Content
                         style={{

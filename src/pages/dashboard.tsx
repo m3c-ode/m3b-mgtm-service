@@ -50,7 +50,7 @@ type Props = {};
 
 const Page = ({ beersList, isLoading, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
-    // console.log("🚀 ~ file: dashboard.tsx:10 ~ beerData", beerData);
+    //  Client Side data fetching
     // const [beersList, setBeersList] = useState<BeerData[] | null>(null);
     // const [isLoading, setIsLoading] = useState(true);
 

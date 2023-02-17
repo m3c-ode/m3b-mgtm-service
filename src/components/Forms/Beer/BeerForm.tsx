@@ -8,7 +8,7 @@ import BeerInfoFields from './BeerInfoFields';
 import GrainFields from './GrainFields';
 import HopsFields from './HopsFields';
 import styles from './styles.module.scss';
-import { beerData } from '../../../seed';
+import { beerData } from '../../../../lib/seed';
 import { useRouter } from 'next/router';
 import { createBeer } from '../../../pages/api/services';
 
@@ -128,13 +128,20 @@ const BeerForm = (props: Props) => {
                  */}
                 <div className={styles.formWrapper}>
                     <div className={styles.progressBar}>
-                        <Steps current={stepIndex}>
-                            {BeerCreationSteps.map((step, index) => (
+                        <Steps
+                            current={stepIndex}
+                            items={BeerCreationSteps.map((step) => {
+                                return {
+                                    title: step
+                                };
+                            })}
+                        >
+                            {/* {BeerCreationSteps.map((step, index) => (
                                 <Step
                                     key={index}
                                     title={step}
                                 />
-                            ))}
+                            ))} */}
                         </Steps>
                     </div>
                     <div className={styles.formContent}>
