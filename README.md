@@ -51,5 +51,5 @@ However, currently, you would not have access to the database's data. Using the 
 - Delivery management (geo-routing)
 
 ## Contact
-Feel free to get in touch for me for more details oro discuss about it
+Feel free to get in touch for me for more details or to discuss about it
 
