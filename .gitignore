@@ -38,3 +38,4 @@ next-env.d.ts
 # other files
 originalREADME.md
 /lib/seed.ts
+src/pages/api/beers/post.ts
