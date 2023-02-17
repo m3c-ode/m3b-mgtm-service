@@ -4,7 +4,6 @@ import router from 'next/router';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { updateBeerData } from '../../../pages/api/services';
-import { beerData } from '../../../../lib/seed';
 import { BeerData, BeersStatusEnum, BeersStylesEnum } from '../../../types/beers';
 import Dashboard from '../../Dashboard';
 import styles from './styles.module.scss';

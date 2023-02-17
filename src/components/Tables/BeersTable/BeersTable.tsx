@@ -4,7 +4,6 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import type { BeersTableProps, BeerData } from '../../../types/beers';
 import styles from '../styles.module.scss';
-import { beerData } from '../../../../lib/seed';
 import { deleteBeer, getAllBeers } from '../../../pages/api/services';
 import { ObjectId } from 'mongodb';
 import toast from 'react-hot-toast';

@@ -8,7 +8,6 @@ import BeerInfoFields from './BeerInfoFields';
 import GrainFields from './GrainFields';
 import HopsFields from './HopsFields';
 import styles from './styles.module.scss';
-import { beerData } from '../../../../lib/seed';
 import { useRouter } from 'next/router';
 import { createBeer } from '../../../pages/api/services';
 
