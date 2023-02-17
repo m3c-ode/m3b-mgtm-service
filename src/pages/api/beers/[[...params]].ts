@@ -12,9 +12,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const db = client.db();
     const collection = db.collection("beers");
     // console.log('params', req.params);
-    console.log('req.query', req.query);
-    console.log('req.body', req.body);
-    console.log("🚀 ~ file: index.ts:16 ~ handler ~ req.method", req.method);
+    // console.log('req.query', req.query);
+    // console.log('req.body', req.body);
+    // console.log("🚀 ~ file: index.ts:16 ~ handler ~ req.method", req.method);
 
 
     switch (req.method) {
@@ -52,8 +52,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const updateData = req.body;
                 delete updateData._id;
                 const [id] = req.query.params as string[];
-                console.log('req.query.param', req.query.params);
-                console.log("🚀 ~ file: [[...params]].ts:55 ~ handler ~ id", id);
+                // console.log('req.query.param', req.query.params);
+                // console.log("🚀 ~ file: [[...params]].ts:55 ~ handler ~ id", id);
                 // console.log("🚀 ~ file: index.ts:49 ~ handler ~ _id", _id);
                 await collection.updateOne({ _id: new ObjectId(id) }, { $set: { ...req.body } },
                     // {
@@ -62,7 +62,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 );
 
                 const beer = await collection.findOne({ _id: new ObjectId(id) });
-                console.log("🚀 ~ file: index.ts:53 ~ handler ~ beer", beer);
+                // console.log("🚀 ~ file: index.ts:53 ~ handler ~ beer", beer);
                 res.status(200).json(beer);
             } catch (error) {
                 console.log("🚀 ~ file: index.ts:49 ~ handler ~ patch error", error);
@@ -73,7 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             try {
                 const [_id] = req.query.params as string[];
                 const beer = await collection.deleteOne({ _id: new ObjectId(_id) });
-                console.log("🚀 ~ file: [[...params]].ts:76 ~ handler ~ beer", beer);
+                // console.log("🚀 ~ file: [[...params]].ts:76 ~ handler ~ beer", beer);
                 res.json(beer);
             } catch (error) {
                 res.status(500).json({ message: 'Error deleting product' });

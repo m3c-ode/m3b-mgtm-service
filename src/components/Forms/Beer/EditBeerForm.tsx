@@ -16,16 +16,12 @@ type Props = {
 };
 
 const EditBeerForm = ({ data }: Props) => {
-    console.log("🚀 ~ file: EditBeerForm.tsx:14 ~ EditBeerForm ~ data", data);
     const [form] = Form.useForm();
 
     const [isFormDisabled, setIsFormDisabled] = useState(true);
-    // const router = useRouter();
-    // console.log('router query', router.query);
 
     // extract data
     const { _id, name, description, style, status, abv, ibu, brewedOn, availableOn, qty } = data;
-    // console.log("🚀 ~ file: [id].tsx:19 ~ Beer ~ params", params);
 
     const switchMode = ({ disabled }: { disabled: boolean; }) => {
         console.log("🚀 ~ file: EditBeerForm.tsx:28 ~ switchMode ~ checked", disabled);
@@ -52,10 +48,6 @@ const EditBeerForm = ({ data }: Props) => {
         console.log("🚀 ~ file: EditBeerForm.tsx:52 ~ onFinish ~ beer update data", data);
         // hops: formData.hops,
         // grains: formData.grains
-
-        // local change
-        // beerData[beerData.findIndex((beer) => _id === beer._id)] = data;
-        // console.log("🚀 ~ file: BeerForm.tsx:79 ~ onFinish ~ beerData", beerData);
 
         // DB change
         try {

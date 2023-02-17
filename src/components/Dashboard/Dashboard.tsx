@@ -40,12 +40,6 @@ const Dashboard: React.FC = ({ children }: Props) => {
 
     return (
         <Layout>
-            {/* TODO: CustomHeader */}
-            {/* <Header className="something">
-                <div className="logo" />
-
-                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={headerItems} />
-            </Header> */}
             <Toaster />
             <CustomHeader />
             <Layout>
@@ -55,10 +49,8 @@ const Dashboard: React.FC = ({ children }: Props) => {
                 <Layout style={{ padding: '0 24px 24px' }}>
                     {/* TODO: breadcrumb generator */}
                     <Breadcrumb style={{ margin: '16px 0' }}>
-                        {/* <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
-                        <Breadcrumb.Item>Beers</Breadcrumb.Item> */}
                         {breadcrumbs.map((path, index) => (
-                            <Breadcrumb.Item key={index}>{path}</Breadcrumb.Item>
+                            <Breadcrumb.Item key={index}>{path !== '[id]' ? path : 'Edit'}</Breadcrumb.Item>
                         ))}
                     </Breadcrumb>
                     <Content
