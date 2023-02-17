@@ -16,6 +16,9 @@ const getDbCollection = async () => {
 // get beers data from DB
 export const getBeersAsync = async () => {
     const res = await getAllBeers();
+
+    // const collection = await getDbCollection();
+    // const res = await collection.find({}).toArray();
     return res.data;
 };
 
@@ -33,13 +36,18 @@ export const getBeersAsync = async () => {
 
 export const getDbBeersId = async () => {
     const beers = await getBeersAsync();
-    return beers.map((beer: BeerData) => {
-        return {
-            params: {
-                id: beer._id!
-            }
-        };
-    });
+    console.log("🚀 ~ file: beers.ts:36 ~ getDbBeersId ~ beers", beers);
+    if (beers.map) {
+        return beers.map((beer: BeerData) => {
+            return {
+                params: {
+                    id: beer._id!
+                }
+            };
+        });
+    } else {
+        return [];
+    }
 };
 
 export const getBeerData = async (id: string) => {

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 // axios.defaults.baseURL = process.env.MONGODB_URL
+// axios.defaults.baseURL = "http://localhost:3000";
 axios.defaults.baseURL =
     process.env.NODE_ENV === "development" ?
         "http://localhost:3000"
