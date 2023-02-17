@@ -16,23 +16,6 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
 
     const [currentData, setCurrentData] = useState(data);
 
-    // const handleDelete = (index: number) => {
-    const handleDelete = (id: string) => {
-        console.log("🚀 ~ file: BeersTable.tsx:21 ~ handleDelete ~ id", id);
-        // console.log("🚀 ~ file: BeersTable.tsx:17 ~ handleDelete ~ id", index);
-        console.log("🚀 ~ file: BeersTable.tsx:22 ~ handleDelete ~ data", data);
-        console.log("before splice", beerData);
-        // data.splice(index, 1);
-        console.log("🚀 after splice", beerData);
-        // setCurrentData(data);
-
-        // const newData = currentData.splice(index, 1);
-        const newData = beerData.filter((item) => item.id !== id);
-        beerData.splice(parseInt(id) - 1, 1);
-
-        setCurrentData(newData);
-    };
-
     const handleDeleteDb = async (id: string | ObjectId) => {
         try {
             const delRes = await deleteBeer(id);
@@ -106,6 +89,7 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
                 }
             },
             sorter: (a, b) => new Date(b.availableOn).valueOf() - new Date(a.availableOn).valueOf(),
+            defaultSortOrder: 'descend'
 
         },
         {
@@ -172,6 +156,7 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
 
     return (
         <Table
+            className={styles.tableContainer}
             columns={columns}
             dataSource={currentData}
             loading={isLoading}

@@ -14,6 +14,7 @@ const today = dayjs();
 type Props = {};
 
 const BeerInfoFields = (props: Props) => {
+
     return (
         <>
             <Form.Item
@@ -28,16 +29,22 @@ const BeerInfoFields = (props: Props) => {
                 name="style"
                 rules={[{ required: true, message: 'Please input beer style!' }]}
             >
-                <Select>
-                    {Object.values(BeersStylesEnum).map((value, index) => (
+                <Select
+                    showSearch
+                    filterOption={(input, option) =>
+                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
+                    options={Object.values(BeersStylesEnum).map((value, index) => ({ value, label: value }))}
+                >
+                    {/* {Object.values(BeersStylesEnum).map((value, index) => (
 
                         <Option
                             key={index}
                             value={value}
                         >
                             {value}
-                        </Option>
-                    ))}
+                        </Option> 
+                    ))} */}
                 </Select>
             </Form.Item>
             {/* <Form.Item
@@ -94,16 +101,6 @@ const BeerInfoFields = (props: Props) => {
                     </Form.Item>
                 </Col>
             </Row>
-
-
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-                {/* <Button htmlType="button" onClick={onReset}>
-                    Reset
-                </Button> */}
-            </Form.Item>
         </>
 
     );

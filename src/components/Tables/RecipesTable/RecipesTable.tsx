@@ -109,6 +109,7 @@ const RecipesTable: React.FC<RecipesTableProps> = ({ data, isLoading, title }) =
     return (
         <Table
             columns={columns}
+            className={styles.tableContainer}
             dataSource={currentData}
             title={title}
         />

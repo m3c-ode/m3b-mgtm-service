@@ -93,6 +93,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ data, isLoading, title })
 
     return (
         <Table
+            className={styles.tableContainer}
             columns={columns}
             dataSource={currentData}
             title={title}
