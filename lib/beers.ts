@@ -2,7 +2,16 @@
 import { AxiosResponse } from 'axios';
 import { getAllBeers } from '../src/pages/api/services';
 import { BeerData } from '../src/types/beers';
+import clientPromise from './mongodb';
 // import { beerData } from '../src/seed';
+
+const getDbCollection = async () => {
+    const client = await clientPromise;
+    // creates and use a db called "test"
+    const db = client.db();
+    const collection = db.collection("beers");
+    return collection;
+};
 
 // get beers data from DB
 export const getBeersAsync = async () => {

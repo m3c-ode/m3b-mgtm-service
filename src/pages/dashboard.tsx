@@ -17,15 +17,18 @@ interface BeerPageProps {
 
 export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => {
     // const [isLoading, setIsLoading] = useState(true);
+    const env = process.env.NODE_ENV;
+    console.log("🚀 ~ file: dashboard.tsx:21 ~ constgetStaticProps:GetStaticProps<BeerPageProps>= ~ env", env);
+    console.log('entering getstaic props');
     try {
         // setIsLoading(true);
         const beerRes = await getAllBeers();
-        console.log("🚀 ~ file: dashboard.tsx:25 ~ fetchAllBeers ~ beerRes", beerRes);
+        // console.log("🚀 ~ file: dashboard.tsx:25 ~ fetchAllBeers ~ beerRes", beerRes);
         const beersList = beerRes.data;
-        if (beerRes.data) {
-            // setBeersList(beerRes.data);
-            // setIsLoading(false);
-        }
+        // if (beerRes.data) {
+        //     // setBeersList(beerRes.data);
+        //     // setIsLoading(false);
+        // }
         return {
             props: {
                 beersList,
@@ -34,12 +37,12 @@ export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => 
             revalidate: 60
         };
     } catch (error: any) {
-        console.log("🚀 ~ file: dashboard.tsx:35 ~ fetchAllBeers ~ error", error);
+        // console.log("🚀 ~ file: dashboard.tsx:35 ~ fetchAllBeers ~ error", error);
         toast.error('Error fetching beer data');
         // setIsLoading(false);
         return {
             props: {
-                error: error
+                error: 'Error getting beer data'
             }
         };
         // throw new Error(error).message;
@@ -75,6 +78,7 @@ const Page = ({ beersList, isLoading, error }: InferGetStaticPropsType<typeof ge
     // }, []);
 
     if (error) {
+        console.log("🚀 ~ file: dashboard.tsx:79 ~ Page ~ error", error);
         toast.error('There was an error fetching the beer data');
     }
 

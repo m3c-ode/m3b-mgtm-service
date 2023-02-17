@@ -9,6 +9,7 @@ export type BeersTableProps = {
 
 export type BeerData = NewBeerData & {
     _id: string;
+    key?: any;
 };
 
 export type NewBeerData = {
