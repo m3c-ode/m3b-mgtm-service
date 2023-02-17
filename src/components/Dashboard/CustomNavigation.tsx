@@ -1,6 +1,6 @@
 import { Divider, Menu, MenuProps } from 'antd';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { IoBeerOutline, IoPeopleOutline } from 'react-icons/io5';
 import { TbTruckDelivery, TbFileInvoice } from 'react-icons/tb';
 import { MdOutlineProductionQuantityLimits } from 'react-icons/md';
@@ -19,41 +19,44 @@ const CustomNavigation = (props: Props) => {
 
     const navigationItems: MenuProps['items'] = [
         {
-            key: 1,
+            key: `/dashboard`,
             label: (<Link href={`/dashboard`}>Beers</Link>),
             // icon: <IoBeerOutline />,
             icon: React.createElement(IoBeerOutline),
         },
         {
-            key: 7,
-            label: (<Link href={`/dashboard`}>Recipes</Link>),
+            key: `/recipes`,
+            label: (<Link href={`/recipes`}>Recipes</Link>),
             // icon: <IoBeerOutline />,
             icon: React.createElement(AiOutlineProfile),
         },
         {
-            key: 4,
+            key: `/products`,
             label: (<Link href={`/products`}>Ingredients/Products</Link>),
             icon: React.createElement(GiHops),
         },
         {
-            key: 6,
-            label: (<Link href={`/clients`}>Clients</Link>),
+            key: `/clients`,
+            // label: (<Link href={`/clients`}>Clients</Link>),
+            label: 'Clients',
             icon: React.createElement(IoPeopleOutline),
         },
         {
-            key: 2,
-            // label: 'Deliveries',
-            label: (<Link href={`/deliveries`}>Deliveries</Link>),
+            key: `/deliveries`,
+            label: 'Deliveries',
+            // label: (<Link href={`/deliveries`}>Deliveries</Link>),
             icon: React.createElement(TbTruckDelivery),
         },
         {
-            key: 3,
-            label: (<Link href={`/orders`}>Orders</Link>),
+            key: `/orders`,
+            label: 'Orders',
+            // label: (<Link href={`/orders`}>Orders</Link>),
             icon: React.createElement(MdOutlineProductionQuantityLimits),
         },
         {
-            key: 5,
-            label: (<Link href={`/invoices`}>Invoices</Link>),
+            key: `/invoices`,
+            // label: (<Link href={`/invoices`}>Invoices</Link>),
+            label: 'Invoices',
             icon: React.createElement(TbFileInvoice),
         },
 
@@ -69,8 +72,7 @@ const CustomNavigation = (props: Props) => {
             }} />
             <Menu
                 mode="inline"
-                defaultSelectedKeys={['1']}
-                // defaultOpenKeys={['sub1']}
+                defaultSelectedKeys={[pathname]}
                 style={{ height: '100%', borderRight: 0 }}
                 items={navigationItems}
             />

@@ -8,7 +8,7 @@ export type BeersTableProps = {
 };
 
 export type BeerData = NewBeerData & {
-    _id: string | ObjectId;
+    _id: string;
 };
 
 export type NewBeerData = {

@@ -1,4 +1,4 @@
-import { NextPage } from 'next';
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import Dashboard from '../components/Dashboard';
@@ -6,31 +6,77 @@ import BeersTable from '../components/Tables/BeersTable';
 import TableHeader from '../components/Tables/TableHeader';
 import { BeerData, BeersStatusEnum, BeersStylesEnum } from '../types/beers';
 import { IoAddOutline } from 'react-icons/io5';
-// import { beerData } from '../seed';
-import axios from 'axios';
 import { getAllBeers } from './api/services';
+import toast from 'react-hot-toast';
 
+interface BeerPageProps {
+    beersList?: BeerData[],
+    isLoading?: boolean,
+    error?: any;
+}
 
+export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => {
+    // const [isLoading, setIsLoading] = useState(true);
+    try {
+        // setIsLoading(true);
+        const beerRes = await getAllBeers();
+        console.log("🚀 ~ file: dashboard.tsx:25 ~ fetchAllBeers ~ beerRes", beerRes);
+        const beersList = beerRes.data;
+        if (beerRes.data) {
+            // setBeersList(beerRes.data);
+            // setIsLoading(false);
+        }
+        return {
+            props: {
+                beersList,
+                // isLoading
+            },
+            revalidate: 60
+        };
+    } catch (error: any) {
+        console.log("🚀 ~ file: dashboard.tsx:35 ~ fetchAllBeers ~ error", error);
+        toast.error('Error fetching beer data');
+        // setIsLoading(false);
+        return {
+            props: {
+                error: error
+            }
+        };
+        // throw new Error(error).message;
+    }
+};
 
 type Props = {};
 
-const Page: NextPage = (props: Props) => {
+const Page = ({ beersList, isLoading, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
     // console.log("🚀 ~ file: dashboard.tsx:10 ~ beerData", beerData);
-    const [beerList, setBeerList] = useState<BeerData[] | null>(null);
+    // const [beersList, setBeersList] = useState<BeerData[] | null>(null);
+    // const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchAllBeers = async () => {
-            try {
-                const beerRes = await getAllBeers();
-                console.log("🚀 ~ file: dashboard.tsx:25 ~ fetchAllBeers ~ beerRes", beerRes);
-                setBeerList(beerRes.data);
-            } catch (error) {
+    // useEffect(() => {
+    //     const fetchAllBeers = async () => {
+    //         try {
+    //             // setIsLoading(true);
+    //             const beerRes = await getAllBeers();
+    //             console.log("🚀 ~ file: dashboard.tsx:25 ~ fetchAllBeers ~ beerRes", beerRes);
+    //             if (beerRes.data) {
+    //                 setBeersList(beerRes.data);
+    //                 // setIsLoading(false);
+    //             }
+    //         } catch (error: any) {
+    //             console.log("🚀 ~ file: dashboard.tsx:35 ~ fetchAllBeers ~ error", error);
+    //             toast.error('Error fetching beer data');
+    //             // setIsLoading(false);
+    //             throw new Error(error).message;
+    //         }
+    //     };
+    //     fetchAllBeers();
+    // }, []);
 
-            }
-        };
-        fetchAllBeers();
-    }, []);
+    if (error) {
+        toast.error('There was an error fetching the beer data');
+    }
 
 
     const TableTitle = () =>
@@ -51,9 +97,9 @@ const Page: NextPage = (props: Props) => {
         <>
             {/* TODO: Authentication: if logged in, show dashboard, otherwise, home/login page */}
             <Dashboard>
-                {beerList &&
+                {beersList &&
                     <BeersTable
-                        data={beerList}
+                        data={beersList}
                         title={TableTitle}
                         isLoading={false}
                     />

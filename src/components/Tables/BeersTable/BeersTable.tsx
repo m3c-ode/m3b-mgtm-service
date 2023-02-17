@@ -1,12 +1,9 @@
 import { Button, Popconfirm, Space, Table } from 'antd';
-import Item from 'antd/es/list/Item';
 import { ColumnsType } from 'antd/es/table';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import type { BeersTableProps, BeerData } from '../../../types/beers';
-import Dashboard from '../../Dashboard';
 import styles from '../styles.module.scss';
-import utilStyles from '../utilStyle.module.css';
 import { beerData } from '../../../seed';
 import { deleteBeer, getAllBeers } from '../../../pages/api/services';
 import { ObjectId } from 'mongodb';
@@ -177,6 +174,7 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
         <Table
             columns={columns}
             dataSource={currentData}
+            loading={isLoading}
             title={title}
         />
     );

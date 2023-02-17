@@ -80,15 +80,19 @@ const EditBeerForm = ({ data }: Props) => {
 
     return (
         <Dashboard>
-            <h2>Beer details</h2>
-            <Divider />
-            <h3>General information</h3>
-            <Checkbox
-                checked={!isFormDisabled}
-                onChange={(e) => setIsFormDisabled(!e.target.checked)}
-            >
-                Edit mode
-            </Checkbox>
+
+            <div className={styles.preFromHeader}>
+                <h2>Beer details</h2>
+                <Divider />
+                <h3>General information</h3>
+                <Checkbox
+                    className={styles.checkBox}
+                    checked={!isFormDisabled}
+                    onChange={(e) => setIsFormDisabled(!e.target.checked)}
+                >
+                    Edit mode
+                </Checkbox>
+            </div>
             <Form
                 form={form}
                 name="createBeerForm"
