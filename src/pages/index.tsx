@@ -54,7 +54,7 @@ export default function Home({
 
       <section className={utilStyles.headingMd}>
         <p className={utilStyles.headingLg}>Welcome to m3.beer management system!</p>
-        <p>This app is a personal project currently part of my portfolio. It's a CRUD app using the NextJS Meta framework. It's still under progress, as many features could be added.</p>
+        <p>This app is a personal project currently part of my portfolio. It's a CRUD app using the NextJS Meta framework connected to a MongoDB Database. It's still under progress, as many features could be added.</p>
         <p>Using this platform, you'll be able to:</p>
         <ul>
           <li>Create and manage your products</li>
