@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ObjectId } from "mongodb";
+import clientPromise from '../../../../lib/mongodb';
 import type { BeerData, NewBeerData } from '../../../types/beers';
 
 export const createBeer = (beerData: NewBeerData | NewBeerData[]) => axios.post('/api/beers', beerData);

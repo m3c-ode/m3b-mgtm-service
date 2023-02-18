@@ -155,6 +155,7 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
 
     return (
         <Table
+            rowKey={record => record._id}
             className={styles.tableContainer}
             columns={columns}
             dataSource={currentData}

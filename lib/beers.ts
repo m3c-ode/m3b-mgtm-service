@@ -1,26 +1,22 @@
-// local seed
-import { AxiosResponse } from 'axios';
 import { getAllBeers } from '../src/pages/api/services';
 import { BeerData } from '../src/types/beers';
 import clientPromise from './mongodb';
-// import { beerData } from '../src/seed';
 
-const getDbCollection = async () => {
+export const getDbCollection = async (name: string) => {
     const client = await clientPromise;
     // creates and use a db called "test"
     const db = client.db();
-    const collection = db.collection("beers");
+    const collection = db.collection(name);
     return collection;
 };
 
-// get beers data from DB
+// get beers data from DB, serveer side directly
 export const getBeersAsync = async () => {
-    const res = await getAllBeers();
-
-    // const collection = await getDbCollection();
-    // const res = await collection.find({}).toArray();
-    return res.data;
+    const collection = await getDbCollection('beers');
+    const beers = await collection.find({}).toArray();
+    return JSON.parse(JSON.stringify(beers));
 };
+
 
 // get local seed data
 // export const getLocalBeersId = () => {
@@ -54,4 +50,10 @@ export const getBeerData = async (id: string) => {
     const beers = await getBeersAsync();
     const data = beers.find((beer: BeerData) => beer._id === id)!;
     return data;
+};
+
+// gets data from the API request
+export const getBeersAsyncAPI = async () => {
+    const res = await getAllBeers();
+    return res.data;
 };
