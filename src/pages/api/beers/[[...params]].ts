@@ -46,6 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
             break;
         case 'PATCH':
+        case 'patch':
             // case 'PUT':
             try {
                 // const { _id } = req.body;
