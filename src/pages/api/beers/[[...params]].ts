@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // console.log('params', req.params);
     // console.log('req.query', req.query);
     // console.log('req.body', req.body);
-    // console.log("🚀 ~ file: index.ts:16 ~ handler ~ req.method", req.method);
+    console.log("🚀 ~ file: index.ts:16 ~ handler ~ req.method", req.method);
 
 
     switch (req.method) {
@@ -46,7 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
             break;
         case 'PATCH':
-        case 'PUT':
+            // case 'PUT':
             try {
                 // const { _id } = req.body;
                 const updateData = req.body;
