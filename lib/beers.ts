@@ -32,7 +32,7 @@ export const getBeersAsync = async () => {
 
 export const getDbBeersId = async () => {
     const beers = await getBeersAsync();
-    console.log("🚀 ~ file: beers.ts:36 ~ getDbBeersId ~ beers", beers);
+    // console.log("🚀 ~ file: beers.ts:36 ~ getDbBeersId ~ beers", beers);
     if (beers.map) {
         return beers.map((beer: BeerData) => {
             return {

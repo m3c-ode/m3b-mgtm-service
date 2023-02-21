@@ -27,7 +27,7 @@ export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => 
     // const [isLoading, setIsLoading] = useState(true);
     // const env = process.env.NODE_ENV;
     // console.log("🚀 ~ file: dashboard.tsx:21 ~ constgetStaticProps:GetStaticProps<BeerPageProps>= ~ env", env);
-    console.log('entering getstaic props');
+    console.log('entering getstatic props');
     try {
         // setIsLoading(true);
         // const beerRes = await getAllBeers();

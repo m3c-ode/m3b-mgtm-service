@@ -22,7 +22,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // `getStaticPaths` requires using `getStaticProps`
 export const getStaticProps: GetStaticProps<EditBeerPageProps> = async (context) => {
     try {
-        console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
+        // console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
         const beerId = context.params!.id as string;;
         const beerData = await getBeerData(beerId);
         return {
@@ -47,7 +47,7 @@ type Props = {
 };
 
 const Beer = ({ beerData }: InferGetStaticPropsType<typeof getStaticProps>) => {
-    console.log("🚀 ~ file: index.tsx:36 ~ Beer ~ beerData", beerData);
+    // console.log("🚀 ~ file: index.tsx:36 ~ Beer ~ beerData", beerData);
 
     // const [form] = Form.useForm();
     // const router = useRouter();
