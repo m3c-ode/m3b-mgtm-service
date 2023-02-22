@@ -56,7 +56,7 @@ export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (cont
                 beersList: JSON.parse(JSON.stringify(beersList)),
                 // isLoading
             },
-            revalidate: 5
+            // revalidate: 5
         };
     } catch (error: any) {
         // console.log("🚀 ~ file: dashboard.tsx:35 ~ fetchAllBeers ~ error", error);
