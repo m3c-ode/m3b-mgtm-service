@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { getAllBeers } from '../src/pages/api/services';
 import { BeerData } from '../src/types/beers';
 import clientPromise from './mongodb';
@@ -56,4 +57,8 @@ export const getBeerData = async (id: string) => {
 export const getBeersAsyncAPI = async () => {
     const res = await getAllBeers();
     return res.data;
+};
+
+export const dbUpdateBeer = async (id: string | ObjectId) => {
+
 };
