@@ -40,7 +40,7 @@ const CustomHeader = (props: Props) => {
             <div className={styles.topLeft}>
                 <Image
                     className={styles.logo}
-                    src={'/images/logom3b.png'}
+                    src={'/../public/images/logom3b.png'}
                     alt='comp. logo'
                     width={40}
                     height={40}
