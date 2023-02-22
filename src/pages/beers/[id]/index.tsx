@@ -15,7 +15,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     return {
         paths,
         // TODO: double check this
-        fallback: false,
+        fallback: true,
     };
 };
 
@@ -28,6 +28,7 @@ export const getStaticProps: GetStaticProps<EditBeerPageProps> = async (context)
         return {
             // Passed to the page component as props
             props: { beerData },
+            revalidate: 5
         };
 
     } catch (error) {
