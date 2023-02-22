@@ -18,16 +18,16 @@ interface BeerPageProps {
     error?: any;
 }
 
-// export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (context) => {
+export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (context) => {
+    console.log('entering getServerSideProps');
+    // }
 
-// }
-
-export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => {
+    // export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => {
     // console.log("🚀 ~ file: dashboard.tsx:20 ~ constgetStaticProps:GetStaticProps<BeerPageProps>= ~ context", context);
     // const [isLoading, setIsLoading] = useState(true);
     // const env = process.env.NODE_ENV;
     // console.log("🚀 ~ file: dashboard.tsx:21 ~ constgetStaticProps:GetStaticProps<BeerPageProps>= ~ env", env);
-    console.log('entering getstatic props');
+    // console.log('entering getstatic props');
     try {
         // setIsLoading(true);
         // const beerRes = await getAllBeers();
@@ -72,7 +72,7 @@ export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => 
 
 type Props = {};
 
-const Page = ({ beersList, isLoading, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Page = ({ beersList, isLoading, error }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
     //  Client Side data fetching
     // const [beersList, setBeersList] = useState<BeerData[] | null>(null);
