@@ -18,12 +18,12 @@ interface BeerPageProps {
     error?: any;
 }
 
-// export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (context) => {
+export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (context) => {
 
-// }
+    // }
 
-// TODO: Try getStatic with a short revalidate?
-export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => {
+    // TODO: Try getStatic with a short revalidate?
+    // export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => {
     // console.log("🚀 ~ file: dashboard.tsx:20 ~ constgetStaticProps:GetStaticProps<BeerPageProps>= ~ context", context);
     // const [isLoading, setIsLoading] = useState(true);
     // const env = process.env.NODE_ENV;
@@ -73,7 +73,8 @@ export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => 
 
 type Props = {};
 
-const Page = ({ beersList, isLoading, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
+// const Page = ({ beersList, isLoading, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Page = ({ beersList, isLoading, error }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     console.log("🚀 ~ file: dashboard.tsx:76 ~ Page ~ beersList:", beersList);
 
     //  Client Side data fetching

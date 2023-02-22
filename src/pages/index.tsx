@@ -48,6 +48,7 @@ export default function Home({
         width={144}
         height={144}
         priority
+        style={{ marginTop: '2rem' }}
       />
       <h1 className={utilStyles.heading2Xl}>{APP_NAME}</h1>
 
