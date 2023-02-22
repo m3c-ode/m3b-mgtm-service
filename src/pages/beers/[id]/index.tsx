@@ -9,15 +9,15 @@ interface EditBeerPageProps {
     beerData?: BeerData;
 }
 
-// Generates `/beers/1` and `/beers/2`
-export const getStaticPaths: GetStaticPaths = async () => {
-    const paths = await getDbBeersId();
-    return {
-        paths,
-        // TODO: double check this
-        fallback: true,
-    };
-};
+// Generates `/beers/1` and `/beers/2` - used only with SSG
+// export const getStaticPaths: GetStaticPaths = async () => {
+//     const paths = await getDbBeersId();
+//     return {
+//         paths,
+//         // TODO: double check this
+//         fallback: true,
+//     };
+// };
 
 // `getStaticPaths` requires using `getStaticProps`
 export const getServerSideProps: GetServerSideProps<EditBeerPageProps> = async (context) => {
