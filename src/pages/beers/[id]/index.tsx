@@ -47,7 +47,7 @@ type Props = {
 };
 
 const Beer = ({ beerData }: InferGetStaticPropsType<typeof getStaticProps>) => {
-    // console.log("🚀 ~ file: index.tsx:36 ~ Beer ~ beerData", beerData);
+    console.log("🚀 ~ file: index.tsx:36 ~ Beer ~ beerData", beerData);
 
     // const [form] = Form.useForm();
     // const router = useRouter();
