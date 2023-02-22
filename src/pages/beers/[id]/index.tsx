@@ -1,5 +1,5 @@
 import { Form } from 'antd';
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import { GetServerSideProps, GetStaticPaths, GetStaticProps, InferGetServerSidePropsType, InferGetStaticPropsType } from 'next';
 import React from 'react';
 import { getBeerData, getDbBeersId } from '../../../../lib/beers';
 import EditBeerForm from '../../../components/Forms/Beer/EditBeerForm';
@@ -20,15 +20,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 // `getStaticPaths` requires using `getStaticProps`
-export const getStaticProps: GetStaticProps<EditBeerPageProps> = async (context) => {
+export const getServerSideProps: GetServerSideProps<EditBeerPageProps> = async (context) => {
     try {
-        // console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
+        console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
         const beerId = context.params!.id as string;;
         const beerData = await getBeerData(beerId);
         return {
             // Passed to the page component as props
             props: { beerData },
-            revalidate: 5
+            // revalidate: 5
         };
 
     } catch (error) {
@@ -47,7 +47,7 @@ type Props = {
     beerData?: BeerData,
 };
 
-const Beer = ({ beerData }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Beer = ({ beerData }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     console.log("🚀 ~ file: index.tsx:36 ~ Beer ~ beerData", beerData);
 
     // const [form] = Form.useForm();

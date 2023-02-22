@@ -18,11 +18,11 @@ interface BeerPageProps {
     error?: any;
 }
 
-// export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (context) => {
+export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (context) => {
 
-// }
+    // }
 
-export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => {
+    // export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => {
     // console.log("🚀 ~ file: dashboard.tsx:20 ~ constgetStaticProps:GetStaticProps<BeerPageProps>= ~ context", context);
     // const [isLoading, setIsLoading] = useState(true);
     // const env = process.env.NODE_ENV;
@@ -55,7 +55,7 @@ export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => 
                 beersList: JSON.parse(JSON.stringify(beersList)),
                 // isLoading
             },
-            revalidate: 10
+            // revalidate: 10
         };
     } catch (error: any) {
         // console.log("🚀 ~ file: dashboard.tsx:35 ~ fetchAllBeers ~ error", error);
@@ -72,7 +72,7 @@ export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => 
 
 type Props = {};
 
-const Page = ({ beersList, isLoading, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Page = ({ beersList, isLoading, error }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     console.log("🚀 ~ file: dashboard.tsx:76 ~ Page ~ beersList:", beersList);
 
     //  Client Side data fetching
