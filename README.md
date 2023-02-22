@@ -13,7 +13,7 @@ It has the potential to be a dedicated end-to-end solution for this type of indu
 ## Deployment
 ---
 This app will be deployed thanks to the vercel platform, clicking on this link: 
-[Deployment Link](www.tobecontinued.com)
+[https://m3b-mgtm-service.vercel.app/](https://m3b-mgtm-service.vercel.app/)
 
 ## Installation
 ---
