@@ -43,7 +43,7 @@ export default function Home({
       </Head>
 
       <Image
-        src={'/../public/images/logom3b.png'}
+        src={'/images/logom3b.png'}
         alt='logo'
         width={144}
         height={144}

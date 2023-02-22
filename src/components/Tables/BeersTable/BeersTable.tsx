@@ -18,6 +18,7 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
     const handleDeleteDb = async (id: string | ObjectId) => {
         try {
             const delRes = await deleteBeer(id);
+            toast.success("Beer Successfully Deleted");
 
             // reloads the window
             // window.location.reload();
