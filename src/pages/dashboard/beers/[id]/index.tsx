@@ -1,9 +1,9 @@
 import { Form } from 'antd';
 import { GetServerSideProps, GetStaticPaths, GetStaticProps, InferGetServerSidePropsType, InferGetStaticPropsType } from 'next';
 import React from 'react';
-import { getBeerData, getDbBeersId } from '../../../../lib/beers';
-import EditBeerForm from '../../../components/Forms/Beer/EditBeerForm';
-import type { BeerData } from '../../../types/beers';
+import { getBeerData, getDbBeersId } from '../../../../../lib/beers';
+import EditBeerForm from '../../../../components/Forms/Beer/EditBeerForm';
+import type { BeerData } from '../../../../types/beers';
 
 interface EditBeerPageProps {
     beerData?: BeerData;
@@ -28,7 +28,6 @@ export const getServerSideProps: GetServerSideProps<EditBeerPageProps> = async (
         return {
             // Passed to the page component as props
             props: { beerData },
-            // revalidate: 5
         };
 
     } catch (error) {

@@ -1,7 +1,7 @@
 import React from 'react';
-import Dashboard from '../../components/Dashboard';
-import RecipesTable from '../../components/Tables/RecipesTable';
-import TableHeader from '../../components/Tables/TableHeader';
+import Dashboard from '../../../components/Dashboard';
+import RecipesTable from '../../../components/Tables/RecipesTable';
+import TableHeader from '../../../components/Tables/TableHeader';
 
 type Props = {};
 

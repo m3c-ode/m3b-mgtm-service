@@ -1,5 +1,5 @@
 import React from 'react';
-import BeerForm from '../../components/Forms/Beer';
+import BeerForm from '../../../components/Forms/Beer';
 
 type Props = {};
 

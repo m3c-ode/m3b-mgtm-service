@@ -1,15 +1,15 @@
 import { GetServerSideProps, GetStaticProps, InferGetServerSidePropsType, InferGetStaticPropsType } from 'next';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import Dashboard from '../components/Dashboard';
-import BeersTable from '../components/Tables/BeersTable';
-import TableHeader from '../components/Tables/TableHeader';
-import type { BeerData } from '../types/beers';
+import Dashboard from '../../../components/Dashboard';
+import BeersTable from '../../../components/Tables/BeersTable';
+import TableHeader from '../../../components/Tables/TableHeader';
+import type { BeerData } from '../../../types/beers';
 import { IoAddOutline } from 'react-icons/io5';
-import { getAllBeers } from './api/services';
+import { getAllBeers } from '../../api/services';
 import toast from 'react-hot-toast';
-import { getBeersAsync } from '../../lib/beers';
-import clientPromise from '../../lib/mongodb';
+import { getBeersAsync } from '../../../../lib/beers';
+import clientPromise from '../../../../lib/mongodb';
 // import { getDbCollection } from './api/services/beers';
 
 interface BeerPageProps {

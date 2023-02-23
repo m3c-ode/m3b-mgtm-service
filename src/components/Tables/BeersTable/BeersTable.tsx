@@ -132,7 +132,7 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
                     >
                         <Link
                             className={styles.tableButton}
-                            href={`/beers/${record._id}`}>Update Info</Link>
+                            href={`beers/${record._id}`}>Update Info</Link>
 
                     </Button>
                     {/* <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(parseInt(record.id) - 1)}> */}

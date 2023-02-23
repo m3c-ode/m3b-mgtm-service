@@ -17,45 +17,47 @@ const CustomNavigation = (props: Props) => {
     const { pathname } = router;
     console.log("🚀 ~ file: CustomNavigation.tsx:15 ~ CustomNavigation ~ pathname", pathname);
 
+    const BASE_DASHBOARD_PATH = "/dashboard";
+
     const navigationItems: MenuProps['items'] = [
         {
-            key: `/dashboard`,
-            label: (<Link href={`/dashboard`}>Beers</Link>),
+            key: `${BASE_DASHBOARD_PATH}/beers`,
+            label: (<Link href={`${BASE_DASHBOARD_PATH}/beers`}>Beers</Link>),
             // icon: <IoBeerOutline />,
             icon: React.createElement(IoBeerOutline),
         },
         {
-            key: `/recipes`,
-            label: (<Link href={`/recipes`}>Recipes</Link>),
+            key: `${BASE_DASHBOARD_PATH}/recipes`,
+            label: (<Link href={`${BASE_DASHBOARD_PATH}/recipes`}>Recipes</Link>),
             // icon: <IoBeerOutline />,
             icon: React.createElement(AiOutlineProfile),
         },
         {
-            key: `/products`,
-            label: (<Link href={`/products`}>Ingredients/Products</Link>),
+            key: `${BASE_DASHBOARD_PATH}/products`,
+            label: (<Link href={`${BASE_DASHBOARD_PATH}/products`}>Ingredients/Products</Link>),
             icon: React.createElement(GiHops),
         },
         {
-            key: `/clients`,
-            // label: (<Link href={`/clients`}>Clients</Link>),
+            key: `${BASE_DASHBOARD_PATH}/clients`,
+            // label: (<Link href={`${BASE_DASHBOARD_PATH}/clients`}>Clients</Link>),
             label: 'Clients',
             icon: React.createElement(IoPeopleOutline),
         },
         {
-            key: `/deliveries`,
+            key: `${BASE_DASHBOARD_PATH}/deliveries`,
             label: 'Deliveries',
-            // label: (<Link href={`/deliveries`}>Deliveries</Link>),
+            // label: (<Link href={`${BASE_DASHBOARD_PATH}/deliveries`}>Deliveries</Link>),
             icon: React.createElement(TbTruckDelivery),
         },
         {
-            key: `/orders`,
+            key: `${BASE_DASHBOARD_PATH}/orders`,
             label: 'Orders',
-            // label: (<Link href={`/orders`}>Orders</Link>),
+            // label: (<Link href={`${BASE_DASHBOARD_PATH}/orders`}>Orders</Link>),
             icon: React.createElement(MdOutlineProductionQuantityLimits),
         },
         {
-            key: `/invoices`,
-            // label: (<Link href={`/invoices`}>Invoices</Link>),
+            key: `${BASE_DASHBOARD_PATH}/invoices`,
+            // label: (<Link href={`${BASE_DASHBOARD_PATH}/invoices`}>Invoices</Link>),
             label: 'Invoices',
             icon: React.createElement(TbFileInvoice),
         },

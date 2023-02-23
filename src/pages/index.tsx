@@ -62,15 +62,14 @@ export default function Home({
           <li>Check and manage your inventory</li>
           <li>Create and manage your recipes</li>
         </ul>
-        <p>Potential features:
-          <ul>
-            <li>Client base management</li>
-            <li>Delivery management</li>
-            <li>Admin and Company access</li>
-            <li>Orders and Invoices management</li>
-            <li>Personalized shopping page for clients</li>
-          </ul>
-        </p>
+        <p>Potential features:</p>
+        <ul>
+          <li>Client base management</li>
+          <li>Delivery management</li>
+          <li>Admin and Company access</li>
+          <li>Orders and Invoices management</li>
+          <li>Personalized shopping page for clients</li>
+        </ul>
       </section>
 
       {isConnected ? (
@@ -84,7 +83,7 @@ export default function Home({
 
       {/* TODO: add login process */}
       <div className="accessButton">
-        <Link href={'/dashboard'}>Access your Dashboard</Link>
+        <Link href={'/dashboard/beers'}>Access your Dashboard</Link>
       </div>
 
       <footer>

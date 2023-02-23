@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import router from 'next/router';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import { dbUpdateBeer } from '../../../../lib/beers';
 import { updateBeerData } from '../../../pages/api/services';
 import { BeerData, BeersStatusEnum, BeersStylesEnum } from '../../../types/beers';
 import Dashboard from '../../Dashboard';
@@ -52,9 +53,10 @@ const EditBeerForm = ({ data }: Props) => {
         // DB change
         try {
             const beerUpdateRes = await updateBeerData(_id, data);
+            // const beerUpdateRes = await dbUpdateBeer(_id, data);
             console.log("🚀 ~ file: EditBeerForm.tsx:60 ~ onFinish ~ beerUpdateRes", beerUpdateRes);
             toast.success('Beer updated successfully');
-            router.push('/dashboard');
+            router.push('/dashboard/beers');
 
         } catch (error) {
             console.log("🚀 ~ file: EditBeerForm.tsx:66 ~ onFinish ~ edit error", error);
