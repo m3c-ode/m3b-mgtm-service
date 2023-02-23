@@ -33,7 +33,6 @@ const Dashboard: React.FC = ({ children }: Props) => {
     // TODO: could add href
     const getPathDetails = (pathname: string) => {
         const paths = pathname.split("/").filter(p => p.length > 0);
-        // console.log("🚀 ~ file: Dashboard.tsx:34 ~ getPathDetails ~ paths", paths);
         return paths.map(path => capitalize(path));
     };
     const breadcrumbs = getPathDetails(pathname);

@@ -62,8 +62,6 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
             dataIndex: 'brewedOn',
             key: 'brewedOn',
             render: (value, record) => {
-                // console.log("🚀 ~ file: BeersTable.tsx:36 ~ value", value);
-                // console.log('type of available', typeof value);
                 if (typeof value === 'string') {
                     if (value.includes("T")) {
                         return value.split("T")[0];
@@ -78,8 +76,6 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
             dataIndex: 'availableOn',
             key: 'availableOn',
             render: (value, record) => {
-                // console.log("🚀 ~ file: BeersTable.tsx:47 ~ value", value);
-                // console.log('type of available', typeof value);
                 if (typeof value === 'string') {
                     if (value.includes("T")) {
                         return value.split("T")[0];

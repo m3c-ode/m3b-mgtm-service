@@ -19,47 +19,15 @@ interface BeerPageProps {
 }
 
 export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (context) => {
-
-    // }
-
-    // TODO: Try getStatic with a short revalidate?
-    // export const getStaticProps: GetStaticProps<BeerPageProps> = async (context) => {
-    // console.log("🚀 ~ file: dashboard.tsx:20 ~ constgetStaticProps:GetStaticProps<BeerPageProps>= ~ context", context);
-    // const [isLoading, setIsLoading] = useState(true);
-    // const env = process.env.NODE_ENV;
-    // console.log("🚀 ~ file: dashboard.tsx:21 ~ constgetStaticProps:GetStaticProps<BeerPageProps>= ~ env", env);
-    console.log('entering getstatic props');
     try {
-        // setIsLoading(true);
-        // const beerRes = await getAllBeers();
-        // console.log("🚀 ~ file: dashboard.tsx:25 ~ fetchAllBeers ~ beerRes", beerRes);
-
         const beersList = await getBeersAsync();
-        // console.log("🚀 ~ file: dashboard.tsx:31 ~ constgetStaticProps:GetStaticProps<BeerPageProps>= ~ beersList", beersList);
-
-        // const beersList = beerRes.data;
-        // if (beerRes.data) {
-        //     // setBeersList(beerRes.data);
-        //     // setIsLoading(false);
-        // }
-
-        // const client = await clientPromise;
-        // // creates and use a db called "test"
-        // const db = client.db();
-        // const collection = db.collection('beers');
-        // // const collection = await getDbCollection('beers');
-        // const beersList = await collection.find({}).toArray() as unknown as BeerData[];
-
-
         return {
             props: {
                 beersList: JSON.parse(JSON.stringify(beersList)),
                 // isLoading
             },
-            // revalidate: 5
         };
     } catch (error: any) {
-        // console.log("🚀 ~ file: dashboard.tsx:35 ~ fetchAllBeers ~ error", error);
         toast.error('Error fetching beer data');
         // setIsLoading(false);
         return {
@@ -73,7 +41,6 @@ export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (cont
 
 type Props = {};
 
-// const Page = ({ beersList, isLoading, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
 const Page = ({ beersList, isLoading, error }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     console.log("🚀 ~ file: dashboard.tsx:76 ~ Page ~ beersList:", beersList);
 
