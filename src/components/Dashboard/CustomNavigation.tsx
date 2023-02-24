@@ -39,8 +39,8 @@ const CustomNavigation = (props: Props) => {
         },
         {
             key: `${BASE_DASHBOARD_PATH}/clients`,
-            // label: (<Link href={`${BASE_DASHBOARD_PATH}/clients`}>Clients</Link>),
-            label: 'Clients',
+            label: (<Link href={`${BASE_DASHBOARD_PATH}/clients`}>Clients</Link>),
+            // label: 'Clients',
             icon: React.createElement(IoPeopleOutline),
         },
         {
