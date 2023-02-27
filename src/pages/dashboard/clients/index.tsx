@@ -12,14 +12,18 @@ const clientData: ClientData[] = [
     {
         _id: '1',
         name: 'John Doe',
-        address: '123 Main St',
-        type: ClientTypeEnum.Restau
+        address: '123 Main St, Vancouver, BC',
+        type: ClientTypeEnum.Restau,
+        email: 'kenaa@example.com',
+
     },
     {
         _id: '2',
         name: 'John Doe',
-        address: '123 Main St',
-        type: ClientTypeEnum.LStore
+        address: '123 Main St, Calgary, AB',
+        type: ClientTypeEnum.LStore,
+        email: 'kenaa@example.com',
+
     },
 ];
 

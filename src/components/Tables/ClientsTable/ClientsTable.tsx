@@ -49,6 +49,11 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
             dataIndex: 'type',
             key: 'type',
         },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+        },
         // {
         //     title: 'Brewed On',
         //     dataIndex: 'brewedOn',

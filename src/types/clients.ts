@@ -10,6 +10,7 @@ export type ClientData = {
     _id: string | ObjectId;
     name: string;
     address: string;
+    email: string;
     type: ClientTypeEnum;
 };
 

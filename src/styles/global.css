@@ -12,15 +12,16 @@ body {
     box-sizing: border-box;
 }
 
-.container {
+/* .container {
     min-height: 100vh;
     padding: 0 0.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
+} */
 
+/* 
 main {
     padding: 5rem 0;
     flex: 1;
@@ -245,4 +246,13 @@ footer a {
         width: 100%;
         flex-direction: column;
     }
+} */
+
+a {
+    color: #0070f3;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
