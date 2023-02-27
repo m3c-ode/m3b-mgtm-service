@@ -74,7 +74,7 @@ const EditBeerForm = ({ data }: Props) => {
     return (
         <Dashboard>
 
-            <div className={styles.preFromHeader}>
+            <div className={styles.preFormHeader}>
                 <h2>Beer details</h2>
                 <Divider />
                 <h3>General information</h3>

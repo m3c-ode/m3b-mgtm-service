@@ -39,7 +39,7 @@ const Products = (props: Props) => {
                     top: '4px'
                 }}
             />}
-            buttonPath={'/clients/new'}
+            buttonPath={'/dashboard/clients/new'}
         />;
     return (
         <Dashboard>
