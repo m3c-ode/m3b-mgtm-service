@@ -77,7 +77,7 @@ const Page = ({ beersList, isLoading, error }: InferGetServerSidePropsType<typeo
     const TableTitle = () =>
         <TableHeader
             title={'Beers'}
-            buttonPath={'/beers/new'}
+            buttonPath={'/dashboard/beers/new'}
             buttonText={'Create New'}
             buttonIcon={<IoAddOutline
                 style={{

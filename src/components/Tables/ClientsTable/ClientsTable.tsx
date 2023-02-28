@@ -122,10 +122,12 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
 
     return (
         <Table
+            rowKey={(record, index) => (index!)}
             columns={columns}
-            className={styles.tableContainer}
+            className={styles.tableContainer + 'ant-table ant-table-default !important'}
             dataSource={currentData}
             title={title}
+
         />
     );
 };

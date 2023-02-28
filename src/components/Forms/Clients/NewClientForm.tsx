@@ -1,13 +1,18 @@
-import { Form, Button } from 'antd';
-import React, { useRef } from 'react';
+import { Form, Button, Divider } from 'antd';
+import Script from 'next/script';
+import React, { useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { NewAddressInput } from '../../../types/addresses';
 import Dashboard from '../../Dashboard';
 import CreateAddressFields from './CreateAddressFields';
 import styles from './styles.module.scss';
 
-
 type Props = {};
+
+const PLACES_API_KEY = process.env.NEXT_PUBLIC_PLACES_API_KEY;
+console.log("🚀 ~ file: NewClientForm.tsx:13 ~ PLACES_API_KEY:", PLACES_API_KEY);
+const LOC_PLACES_API_KEY = process.env.PLACES_API_KEY;
+console.log("🚀 ~ file: NewClientForm.tsx:15 ~ LOC_PLACES_API_KEY:", LOC_PLACES_API_KEY);
 
 const NewClientForm = (props: Props) => {
     const [form] = Form.useForm();
@@ -65,6 +70,13 @@ const NewClientForm = (props: Props) => {
         }
     };
 
+    useEffect(() => {
+        console.log('form values in useEffect', form.getFieldValue('city'));
+
+    }, [form]);
+
+    console.log('form values', form.getFieldValue('city'));
+
     // TODO: Fix the reset button
     const onReset = () => {
         console.log('hello');
@@ -73,6 +85,8 @@ const NewClientForm = (props: Props) => {
 
     return (
         <Dashboard>
+            {/* <Script src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyA1oJiPasx6wn42mLLf-NdhqE3bQAMwU8Y&libraries=places&callback=Function.prototype`} defer async /> */}
+
             <Form
                 ref={formRef}
                 form={form}
@@ -84,9 +98,19 @@ const NewClientForm = (props: Props) => {
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
                 className={styles.createClientForm}
-                layout="horizontal">
-                <h2 className={styles.createAddressTitle}>Create a New Client</h2>
-                <CreateAddressFields />
+                layout="horizontal"
+                onValuesChange={(changed, all) => console.log('values change', changed, all)}
+                onFieldsChange={(first, second) => console.log('fields change', first, second)}
+                fields={[
+                    {
+                        name: 'city',
+                        value: form.getFieldValue('city')
+                    }
+                ]}
+            >
+                <h2>Create a New Client</h2>
+                <Divider />
+                <CreateAddressFields form={form} />
                 <Form.Item
                     style={{ textAlign: 'center' }}
                 // wrapperCol={{ offset: 4, span: 16 }}

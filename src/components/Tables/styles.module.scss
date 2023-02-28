@@ -1,13 +1,27 @@
 .tableContainer {
     width: 95%;
 
-    // ul {
-    //     list-style-type: none;
-    // }
+    ul {
+        list-style-type: none;
+        // display: flex;
+        // justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        justify-items: center;
 
-    // li {
-    //     min-width: 32px;
-    // }
+    }
+
+    li {
+        min-width: 32px;
+        align-self: center;
+        justify-self: center;
+        justify-items: center;
+
+        button {
+            background: none;
+            border: none;
+        }
+    }
 }
 
 .tableButton {

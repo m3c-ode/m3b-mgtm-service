@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import { AddressData } from "./addresses";
 
 export type ClientsTableProps = {
     data?: ClientData[];
@@ -9,7 +10,7 @@ export type ClientsTableProps = {
 export type ClientData = {
     _id: string | ObjectId;
     name: string;
-    address: string;
+    address: string | AddressData;
     email: string;
     type: ClientTypeEnum;
 };
