@@ -1,11 +1,17 @@
-import { Form, Button, Divider } from 'antd';
+import { Form, Button, Divider, Select, Input } from 'antd';
 import Script from 'next/script';
 import React, { useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
+import { createNewClient } from '../../../../lib/clients';
+import { createClient } from '../../../pages/api/services';
 import { NewAddressInput } from '../../../types/addresses';
+import { ClientTypeEnum, NewClientInput } from '../../../types/clients';
 import Dashboard from '../../Dashboard';
+import EmailInput from '../Input/EmailInput';
 import CreateAddressFields from './CreateAddressFields';
 import styles from './styles.module.scss';
+
+const { Option } = Select;
 
 type Props = {};
 
@@ -20,45 +26,55 @@ const NewClientForm = (props: Props) => {
     const formRef = useRef<any>(null);
 
     const onFinish = async (values: any) => {
-        const newAddressData: NewAddressInput = {
+        const newClientData: NewClientInput = {
             // clientId: customerId,
             // businessId: merchantId,
             name: values.name?.toUpperCase(),
-            company: values.company?.toUpperCase(),
-            street1: values.street1.toUpperCase(),
-            street2: values.street2?.toUpperCase(),
-            city: values.city.toUpperCase(),
-            state: values.state.toUpperCase(),
-            zip: values.zip.toUpperCase(),
-            country: values.country.toUpperCase(),
-            phone: values.phone,
-            notes: values.notes,
+            email: values.email?.toUpperCase(),
+            type: values.type?.toUpperCase(),
+            address: {
+                company: values.company?.toUpperCase(),
+                street1: values.street1.toUpperCase(),
+                street2: values.street2?.toUpperCase(),
+                city: values.city.toUpperCase(),
+                state: values.state.toUpperCase(),
+                zip: values.zip.toUpperCase(),
+                country: values.country.toUpperCase(),
+                phone: values.phone,
+                notes: values.notes,
+
+            }
         };
-        console.log("🚀 ~ file: NewClientForm.tsx:31 ~ onFinish ~ newAddressData:", newAddressData);
+        console.log("🚀 ~ file: NewClientForm.tsx:31 ~ onFinish ~ newClientData:", newClientData);
 
-        // try {
-        //     console.log('customerID sent in form', customerId);
+        try {
+            //     console.log('customerID sent in form', customerId);
+            // const res = createNewClient(newClientData);
+            // console.log("🚀 ~ file: NewClientForm.tsx:52 ~ onFinish ~ res:", res);
 
-        //     console.log('new address data: ', newAddressData);
-        //     const addressRes = await createAddress(newAddressData);
-        //     console.log('address res: ', addressRes);
-        //     if (!addressRes.data.result) {
-        //         if (addressRes.data.message) {
-        //             addressRes.data.result.details.map((error: any) => toast.error(error.message));
-        //             toast.error(addressRes.data.result.message + '. Please verify details again');
-        //             return;
-        //         }
-        //         toast.error(addressRes.data.message as string);
-        //         // throw new Error(addressRes.data.error);
-        //         return;
-        //     }
-        //     toast.success('Address created succesfully');
-        //     setNewAddress(addressRes.data.result);
-        // } catch (error: any) {
-        //     // toast.error(JSON.parse(error.request.responseText).message as string);
-        //     toast.error(error.response.data.message);
-        //     console.log(error);
-        // }
+            const res = await createClient(newClientData);
+            console.log("🚀 ~ file: NewClientForm.tsx:56 ~ onFinish ~ res:", res);
+
+            //     console.log('new address data: ', newAddressData);
+            //     const addressRes = await createAddress(newAddressData);
+            //     console.log('address res: ', addressRes);
+            //     if (!addressRes.data.result) {
+            //         if (addressRes.data.message) {
+            //             addressRes.data.result.details.map((error: any) => toast.error(error.message));
+            //             toast.error(addressRes.data.result.message + '. Please verify details again');
+            //             return;
+            //         }
+            //         toast.error(addressRes.data.message as string);
+            //         // throw new Error(addressRes.data.error);
+            //         return;
+            //     }
+            //     toast.success('Address created succesfully');
+            //     setNewAddress(addressRes.data.result);
+        } catch (error: any) {
+            // toast.error(JSON.parse(error.request.responseText).message as string);
+            toast.error(error.response.data.message);
+            console.log(error.response);
+        }
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -99,17 +115,45 @@ const NewClientForm = (props: Props) => {
                 autoComplete="off"
                 className={styles.createClientForm}
                 layout="horizontal"
-                onValuesChange={(changed, all) => console.log('values change', changed, all)}
-                onFieldsChange={(first, second) => console.log('fields change', first, second)}
-                fields={[
-                    {
-                        name: 'city',
-                        value: form.getFieldValue('city')
-                    }
-                ]}
+            // onValuesChange={(changed, all) => console.log('values change', changed, all)}
+            // onFieldsChange={(first, second) => console.log('fields change', first, second)}
+            // fields={[
+            //     {
+            //         name: 'city',
+            //         value: form.getFieldValue('city')
+            //     }
+            // ]}
             >
                 <h2>Create a New Client</h2>
                 <Divider />
+                <Form.Item
+                    label="Name: "
+                    name="name"
+                    rules={[{ required: true, message: 'Please input your name!' }]}>
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Email: "
+                    name="email"
+                    rules={[{ required: true, type: 'email', message: 'Please input a valid email!' }]}>
+                    <Input
+                        type='email'
+                    // onBlur={}
+                    />
+                    {/* <EmailInput /> */}
+                </Form.Item>
+                <Form.Item
+                    label="Type: "
+                    name="type"
+                    rules={[{ required: true, message: 'Please input your type!' }]}>
+                    <Select
+                        showSearch
+                        filterOption={(input, option) =>
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                        }
+                        options={Object.values(ClientTypeEnum).map((value, index) => ({ value, label: value, key: index }))}
+                    />
+                </Form.Item>
                 <CreateAddressFields form={form} />
                 <Form.Item
                     style={{ textAlign: 'center' }}
@@ -122,7 +166,7 @@ const NewClientForm = (props: Props) => {
                     </Button>
                 </Form.Item>
             </Form>
-        </Dashboard>
+        </Dashboard >
     );
 };
 

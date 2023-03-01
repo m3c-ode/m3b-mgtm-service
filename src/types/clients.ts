@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { AddressData } from "./addresses";
+import { AddressData, NewAddressInput } from "./addresses";
 
 export type ClientsTableProps = {
     data?: ClientData[];
@@ -7,12 +7,18 @@ export type ClientsTableProps = {
     title?: () => JSX.Element;
 };
 
-export type ClientData = {
-    _id: string | ObjectId;
+export type NewClientInput = {
     name: string;
-    address: string | AddressData;
+    address: NewAddressInput;
     email: string;
     type: ClientTypeEnum;
+};
+
+export type ClientData = NewClientInput & {
+    _id: string;
+    address: AddressData;
+    createdOn: string | Date;
+    updatedOn: string | Date;
 };
 
 export enum ClientTypeEnum {

@@ -8,3 +8,7 @@ axios.defaults.baseURL =
 console.log('env varibale tests');
 
 export { createBeer, getAllBeers, updateBeerData, deleteBeer } from './beers';
+export {
+    createClient,
+    // getAllClients, updateClientData, deleteClient
+} from './clients';

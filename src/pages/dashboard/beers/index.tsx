@@ -85,6 +85,12 @@ const Page = ({ beersList, isLoading, error }: InferGetServerSidePropsType<typeo
                     position: 'relative',
                     top: '4px'
                 }}
+            // If bootstrap globally
+            // style={{
+            //     fontSize: '19px',
+            //     position: 'relative',
+            //     bottom: '.8px'
+            // }}
             />}
         />;
 

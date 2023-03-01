@@ -1,5 +1,13 @@
 import clientPromise from "./mongodb";
 
+// const getDbCollection = async (name: string) => {
+//     const client = await clientPromise;
+//     // creates and use a db called "test"
+//     const db = client.db();
+//     const collection = db.collection(name);
+//     return collection;
+// };
+
 export const capitalize = (word: string) => {
     if (word.length === 0) return '';
 
@@ -13,3 +21,5 @@ export const capitalize = (word: string) => {
             })
     );
 };
+
+// export default getDbCollection;

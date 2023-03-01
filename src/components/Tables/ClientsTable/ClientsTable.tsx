@@ -6,6 +6,7 @@ import styles from '../styles.module.scss';
 import { ObjectId } from 'mongodb';
 import toast from 'react-hot-toast';
 import { ClientData, ClientsTableProps } from '../../../types/clients';
+import { AddressData } from '../../../types/addresses';
 
 const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) => {
 
@@ -43,6 +44,12 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
             title: 'Address',
             dataIndex: 'address',
             key: 'address',
+            render(value: AddressData, record, index) {
+                // console.log("🚀 ~ file: ClientsTable.tsx:47 ~ render ~ value:", value);
+                const { street1, street2, city, state, zip, country } = value;
+
+                return `${street2 ? street2 + ', ' : ''}${street1}, ${city}, ${state}`;
+            },
         },
         {
             title: 'Type',
@@ -122,7 +129,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
 
     return (
         <Table
-            rowKey={(record, index) => (index!)}
+            rowKey={(record, index) => (record._id)}
             columns={columns}
             className={styles.tableContainer + 'ant-table ant-table-default !important'}
             dataSource={currentData}

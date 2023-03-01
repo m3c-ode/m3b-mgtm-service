@@ -8,6 +8,7 @@ import { AxiosResponse } from 'axios';
 import Script from 'next/script';
 import { usePlacesWidget } from 'react-google-autocomplete';
 import { NewAddressInput } from '../../../types/addresses';
+import PhoneNumberInput from '../Input/PhoneNumberInput';
 const { Option } = Select;
 
 type Props = {
@@ -39,81 +40,82 @@ function CreateAddressFields({ form }: Props) {
     // inputRef.current.focus();
 
 
-    const { ref, autocompleteRef } = usePlacesWidget({
-        apiKey: PLACES_API_KEY,
-        onPlaceSelected: (place, inputRef, something) => {
-            console.log('place selected', place);
-            const address = place.address_components;
-            // let newAddress: NewAddressInput = {
-            //     street1: '',
-            //     street2: '',
-            //     city: '',
-            //     zip: '',
-            //     state: '',
-            //     country: ''
-            // };
-            let { street1, street2, city, state, zip, country }: NewAddressInput = {
-                street1: place.name!,
-                street2: '',
-                city: '',
-                zip: '',
-                state: '',
-                country: ''
-            };
-            if (address) {
-                console.log('going through found address');
-                for (const component of address) {
-                    console.log("🚀 ~ file: CreateAddressFields.tsx:63 ~ CreateAddressFields ~ component:", component);
-                    const type = component.types[0];
-                    switch (type) {
-                        // case "street_number":
-                        //     street1 = `${component.long_name} ${street1}`;
-                        //     break;
-                        // case "route": {
-                        //     street1 += component.short_name;
-                        //     break;
-                        // }
+    const { ref, autocompleteRef }: { ref: any, autocompleteRef: any; } = usePlacesWidget(
+        {
+            apiKey: PLACES_API_KEY,
+            onPlaceSelected: (place, inputRef, something) => {
+                console.log('place selected', place);
+                const address = place.address_components;
+                // let newAddress: NewAddressInput = {
+                //     street1: '',
+                //     street2: '',
+                //     city: '',
+                //     zip: '',
+                //     state: '',
+                //     country: ''
+                // };
+                let { street1, street2, city, state, zip, country }: NewAddressInput = {
+                    street1: place.name!,
+                    street2: '',
+                    city: '',
+                    zip: '',
+                    state: '',
+                    country: ''
+                };
+                if (address) {
+                    console.log('going through found address');
+                    for (const component of address) {
+                        console.log("🚀 ~ file: CreateAddressFields.tsx:63 ~ CreateAddressFields ~ component:", component);
+                        const type = component.types[0];
+                        switch (type) {
+                            // case "street_number":
+                            //     street1 = `${component.long_name} ${street1}`;
+                            //     break;
+                            // case "route": {
+                            //     street1 += component.short_name;
+                            //     break;
+                            // }
 
-                        case "postal_code": {
-                            zip = `${component.long_name}${zip}`;
-                            break;
+                            case "postal_code": {
+                                zip = `${component.long_name}${zip}`;
+                                break;
+                            }
+
+                            case "locality":
+                                // (document.querySelector("#locality") as HTMLInputElement).value =
+                                //     component.long_name;
+                                city = `${component.long_name}${city}`;
+                                break;
+
+                            case "administrative_area_level_1": {
+                                // (document.querySelector("#state") as HTMLInputElement).value =
+                                //     component.short_name;
+                                state = `${component.short_name}${state}`;
+                                break;
+                            }
+
+                            case "country":
+                                // (document.querySelector("#country") as HTMLInputElement).value =
+                                //     component.long_name;
+                                country = `${component.short_name}${country}`;
+                                break;
+
+                            default:
+                                break;
                         }
-
-                        case "locality":
-                            // (document.querySelector("#locality") as HTMLInputElement).value =
-                            //     component.long_name;
-                            city = `${component.long_name}${city}`;
-                            break;
-
-                        case "administrative_area_level_1": {
-                            // (document.querySelector("#state") as HTMLInputElement).value =
-                            //     component.short_name;
-                            state = `${component.short_name}${state}`;
-                            break;
-                        }
-
-                        case "country":
-                            // (document.querySelector("#country") as HTMLInputElement).value =
-                            //     component.long_name;
-                            country = `${component.short_name}${country}`;
-                            break;
-
-                        default:
-                            break;
+                        // newAddress.city = 
                     }
-                    // newAddress.city = 
+                    // let street1 = address.
+                    // setFoundAddress({ street1, street2, city, state, zip, country });
+                    console.log('results', { street1, street2, city, state, zip, country });
+                    form.setFieldsValue({
+                        street1, city, state, zip, country
+                    });
+                    street2Ref.current.focus();
                 }
-                // let street1 = address.
-                // setFoundAddress({ street1, street2, city, state, zip, country });
-                console.log('results', { street1, street2, city, state, zip, country });
-                form.setFieldsValue({
-                    street1, city, state, zip, country
-                });
-                street2Ref.current.focus();
-            }
-        },
-        options
-    });
+            },
+            options
+        });
     console.log("🚀 ~ file: CreateAddressFields.tsx:41 ~ CreateAddressFields ~ autocompleteRef:", autocompleteRef);
 
     // const handleChange = (event: any) => {
@@ -169,25 +171,31 @@ function CreateAddressFields({ form }: Props) {
             {/* <Script src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyA1oJiPasx6wn42mLLf-NdhqE3bQAMwU8Y&libraries=places&callback=Function.prototype`} async /> */}
 
             {/* <Script src={`https://maps.googleapis.com/maps/api/js?key=${LOC_PLACES_API_KEY}&libraries=places&callback=initMap`} /> */}
-            <Form.Item
+            {/* <Form.Item
                 label="Name: "
                 name="name"
                 rules={[{ required: true, message: 'Please input your name!' }]}>
                 <Input
-                // onChange={handleChange}
+                />
+            </Form.Item>
+            <Form.Item
+                label="Email: "
+                name="email"
+                rules={[{ required: true, message: 'Please input your email!' }]}>
+                <Input
                 />
             </Form.Item>
             <Form.Item
                 label="Company: "
                 name="company">
                 <Input />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
                 label="Street Info 1:"
                 name="street1"
                 rules={[{ required: true, message: 'Please input your street1!' }]}>
                 <Input
-                    placeholder=''
+                    placeholder='Start typing for autofill...'
                     ref={(c) => {
                         // console.log("🚀 ~ file: CreateAddressFields.tsx:98 ~ CreateAddressFields ~ c:", c);
                         inputRef.current = c;
@@ -267,10 +275,13 @@ function CreateAddressFields({ form }: Props) {
             </Form.Item>
             {/* )} */}
             <Form.Item
+                // labelCol={{ span: 4 }}
+                // wrapperCol={{ span: 16 }}
                 label="Phone:"
                 name="phone"
                 rules={[{ required: true, message: 'Please input your phone number!' }]}>
-                <Input />
+                {/* <Input /> */}
+                <PhoneNumberInput />
             </Form.Item>
             <Form.Item
                 label="Notes:"

@@ -9,10 +9,10 @@ export type NewAddressInput = {
     zip: string,
     state: string,
     country: string,
-    phone?: number,
+    phone?: string,
     notes?: string;
 };
 
 export type AddressData = NewAddressInput & {
-    _id: string;
+    _id?: string;
 };
