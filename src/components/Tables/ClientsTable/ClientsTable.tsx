@@ -3,7 +3,6 @@ import { ColumnsType } from 'antd/es/table';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import styles from '../styles.module.scss';
-import { ObjectId } from 'mongodb';
 import toast from 'react-hot-toast';
 import type { ClientData, ClientsTableProps } from '../../../types/clients';
 import type { AddressData } from '../../../types/addresses';

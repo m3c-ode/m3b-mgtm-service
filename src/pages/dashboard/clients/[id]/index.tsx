@@ -1,7 +1,6 @@
 import { Form } from 'antd';
-import { GetServerSideProps, GetStaticPaths, GetStaticProps, InferGetServerSidePropsType, InferGetStaticPropsType } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import React from 'react';
-import { getBeerData, getDbBeersId } from '../../../../../lib/beers';
 import { getClientData } from '../../../../../lib/clients';
 import EditClientForm from '../../../../components/Forms/Clients/EditClientForm';
 import type { ClientData } from '../../../../types/clients';

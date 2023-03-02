@@ -1,15 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Form, FormInstance, Input, Select } from 'antd';
-// import { fetchAllCountries, fetchMerchantsCountries } from '../../../pages/api/services';
-// import UserDataContext from '../../../context/user';
-import toast from 'react-hot-toast';
-// import { RoleEnums } from '../../../types';
-import { AxiosResponse } from 'axios';
-import Script from 'next/script';
+import React, { useRef } from 'react';
+import { Form, FormInstance, Input } from 'antd';
 import { usePlacesWidget } from 'react-google-autocomplete';
 import { AddressData, NewAddressInput } from '../../../types/addresses';
 import PhoneNumberInput from '../Input/PhoneNumberInput';
-const { Option } = Select;
+
+// const { Option } = Select;
 
 type Props = {
     form: FormInstance<any>;
@@ -18,21 +13,14 @@ type Props = {
 
 
 const PLACES_API_KEY = process.env.NEXT_PUBLIC_PLACES_API_KEY;
-// console.log("🚀 ~ file: NewClientForm.tsx:13 ~ PLACES_API_KEY:", PLACES_API_KEY);
-// const LOC_PLACES_API_KEY = process.env.PLACES_API_KEY;
-// console.log("🚀 ~ file: NewClientForm.tsx:15 ~ LOC_PLACES_API_KEY:", LOC_PLACES_API_KEY);
 
 function CreateAddressFields({ form, data }: Props) {
     // const { merchantId, userRole } = useContext(UserDataContext);
-
-    // const [foundAddress, setFoundAddress] = useState<NewAddressInput | null>(null);
-    // const [city, setCity] = useState<string | null>(null);
 
     // const autoCompleteRef = useRef<google.maps.places.Autocomplete>();
     const inputRef = useRef<any>(null);
     const street2Ref = useRef<any>(null);
 
-    // console.log("🚀 ~ file: CreateAddressFields.tsx:24 ~ CreateAddressFields ~ inputRef:", inputRef);
     const options = {
         componentRestrictions: { country: ["ca", "us"] },
         fields: ["address_components", "geometry", "icon", "name"],
@@ -47,14 +35,6 @@ function CreateAddressFields({ form, data }: Props) {
             onPlaceSelected: (place, inputRef, something) => {
                 console.log('place selected', place);
                 const address = place.address_components;
-                // let newAddress: NewAddressInput = {
-                //     street1: '',
-                //     street2: '',
-                //     city: '',
-                //     zip: '',
-                //     state: '',
-                //     country: ''
-                // };
                 let { street1, street2, city, state, zip, country }: NewAddressInput = {
                     street1: place.name!,
                     street2: '',
@@ -104,10 +84,7 @@ function CreateAddressFields({ form, data }: Props) {
                             default:
                                 break;
                         }
-                        // newAddress.city = 
                     }
-                    // let street1 = address.
-                    // setFoundAddress({ street1, street2, city, state, zip, country });
                     console.log('results', { street1, street2, city, state, zip, country });
                     form.setFieldsValue({
                         street1, city, state, zip, country
@@ -117,78 +94,12 @@ function CreateAddressFields({ form, data }: Props) {
             },
             options
         });
-    // const handleChange = (event: any) => {
-    //     console.log('found add', foundAddress);
-    //     console.log("🚀 ~ file: CreateAddressFields.tsx:54 ~ handleChange ~ event:", event);
-    //     console.log('name', event.target.name);
-    //     const name = event.target.name;
-    //     console.log('value', event.target.value);
-    //     const value = event.target.value;
-    //     setFoundAddress({ ...foundAddress!, [event.target.name]: event.target.value });
-    //     if (name === 'city') {
-    //         setCity(value);
-    //     }
 
-    // };
-
-    // useEffect(() => {
-    //     if (typeof window.google !== 'undefined') {
-    //         autoCompleteRef.current = new window.google.maps.places.Autocomplete(
-    //             inputRef.current,
-    //             options
-    //         );
-    //         autoCompleteRef.current.addListener("place_changed", async function () {
-    //             const place = await autoCompleteRef.current?.getPlace();
-    //             console.log('finding for places', { place });
-    //         });
-
-    //     };
-    // }, []);
-
-    const [countriesList, setCountriesList] = useState<any | null>(null);
-
-    // useEffect(() => {
-    //     const getCountriesList = async () => {
-    //         try {
-    //             let countriesRes: AxiosResponse<any, any> | undefined;
-    //             if (userRole === 'MerchantOwner') {
-    //                 countriesRes = await fetchMerchantsCountries(merchantId);
-    //             } else if (userRole === 'PlatformManager') {
-    //                 countriesRes = await fetchAllCountries();
-    //             }
-    //             if (countriesRes?.data.result) setCountriesList(countriesRes.data.result);
-    //             if (countriesRes?.data.message) toast.error("Couldn't fetch countries", countriesRes.data.message);
-    //         } catch (error) {
-    //             toast.error("Couldn't fetch countries");
-    //         }
-    //     };
-    //     getCountriesList();
-    // }, []);
+    // Set a countries list?
+    // const [countriesList, setCountriesList] = useState<any | null>(null);
 
     return (
         <>
-            {/* <Script src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyA1oJiPasx6wn42mLLf-NdhqE3bQAMwU8Y&libraries=places&callback=Function.prototype`} async /> */}
-
-            {/* <Script src={`https://maps.googleapis.com/maps/api/js?key=${LOC_PLACES_API_KEY}&libraries=places&callback=initMap`} /> */}
-            {/* <Form.Item
-                label="Name: "
-                name="name"
-                rules={[{ required: true, message: 'Please input your name!' }]}>
-                <Input
-                />
-            </Form.Item>
-            <Form.Item
-                label="Email: "
-                name="email"
-                rules={[{ required: true, message: 'Please input your email!' }]}>
-                <Input
-                />
-            </Form.Item>
-            <Form.Item
-                label="Company: "
-                name="company">
-                <Input />
-            </Form.Item> */}
             <Form.Item
                 label="Street Info 1:"
                 name="street1"
@@ -196,7 +107,6 @@ function CreateAddressFields({ form, data }: Props) {
                 <Input
                     placeholder='Start typing for autofill...'
                     ref={(c) => {
-                        // console.log("🚀 ~ file: CreateAddressFields.tsx:98 ~ CreateAddressFields ~ c:", c);
                         inputRef.current = c;
                         if (c) ref.current = c.input;
                     }}
@@ -213,26 +123,10 @@ function CreateAddressFields({ form, data }: Props) {
             <Form.Item
                 label="City:"
                 name="city"
-                // initialValue={foundAddress?.city ? foundAddress.city : ''}
-                // getValueFromEvent={handleChange}
-                // getValueProps={(v) => {
-                //     return ({ name: 'city', value: v });
-                // }}
                 rules={[{ required: true, message: 'Please input your city!' }]}>
                 <Input
-                // onChange={handleChange}
-                // value={city!
-                //     // ? foundAddress.city : ''
-                // }
-                // placeholder={foundAddress?.city}
                 />
             </Form.Item>
-            {/* <input
-                name={"city"}
-                value={foundAddress?.city}
-                placeholder={"City"}
-                onChange={handleChange}
-            /> */}
             <Form.Item
                 label="State:"
                 name="state"
@@ -272,14 +166,10 @@ function CreateAddressFields({ form, data }: Props) {
                     </Select> */}
                 <Input />
             </Form.Item>
-            {/* )} */}
             <Form.Item
-                // labelCol={{ span: 4 }}
-                // wrapperCol={{ span: 16 }}
                 label="Phone:"
                 name="phone"
                 rules={[{ required: true, message: 'Please input your phone number!' }]}>
-                {/* <Input /> */}
                 <PhoneNumberInput />
             </Form.Item>
             <Form.Item
@@ -287,12 +177,6 @@ function CreateAddressFields({ form, data }: Props) {
                 name="notes">
                 <Input />
             </Form.Item>
-            {/* <Script src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyA1oJiPasx6wn42mLLf-NdhqE3bQAMwU8Y&libraries=places&callback=Function.prototype`} async /> */}
-            {/* <script
-                async
-                type='text/javascript'
-                src='https://maps.googleapis.com/maps/api/js?key=AIzaSyA1oJiPasx6wn42mLLf-NdhqE3bQAMwU8Y&libraries=places&callback=Function.prototype'
-            ></script> */}
         </>
     );
 }
