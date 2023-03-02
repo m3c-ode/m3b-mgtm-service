@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { NewClientInput } from "../src/types/clients";
 import getDbCollection from "./getCollection";
 // import getDbCollection from "./functions";
@@ -30,25 +31,39 @@ export const getAllClientsAsync = async () => {
 
 // Check if there are no duplicate before creating
 export const doesClientExist = async (name: string, email: string, street1: string) => {
-    console.log("🚀 ~ file: clients.ts:33 ~ doesClientExist ~ name: string, email: string, street1::", name, email, street1);
-    console.log('checking if client exists');
     const collection = await getDbCollection("clients");
     // try {
 
-    const res = await collection.findOne({
-        $and: [
-            { name: name.toUpperCase() },
-            { email: email.toUpperCase() },
-            { 'address.street1': street1.toUpperCase() },
-        ]
-        //     , email: email, street1 }]
-        // name: name.toUpperCase(),
-        // email: email.toUpperCase(),
-        // street1: street1.toUpperCase(),
-    });
+    const res = await collection
+        // .findOne({
+        // .find({
+        //     $and: [
+        //         { name: name.toUpperCase() },
+        //         { email: email.toUpperCase() },
+        //         { 'address.street1': street1.toUpperCase() },
+        //     ]
+        //     //     , email: email, street1 }]
+        //     // name: name.toUpperCase(),
+        //     // email: email.toUpperCase(),
+        //     // street1: street1.toUpperCase(),
+        // })
+        // Allows case insensitivity Search
+        // .collation({ locale: 'en', strength: 2 })
+        // .toArray();
+        .count({
+            $and: [
+                { name: name.toUpperCase() },
+                { email: email.toUpperCase() },
+                { 'address.street1': street1.toUpperCase() },
+            ]
+        },
+            {
+                collation: { locale: 'en', strength: 2 }
+            }
+        )
+        ;
     console.log("🚀 ~ file: clients.ts:35 ~ doesClientExist ~ res:", res);
     if (res) return true;
-    // throw new Error('client with same credentials already exist in the DB');
     else return false;
     // } catch (err) {
     //     console.log("🚀 ~ file: clients.ts:42 ~ doesClientExist ~ err:", err);
@@ -81,4 +96,27 @@ export const insertClients = async (data: NewClientInput | NewClientInput[]) => 
     } catch (error) {
         console.log("🚀 ~ file: clients.ts:27 ~ insertClients ~ error:", error);
     }
+};
+
+export const deleteClient = async (id: string) => {
+    const collection = await getDbCollection('clients');
+    try {
+        const client = await collection.deleteOne({ _id: id });
+        console.log("🚀 ~ file: clients.ts:90 ~ deleteClient ~ client:", client);
+        return Promise.resolve("Client succesfully deleted");
+    } catch (error) {
+        console.log("🚀 ~ file: clients.ts:93 ~ deleteClient ~ error:", error);
+        console.log("error deleting client");
+    }
+};
+
+export const getClientData = async (clientId: string) => {
+    const collection = await getDbCollection('clients');
+    try {
+        const client = await collection.findOne({ _id: new ObjectId(clientId) });
+        return JSON.parse(JSON.stringify(client));
+    } catch (error) {
+        console.log("🚀 ~ file: clients.ts:104 ~ getClientData ~ error:", error);
+    }
+
 };

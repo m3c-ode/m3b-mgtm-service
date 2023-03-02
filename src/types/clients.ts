@@ -15,10 +15,10 @@ export type NewClientInput = {
 };
 
 export type ClientData = NewClientInput & {
-    _id: string;
+    _id?: string;
     address: AddressData;
-    createdOn: string | Date;
-    updatedOn: string | Date;
+    createdOn?: string | Date;
+    updatedOn?: string | Date;
 };
 
 export enum ClientTypeEnum {

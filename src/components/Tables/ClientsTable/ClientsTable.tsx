@@ -5,36 +5,34 @@ import React, { useState } from 'react';
 import styles from '../styles.module.scss';
 import { ObjectId } from 'mongodb';
 import toast from 'react-hot-toast';
-import { ClientData, ClientsTableProps } from '../../../types/clients';
-import { AddressData } from '../../../types/addresses';
+import type { ClientData, ClientsTableProps } from '../../../types/clients';
+import type { AddressData } from '../../../types/addresses';
+import { deleteClient, fetchAllClients } from '../../../pages/api/services/clients';
 
 const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) => {
 
     const [currentData, setCurrentData] = useState(data);
 
 
-    const handleDeleteDb = async (id: string | ObjectId) => {
-        // try {
-        //     const delRes = await deleteBeer(id);
+    const handleDeleteDb = async (id: string) => {
+        try {
+            const delRes = await deleteClient(id);
+            if (delRes.data.deletedCount === 0) {
+                return toast.error("Error deleting client");
+            }
+            toast.success("Client entry deleted");
+            const res = await fetchAllClients();
+            const clientData = res.data;
+            setCurrentData(clientData);
 
-        //     const res = await getAllBeers();
-        //     const beerData = res.data;
-        //     setCurrentData(beerData);
-
-        // } catch (error: any) {
-        //     console.log("🚀 ~ file: ClientsTable.tsx:43 ~ handleDeleteDb ~ error", error);
-        //     toast.error('Error deleting beer');
-
-        //     throw new Error(error).message;
-        // }
+        } catch (error: any) {
+            console.log("🚀 ~ file: ClientsTable.tsx:43 ~ handleDeleteDb ~ error", error);
+            toast.error('Error deleting client');
+            throw new Error(error).message;
+        }
     };
 
     const columns: ColumnsType<ClientData> = [
-        /*         {
-                    title: 'ID',
-                    dataIndex: 'id',
-                    key: 'id',
-                }, */
         {
             title: 'Client Name',
             dataIndex: 'name',
@@ -45,9 +43,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
             dataIndex: 'address',
             key: 'address',
             render(value: AddressData, record, index) {
-                // console.log("🚀 ~ file: ClientsTable.tsx:47 ~ render ~ value:", value);
                 const { street1, street2, city, state, zip, country } = value;
-
                 return `${street2 ? street2 + ', ' : ''}${street1}, ${city}, ${state}`;
             },
         },
@@ -61,36 +57,6 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
             dataIndex: 'email',
             key: 'email',
         },
-        // {
-        //     title: 'Brewed On',
-        //     dataIndex: 'brewedOn',
-        //     key: 'brewedOn',
-        //     render: (value, record) => {
-        //         if (typeof value === 'string') {
-        //             if (value.includes("T")) {
-        //                 return value.split("T")[0];
-        //             } else return value;
-        //         } else {
-        //             return new Date(value).toISOString().split('T')[0];
-        //         }
-        //     }
-        // },
-        // {
-        //     title: 'Available On',
-        //     dataIndex: 'availableOn',
-        //     key: 'availableOn',
-        //     render: (value, record) => {
-        //         if (typeof value === 'string') {
-        //             if (value.includes("T")) {
-        //                 return value.split("T")[0];
-        //             } else return value;
-        //         } else {
-        //             return new Date(value).toISOString().split('T')[0];
-        //         }
-        //     },
-        //     sorter: (a, b) => new Date(b.beer.availableOn).valueOf() - new Date(a.beer.availableOn).valueOf(),
-
-        // },
         {
             title: 'Actions',
             key: 'actions',
@@ -102,7 +68,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
                     >
                         <Link
                             className={styles.tableButton}
-                            href={`/client/${record._id}`}>Update Info</Link>
+                            href={`/dashboard/clients/${record._id}`}>Update Info</Link>
 
                     </Button>
                     <Button
@@ -111,10 +77,10 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
                     >
                         <Link
                             className={styles.tableButton}
-                            href={`/deliveries/${record._id}`}>Create Delivery</Link>
+                            href={`/dashboard/deliveries/${record._id}`}>Create Delivery</Link>
 
                     </Button>
-                    <Popconfirm title="Are you sure?" onConfirm={() => handleDeleteDb(record._id)}>
+                    <Popconfirm title="Are you sure?" onConfirm={() => handleDeleteDb(record._id!)}>
                         <Button
                             type="primary"
                             danger
@@ -129,7 +95,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
 
     return (
         <Table
-            rowKey={(record, index) => (record._id)}
+            rowKey={(record, index) => (record._id!)}
             columns={columns}
             className={styles.tableContainer + 'ant-table ant-table-default !important'}
             dataSource={currentData}

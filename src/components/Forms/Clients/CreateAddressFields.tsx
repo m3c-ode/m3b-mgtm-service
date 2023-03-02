@@ -7,12 +7,13 @@ import toast from 'react-hot-toast';
 import { AxiosResponse } from 'axios';
 import Script from 'next/script';
 import { usePlacesWidget } from 'react-google-autocomplete';
-import { NewAddressInput } from '../../../types/addresses';
+import { AddressData, NewAddressInput } from '../../../types/addresses';
 import PhoneNumberInput from '../Input/PhoneNumberInput';
 const { Option } = Select;
 
 type Props = {
     form: FormInstance<any>;
+    data?: AddressData;
 };
 
 
@@ -21,7 +22,7 @@ const PLACES_API_KEY = process.env.NEXT_PUBLIC_PLACES_API_KEY;
 // const LOC_PLACES_API_KEY = process.env.PLACES_API_KEY;
 // console.log("🚀 ~ file: NewClientForm.tsx:15 ~ LOC_PLACES_API_KEY:", LOC_PLACES_API_KEY);
 
-function CreateAddressFields({ form }: Props) {
+function CreateAddressFields({ form, data }: Props) {
     // const { merchantId, userRole } = useContext(UserDataContext);
 
     // const [foundAddress, setFoundAddress] = useState<NewAddressInput | null>(null);
@@ -116,8 +117,6 @@ function CreateAddressFields({ form }: Props) {
             },
             options
         });
-    console.log("🚀 ~ file: CreateAddressFields.tsx:41 ~ CreateAddressFields ~ autocompleteRef:", autocompleteRef);
-
     // const handleChange = (event: any) => {
     //     console.log('found add', foundAddress);
     //     console.log("🚀 ~ file: CreateAddressFields.tsx:54 ~ handleChange ~ event:", event);

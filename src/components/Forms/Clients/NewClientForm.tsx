@@ -8,6 +8,7 @@ import { NewAddressInput } from '../../../types/addresses';
 import { ClientTypeEnum, NewClientInput } from '../../../types/clients';
 import Dashboard from '../../Dashboard';
 import EmailInput from '../Input/EmailInput';
+import ClientInfoFields from './ClientInfoFields';
 import CreateAddressFields from './CreateAddressFields';
 import styles from './styles.module.scss';
 
@@ -29,11 +30,11 @@ const NewClientForm = (props: Props) => {
         const newClientData: NewClientInput = {
             // clientId: customerId,
             // businessId: merchantId,
-            name: values.name?.toUpperCase(),
-            email: values.email?.toUpperCase(),
-            type: values.type?.toUpperCase(),
+            name: values.name,
+            email: values.email,
+            type: values?.type,
             address: {
-                company: values.company?.toUpperCase(),
+                company: values.company,
                 street1: values.street1.toUpperCase(),
                 street2: values.street2?.toUpperCase(),
                 city: values.city.toUpperCase(),
@@ -126,7 +127,8 @@ const NewClientForm = (props: Props) => {
             >
                 <h2>Create a New Client</h2>
                 <Divider />
-                <Form.Item
+                <ClientInfoFields form={form} />
+                {/* <Form.Item
                     label="Name: "
                     name="name"
                     rules={[{ required: true, message: 'Please input your name!' }]}>
@@ -140,7 +142,7 @@ const NewClientForm = (props: Props) => {
                         type='email'
                     // onBlur={}
                     />
-                    {/* <EmailInput /> */}
+                    {/* <EmailInput />
                 </Form.Item>
                 <Form.Item
                     label="Type: "
@@ -164,7 +166,7 @@ const NewClientForm = (props: Props) => {
                         htmlType="submit">
                         Submit
                     </Button>
-                </Form.Item>
+                </Form.Item> */}
             </Form>
         </Dashboard >
     );
