@@ -41,9 +41,6 @@ export const getBeersAsyncAPI = async () => {
 export const dbUpdateBeer = async (id: string | ObjectId, beerData: BeerData) => {
     const collection = await getDbCollection("beers");
     await collection.updateOne({ _id: new ObjectId(id) }, { $set: { ...beerData } },
-        // {
-        // new: true,
-        // }
     );
     const updatedBeer = await collection.findOne({ _id: new ObjectId(id) });
     return updatedBeer;

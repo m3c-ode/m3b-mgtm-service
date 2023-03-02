@@ -36,15 +36,6 @@ const BeerInfoFields = (props: Props) => {
                     }
                     options={Object.values(BeersStylesEnum).map((value, index) => ({ value, label: value }))}
                 >
-                    {/* {Object.values(BeersStylesEnum).map((value, index) => (
-
-                        <Option
-                            key={index}
-                            value={value}
-                        >
-                            {value}
-                        </Option> 
-                    ))} */}
                 </Select>
             </Form.Item>
             {/* <Form.Item

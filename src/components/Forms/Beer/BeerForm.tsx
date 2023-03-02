@@ -67,7 +67,6 @@ const BeerForm = (props: Props) => {
         console.log("🚀 ~ file: BeerForm.tsx:62 ~ onFinish ~ formData", formData);
         // const currentBeerList = beerData;
         const data: NewBeerData = {
-            // id: (beerData.length + 1).toString(),
             name: formData.name,
             description: formData.description,
             style: formData.style,
@@ -82,11 +81,6 @@ const BeerForm = (props: Props) => {
         };
         // hops: formData.hops,
         // grains: formData.grains
-
-        // local
-        // beerData.push(data);
-        // console.log("🚀 ~ file: BeerForm.tsx:79 ~ onFinish ~ beerData", beerData);
-
 
         // with MongoDB
         const beerRes = await createBeer(data);
@@ -135,12 +129,6 @@ const BeerForm = (props: Props) => {
                                 };
                             })}
                         >
-                            {/* {BeerCreationSteps.map((step, index) => (
-                                <Step
-                                    key={index}
-                                    title={step}
-                                />
-                            ))} */}
                         </Steps>
                     </div>
                     <div className={styles.formContent}>

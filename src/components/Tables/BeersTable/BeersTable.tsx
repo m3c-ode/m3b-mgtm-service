@@ -19,11 +19,6 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
         try {
             const delRes = await deleteBeer(id);
             toast.success("Beer Successfully Deleted");
-
-            // reloads the window
-            // window.location.reload();
-
-            // try with updating state data
             const res = await getAllBeers();
             const beerData = res.data;
             setCurrentData(beerData);
@@ -37,11 +32,6 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
     };
 
     const columns: ColumnsType<BeerData> = [
-        /*         {
-                    title: 'ID',
-                    dataIndex: 'id',
-                    key: 'id',
-                }, */
         {
             title: 'Name',
             dataIndex: 'name',
@@ -135,12 +125,10 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
                             href={`beers/${record._id}`}>Update Info</Link>
 
                     </Button>
-                    {/* <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(parseInt(record.id) - 1)}> */}
                     <Popconfirm title="Are you sure?" onConfirm={() => handleDeleteDb(record._id)}>
                         <Button
                             type="primary"
                             danger
-                        // onClick={() => handleDelete(parseInt(record.id) - 1)}
                         >
                             Delete
                         </Button>

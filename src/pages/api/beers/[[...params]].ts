@@ -38,7 +38,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'GET':
             try {
                 const beers = await collection.find({}).toArray();
-                // console.log("🚀 ~ file: index.ts:15 ~ handler ~ beers", beers);
                 res.status(200).json(beers);
             } catch (error) {
                 console.log("🚀 ~ file: index.ts:22 ~ handler ~ get error", error);
@@ -63,7 +62,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
             break;
         case 'PATCH':
-        case 'patch':
             // case 'PUT':
             try {
                 const updateData = req.body;
