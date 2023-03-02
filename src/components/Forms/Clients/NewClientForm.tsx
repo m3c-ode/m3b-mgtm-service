@@ -11,9 +11,6 @@ const { Option } = Select;
 
 type Props = {};
 
-const PLACES_API_KEY = process.env.NEXT_PUBLIC_PLACES_API_KEY;
-const LOC_PLACES_API_KEY = process.env.PLACES_API_KEY;
-
 const NewClientForm = (props: Props) => {
     const [form] = Form.useForm();
 
@@ -78,8 +75,6 @@ const NewClientForm = (props: Props) => {
 
     return (
         <Dashboard>
-            {/* <Script src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyA1oJiPasx6wn42mLLf-NdhqE3bQAMwU8Y&libraries=places&callback=Function.prototype`} defer async /> */}
-
             <Form
                 ref={formRef}
                 form={form}

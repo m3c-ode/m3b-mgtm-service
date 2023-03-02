@@ -1,10 +1,7 @@
 import { ObjectId, Timestamp } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
-// import { getDbCollection } from "../../../../lib/beers";
 import { doesClientExist } from "../../../../lib/clients";
 import getDbCollection from "../../../../lib/getCollection";
-// import { getDbCollection } from "../../../../lib/functions";
-import clientPromise from "../../../../lib/mongodb";
 import { NewClientInput } from "../../../types/clients";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
@@ -21,12 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const result = await (Array.isArray(newClient)
                     ? collection.insertMany(newClient)
                     : collection.insertOne({ ...newClient, createdOn: new Date() },
-                        // {
-                        //     $currentDate: {
-                        //     }
-                        // }
                     ));
-
                 res.status(201)
                     .json(result);
 
