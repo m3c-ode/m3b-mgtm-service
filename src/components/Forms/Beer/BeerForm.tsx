@@ -85,8 +85,8 @@ const BeerForm = (props: Props) => {
         // with MongoDB
         const beerRes = await createBeer(data);
         console.log("🚀 ~ file: BeerForm.tsx:93 ~ onFinish ~ beerRes", beerRes);
+        router.push('/dashboard/beers');
         toast.success('Beer created successfully');
-        router.push('/dashboard');
     };
 
 
@@ -106,7 +106,7 @@ const BeerForm = (props: Props) => {
                 name="createBeerForm"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
-                initialValues={{ remember: true }}
+                // initialValues={{ remember: true }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"

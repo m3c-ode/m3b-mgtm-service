@@ -73,12 +73,12 @@ const GrainFields = ({ form }: Props) => {
                                 <div className={styles.grainItems}>
 
                                     <Form.Item
-                                        label={index === 0 ? 'Weight' : ''}
+                                        label={index === 0 ? 'Weight (lbs)' : ''}
                                         name={[name, 'weight']}
                                         rules={[{ required: true, message: 'Missing weight' }]}
                                         style={{ width: '25%', maxWidth: '115px' }}
                                     >
-                                        <InputNumber onChange={() => getTotalWeight()} step={0.01} style={{ width: '70%' }} placeholder="5" />
+                                        <InputNumber onChange={() => getTotalWeight()} step={0.01} style={{ width: '80%' }} placeholder="5" />
                                     </Form.Item>
                                     <Form.Item
                                         label={index === 0 ? 'Type' : ''}
@@ -110,73 +110,78 @@ const GrainFields = ({ form }: Props) => {
                                 getTotalWeight();
                                 add();
                             }} block icon={<AiOutlinePlusCircle />}>
-                                Add Grains
+                                Add Grains or Product
                             </Button>
                         </Form.Item>
-                        <Form.Item
-                            label="Total Weight"
-                            name="totalGrain"
-                            // rules={[{ required: true, message: 'Missing total weight' }]}
-                            // wrapperCol={{ span: 4 }}
-                            labelAlign='left'
-                            labelCol={{ span: 3 }}
-                        >
-                            <span>{Math.round(totalGrain * 100) / 100} lbs</span>
-                        </Form.Item>
-                        <Divider style={{ margin: '1rem 0' }} />
-                        <h3>Other</h3>
-                        <Row
-                            style={{
-                                gap: '1rem',
-                                justifyContent: 'space-around'
-
-                            }}
-                        >
-                            <Form.Item
-                                label="Expected OG"
-                                name="expectedOG"
-                                // rules={[{ required: true, message: 'Missing expected OG' }]}
-                                // wrapperCol={{ span: 4 }}
-                                labelAlign='left'
-                                labelCol={{ span: 12 }}
-                            >
-                                <InputNumber step={0.001} placeholder={'1.050'} />
-                            </Form.Item>
-                            <Form.Item
-                                label="Expected FG"
-                                name="expectedFG"
-                                // wrapperCol={{ span: 4 }}
-                                labelAlign='left'
-                                labelCol={{ span: 12 }}
-                            >
-                                <InputNumber step={0.001} placeholder={'1.015'} />
-                            </Form.Item>
-                            <Form.Item
-                                label="Expected ABV"
-                                name="expectedABV"
-                                // wrapperCol={{ span: 1 }}
-                                labelAlign='left'
-                                labelCol={{ span: 12 }}
-                            >
-                                <InputNumber step={0.1} placeholder={'5.0'} /><span>%</span>
-                            </Form.Item>
-                            <Form.Item
-                                label="Yeast"
-                                name="yeast"
-                                // wrapperCol={{ span: 4 }}
-                                labelAlign='left'
-                                labelCol={{ span: 5 }}
-                            >
-                                <Input placeholder={'Lalbrew SF04'} />
-                            </Form.Item>
-                        </Row>
-                        <Divider style={{ margin: '1rem 0' }} />
-
-
                     </>
                 )
                 }
             </Form.List>
+            <Form.Item
+                label="Total Weight"
+                name="totalGrain"
+                // rules={[{ required: true, message: 'Missing total weight' }]}
+                // wrapperCol={{ span: 4 }}
+                labelAlign='left'
+                labelCol={{ span: 3 }}
+            >
+                <span>{Math.round(totalGrain * 100) / 100} lbs</span>
+            </Form.Item>
+            <Divider style={{ margin: '1rem 0' }} />
+            <h3>Other</h3>
+            <Row
+                style={{
+                    gap: '1rem',
+                    justifyContent: 'space-around'
+
+                }}
+            >
+                <Form.Item
+                    label="Expected OG"
+                    name="og"
+                    // rules={[{ required: true, message: 'Missing expected OG' }]}
+                    // wrapperCol={{ span: 4 }}
+                    labelAlign='left'
+                    labelCol={{ span: 12 }}
+                >
+                    <InputNumber min={0} step={0.001} placeholder={'1.050'} />
+                </Form.Item>
+                <Form.Item
+                    label="Expected FG"
+                    name="fg"
+                    // wrapperCol={{ span: 4 }}
+                    labelAlign='left'
+                    labelCol={{ span: 12 }}
+                >
+                    <InputNumber min={0} step={0.001} placeholder={'1.015'} />
+                </Form.Item>
+                <Form.Item
+                    label="Expected ABV"
+                    name="abv"
+                    // wrapperCol={{ span: 1 }}
+                    labelAlign='left'
+                    labelCol={{ span: 12 }}
+                >
+                    <InputNumber
+                        // min={0.1}
+                        // max={20}
+                        formatter={(value) => `${value}%`}
+                        parser={(value) => value!.replace('%', '')}
+                        step={0.1} placeholder={'5.0%'} />
+                </Form.Item>
+                <Form.Item
+                    label="Yeast"
+                    name="yeast"
+                    // wrapperCol={{ span: 4 }}
+                    labelAlign='left'
+                    labelCol={{ span: 5 }}
+                >
+                    <Input placeholder={'Lalbrew SF04'} />
+                </Form.Item>
+            </Row>
+            <Divider style={{ margin: '1rem 0' }} />
+
+
         </>
     );
 };

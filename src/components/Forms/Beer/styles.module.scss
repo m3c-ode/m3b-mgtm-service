@@ -67,8 +67,8 @@
     flex-direction: row;
     // align-items: center !important;
     // justify-content: space-between !important;
-    gap: 1rem;
-    width: 100%;
+    gap: 2rem;
+    // width: 100%;
 
     @media (max-width: 1364px) {
         width: 95%;
@@ -100,6 +100,7 @@
 .hopNumberInput {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     gap: 1rem;
     width: 40%;
 

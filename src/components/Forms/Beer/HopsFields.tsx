@@ -107,7 +107,7 @@ const HopsFields = ({ form }: Props) => {
                                             rules={[{ required: true, message: 'Missing weight of hops' }]}
                                             style={{ width: '25%', minWidth: '110px' }}
                                         >
-                                            <InputNumber
+                                            <InputNumber min={0}
                                                 onChange={() => getTotalWeight()}
                                                 step={0.01} style={{ width: '70%' }} placeholder="5" />
                                         </Form.Item>
@@ -119,7 +119,7 @@ const HopsFields = ({ form }: Props) => {
                                             rules={[{ required: true, message: 'Missing a.a of hops' }]}
                                             style={{ width: '25%', minWidth: '95px' }}
                                         >
-                                            <InputNumber step={0.1} style={{ width: '70%' }} placeholder="5" />
+                                            <InputNumber min={0} step={0.1} style={{ width: '70%' }} placeholder="5" />
                                         </Form.Item>
                                         <Form.Item
                                             // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
@@ -129,7 +129,7 @@ const HopsFields = ({ form }: Props) => {
                                             rules={[{ required: true, message: 'Missing boilTime of hops' }]}
                                             style={{ width: '25%', minWidth: '80px' }}
                                         >
-                                            <InputNumber step={1} style={{ width: '70%' }} placeholder="5" />
+                                            <InputNumber min={0} step={1} style={{ width: '70%' }} placeholder="5" />
                                         </Form.Item>
                                         <AiOutlineMinusCircle
                                             style={{
@@ -165,21 +165,79 @@ const HopsFields = ({ form }: Props) => {
                                 Add Hops
                             </Button>
                         </Form.Item>
-                        <Form.Item
-                            label="Total Weight"
-                            name="totalHops"
-                            // rules={[{ required: true, message: 'Missing total weight' }]}
-                            // wrapperCol={{ span: 4 }}
-                            labelAlign='left'
-                            labelCol={{ span: 3 }}
-                        >
-                            <span>{Math.round(totalHops * 100) / 100} oz</span>
-                        </Form.Item>
                     </>
                 )}
             </Form.List>
-        </>
+            <Row
+                style={{
+                    // gap: '1rem',
+                    // justifyContent: 'space-between',
+                    // margin: '0 1rem'
 
+                }}
+            >
+                <Col md={12} sm={24} >
+                    <Form.Item
+                        label="Total Weight"
+                        name="totalHops"
+                        // rules={[{ required: true, message: 'Missing total weight' }]}
+                        labelAlign='left'
+                        labelCol={{
+                            xs: { span: 24 },
+                            sm: { span: 20 },
+                            md: { span: 12 },
+                            lg: { span: 8 },
+                            xl: { span: 6 }
+                        }}
+                        wrapperCol={{
+                            // span: 14,
+                            xs: { span: 24 },
+                            sm: { span: 16 },
+                            md: { span: 12 },
+                            lg: { span: 8 },
+                            xl: { span: 6 }
+                        }}
+                        style={{
+                            // width: '200px !important',
+                            // display: 'flex',
+                            // flexWrap: 'wrap'
+                        }}
+                    >
+                        <span style={{
+                            // display: 'inline-block',
+                            // width: '100px',
+                            // flexWrap: 'wrap'
+                        }}>{Math.round(totalHops * 100) / 100} oz</span>
+                    </Form.Item>
+                </Col>
+                <Col md={12} sm={24}>
+                    <Form.Item
+                        label="Expected IBU"
+                        name="ibu"
+                        labelCol={{
+                            // xs: { span: 24 },
+                            sm: { span: 7 },
+                            md: { span: 12 },
+                            lg: { span: 16 },
+                            xl: { span: 17 }
+                            // sm: { span: 24, offset: 0 }
+                        }}
+                        wrapperCol={{
+                            // span: 6,
+                            sm: { span: 6, offset: 10 },
+                            md: { span: 12, offset: 1 },
+                            // lg: { span: 16 },
+                            // xl: { span: 16 }
+                        }}
+                    >
+                        <InputNumber step={1} placeholder={'20'}
+                        // style={{ width: '100%' }}
+                        />
+
+                    </Form.Item>
+                </Col>
+            </Row>
+        </>
     );
 };
 
