@@ -16,17 +16,20 @@ const HopsFields = ({ form }: Props) => {
             weight: number,
             type: string,
         }[] = form.getFieldValue("hops") || [];
+        let totalWeight: number = 0;
         if (index && !currentHops[index]) return;
         if (!index) {
             let total = currentHops.reduce((acc: number, item) => {
                 return acc + item.weight;
             }, 0);
-            setTotalHops(total);
-            return;
+            totalWeight = total;
         } else {
             let deletedRow = currentHops[index] ? currentHops[index].weight : 0;
-            setTotalHops(totalHops - deletedRow);
+            totalWeight = totalHops - deletedRow;
         }
+        setTotalHops(totalWeight);
+        form.setFieldValue('totalHops', totalWeight);
+
     };
     return (
         <>

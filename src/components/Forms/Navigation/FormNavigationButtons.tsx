@@ -26,7 +26,7 @@ const FormNavigationButtons = ({ prevStep, nextStep, stepIndex, stepsLength, sen
                 <Form.Item>
                     <Space size="large">
                         <Tooltip
-                            title="Create another package for this customer"
+                            title="Create another beer"
                             color={'blue'}>
                             <Button
                                 type="primary"
@@ -35,7 +35,7 @@ const FormNavigationButtons = ({ prevStep, nextStep, stepIndex, stepsLength, sen
                             </Button>
                         </Tooltip>
                         <Tooltip
-                            title="Save Package and set up Shipment"
+                            title="Save Beer"
                             color={'blue'}>
                             <Button
                                 type="primary"

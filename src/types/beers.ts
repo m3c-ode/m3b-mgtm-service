@@ -12,6 +12,21 @@ export type BeerData = NewBeerData & {
     key?: any;
 };
 
+export type GrainsData = [{
+    name: string;
+    quantity: number;
+    receivedOn?: string | Date;
+}];
+
+export type HopsType = 'Pellets' | "Leafs";
+
+export type HopsData = [{
+    name: string;
+    quantity: number;
+    type: HopsType;
+    receivedOn?: string | Date;
+}];
+
 export type NewBeerData = {
     id?: string,
     name?: string,
@@ -32,6 +47,8 @@ export type NewBeerData = {
         '15GalKegs'?: number,
         total: number;
     };
+    grains: GrainsData,
+    hops: HopsData;
 };
 
 

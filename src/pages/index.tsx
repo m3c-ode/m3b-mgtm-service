@@ -83,16 +83,17 @@ export default function Home({
           <div className="row justify-content-center">
             <div className="col-lg-7">
               <h2 className='blue'>Welcome to m3.beer management system!</h2>
-              <p className="lead py-2">This app is a personal project currently part of my portfolio. It's a CRUD app using the NextJS Meta framework connected to a MongoDB Database. It's still under progress, as many features could be added.</p>
+              <p className="lead py-2">This app is a personal project currently part of my portfolio. It's an example of CRUD app tailored for the beer beverage industry.</p>
+              <p className=''>It is coded using the NextJS Meta framework connected to a MongoDB Database. It's still under progress, as many features could be added.</p>
               <p className="mb-2">Using this platform, you'll be able to:</p>
               <ul>
                 <li>Create and manage your products</li>
                 <li>Check and manage your inventory</li>
-                <li>Create and manage your recipes</li>
+                <li>Create and manage your clients</li>
               </ul>
               <p className="mb-2">Potential features:</p>
               <ul>
-                <li>Client base management</li>
+                <li>Recipe management</li>
                 <li>Delivery management</li>
                 <li>Admin and Company access</li>
                 <li>Orders and Invoices management</li>

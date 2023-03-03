@@ -7,7 +7,7 @@ import { deleteBeer, getAllBeers } from '../../../pages/api/services';
 import { ObjectId } from 'mongodb';
 import toast from 'react-hot-toast';
 import type { ProductData, ProductsTableProps } from '../../../types/products';
-import { HtmlProps } from 'next/dist/shared/lib/html-context';
+import { GrainsData } from '../../../types/beers';
 
 interface Grain {
     key: string;
@@ -15,6 +15,10 @@ interface Grain {
     quantity: number;
     receivedOn: string;
 }
+
+// interface testGrain extends GrainsData {
+//     key: string;
+// }
 
 interface Hop {
     key: string;

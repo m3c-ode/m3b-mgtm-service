@@ -46,6 +46,9 @@ const BeerForm = (props: Props) => {
     const prevStep = () => {
         const formData = stepForm.getFieldsValue();
         console.log("🚀 ~ file: BeerForm.tsx:23 ~ prevStep ~ formData", formData);
+        // if (formData.grains) {
+        //     stepForm.setFieldValue('grains.totalGrains', )
+        // }
         stepForm
             .validateFields()
             .then(() => setStepIndex(stepIndex - 1))
@@ -78,6 +81,15 @@ const BeerForm = (props: Props) => {
             },
             abv: formData.abv,
             ibu: formData.ibu,
+            grains: {
+                ...formData.grains,
+                totalGrains: formData.totalGrains,
+            },
+            hops: {
+                ...formData.hops,
+                totalHops: formData.totalHops,
+            }
+
         };
         // hops: formData.hops,
         // grains: formData.grains

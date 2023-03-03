@@ -1,5 +1,5 @@
 import { Button, Col, Divider, Form, FormInstance, Input, InputNumber, Row, Space } from 'antd';
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import styles from './styles.module.scss';
 
@@ -30,24 +30,29 @@ type Props = {
 const GrainFields = ({ form }: Props) => {
 
     const [totalGrain, setTotalGrain] = useState(0);
+    console.log("🚀 ~ file: GrainFields.tsx:33 ~ GrainFields ~ totalGrain:", totalGrain);
 
     const getTotalWeight = (index?: number) => {
+        console.log("🚀 ~ file: GrainFields.tsx:35 ~ getTotalWeight ~ index:", index);
         let currentGrains: {
-            weight: number,
-            type: string,
+            quantity: number,
+            name: string,
         }[] = form.getFieldValue("grains") || [];
+        let totalWeight: number = 0;
         if (index && !currentGrains[index]) return;
         if (!index) {
             let total = currentGrains.reduce((acc: number, item) => {
-                return acc + item.weight;
+                return acc + item.quantity;
             }, 0);
-            setTotalGrain(total);
-            return;
+            totalWeight = total;
         } else {
-            let deletedRow = currentGrains[index] ? currentGrains[index].weight : 0;
-            setTotalGrain(totalGrain - deletedRow);
+            let deletedRow = currentGrains[index] ? currentGrains[index].quantity : 0;
+            totalWeight = totalGrain - deletedRow;
         }
+        setTotalGrain(totalWeight);
+        form.setFieldValue('totalGrains', totalWeight);
     };
+
     return (
         <>
             <h3>Grain Bill</h3>
@@ -74,16 +79,16 @@ const GrainFields = ({ form }: Props) => {
 
                                     <Form.Item
                                         label={index === 0 ? 'Weight (lbs)' : ''}
-                                        name={[name, 'weight']}
-                                        rules={[{ required: true, message: 'Missing weight' }]}
+                                        name={[name, 'quantity']}
+                                        rules={[{ required: true, message: 'Missing quantity' }]}
                                         style={{ width: '25%', maxWidth: '115px' }}
                                     >
-                                        <InputNumber onChange={() => getTotalWeight()} step={0.01} style={{ width: '80%' }} placeholder="5" />
+                                        <InputNumber min={0} onChange={() => getTotalWeight()} step={0.01} style={{ width: '80%' }} placeholder="5" />
                                     </Form.Item>
                                     <Form.Item
-                                        label={index === 0 ? 'Type' : ''}
-                                        name={[name, 'type']}
-                                        rules={[{ required: true, message: 'Missing type of grain name' }]}
+                                        label={index === 0 ? 'name' : ''}
+                                        name={[name, 'name']}
+                                        rules={[{ required: true, message: 'Missing name of grain name' }]}
                                         style={{ width: '75%' }}
                                     >
                                         <Input
@@ -106,10 +111,14 @@ const GrainFields = ({ form }: Props) => {
                             </>
                         ))}
                         <Form.Item>
-                            <Button type="dashed" onClick={(e: any) => {
-                                getTotalWeight();
-                                add();
-                            }} block icon={<AiOutlinePlusCircle />}>
+                            <Button
+                                type="dashed"
+                                onClick={(e: any) => {
+                                    getTotalWeight();
+                                    add();
+                                }}
+                                block
+                                icon={<AiOutlinePlusCircle />}>
                                 Add Grains or Product
                             </Button>
                         </Form.Item>
@@ -119,13 +128,17 @@ const GrainFields = ({ form }: Props) => {
             </Form.List>
             <Form.Item
                 label="Total Weight"
-                name="totalGrain"
+                name="totalGrains"
                 // rules={[{ required: true, message: 'Missing total weight' }]}
                 // wrapperCol={{ span: 4 }}
                 labelAlign='left'
                 labelCol={{ span: 3 }}
+            // getValueFromEvent={setTotalGrain}
+            // hidden
+            // getValueProps
             >
                 <span>{Math.round(totalGrain * 100) / 100} lbs</span>
+                {/* <InputNumber value={totalGrain} hidden style={{ display: 'none' }} /> */}
             </Form.Item>
             <Divider style={{ margin: '1rem 0' }} />
             <h3>Other</h3>
@@ -163,10 +176,10 @@ const GrainFields = ({ form }: Props) => {
                     labelCol={{ span: 12 }}
                 >
                     <InputNumber
-                        // min={0.1}
-                        // max={20}
+                        min={0.1 as number}
+                        max={20}
                         formatter={(value) => `${value}%`}
-                        parser={(value) => value!.replace('%', '')}
+                        parser={(value) => +value!.replace('%', '')}
                         step={0.1} placeholder={'5.0%'} />
                 </Form.Item>
                 <Form.Item
