@@ -12,6 +12,8 @@ export type BeerData = NewBeerData & {
     key?: any;
 };
 
+export type EditBeetData = Partial<BeerData>;
+
 export type GrainsData = [{
     name: string;
     quantity: number;

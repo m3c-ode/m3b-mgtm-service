@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { dbUpdateBeer } from '../../../../lib/beers';
 import { updateBeerData } from '../../../pages/api/services';
-import { BeerData, BeersStatusEnum, BeersStylesEnum } from '../../../types/beers';
+import { EditBeetData, BeersStatusEnum, BeersStylesEnum } from '../../../types/beers';
 import Dashboard from '../../Dashboard';
 import styles from './styles.module.scss';
 const { TextArea } = Input;
@@ -13,7 +13,7 @@ const { Option } = Select;
 
 
 type Props = {
-    data: BeerData;
+    data: EditBeetData;
 };
 
 const EditBeerForm = ({ data }: Props) => {
@@ -31,7 +31,7 @@ const EditBeerForm = ({ data }: Props) => {
 
     const onFinish = async (values: any) => {
         console.log("edit form values", values);
-        const data: BeerData = {
+        const data: EditBeetData = {
             _id: _id,
             name: values.name,
             description: values.description,
@@ -52,7 +52,7 @@ const EditBeerForm = ({ data }: Props) => {
 
         // DB change
         try {
-            const beerUpdateRes = await updateBeerData(_id, data);
+            const beerUpdateRes = await updateBeerData(_id!, data);
             // const beerUpdateRes = await dbUpdateBeer(_id, data);
             console.log("🚀 ~ file: EditBeerForm.tsx:60 ~ onFinish ~ beerUpdateRes", beerUpdateRes);
             toast.success('Beer updated successfully');
@@ -188,7 +188,7 @@ const EditBeerForm = ({ data }: Props) => {
                             wrapperCol={{ span: 10 }}
                             label="Total Vol. (L)"
                             name="qty"
-                            initialValue={qty.total}
+                            initialValue={qty!.total}
                             rules={[{ required: true, message: 'Please input total volume!' }]}
                         >
                             <InputNumber min={0} />
