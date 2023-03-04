@@ -1,3 +1,5 @@
+import { AddressData } from "../src/types/addresses";
+
 export const capitalize = (word: string) => {
     if (word.length === 0) return '';
 
@@ -10,4 +12,9 @@ export const capitalize = (word: string) => {
                 return str.toUpperCase();
             })
     );
+};
+
+export const addressParser = (data: AddressData) => {
+    const { street1, street2, city, state } = data;
+    return `${street2 ? street2 + ', ' : ''}${street1}, ${city}, ${state}`;
 };

@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import type { ClientData, ClientsTableProps } from '../../../types/clients';
 import type { AddressData } from '../../../types/addresses';
 import { deleteClient, fetchAllClients } from '../../../pages/api/services/clients';
+import { addressParser } from '../../../../lib/functions';
 
 const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) => {
 
@@ -42,8 +43,10 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
             dataIndex: 'address',
             key: 'address',
             render(value: AddressData, record, index) {
-                const { street1, street2, city, state, zip, country } = value;
-                return `${street2 ? street2 + ', ' : ''}${street1}, ${city}, ${state}`;
+                // TODO: check if works
+                // const { street1, street2, city, state, zip, country } = value;
+                // return `${street2 ? street2 + ', ' : ''}${street1}, ${city}, ${state}`;
+                return addressParser(value);
             },
         },
         {
