@@ -22,7 +22,7 @@ interface EditBeerPageProps {
 // `getStaticPaths` requires using `getStaticProps`
 export const getServerSideProps: GetServerSideProps<EditBeerPageProps> = async (context) => {
     try {
-        console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
+        // console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
         const beerId = context.params!.id as string;;
         const beerData = await getBeerData(beerId);
         return {
@@ -47,8 +47,6 @@ type Props = {
 };
 
 const Beer = ({ beerData }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    console.log("🚀 ~ file: index.tsx:36 ~ Beer ~ beerData", beerData);
-
     return (
         <>
             {beerData &&

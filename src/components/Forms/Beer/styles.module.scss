@@ -109,3 +109,20 @@
         width: 100%;
     }
 }
+
+.volumes {
+    width: 95%;
+    padding-left: 8%;
+
+    .units {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .kegs {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    // display: flex;
+}

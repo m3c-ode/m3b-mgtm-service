@@ -76,7 +76,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
                     >
                         <Link
                             className={styles.tableButton}
-                            href={`/dashboard/deliveries/${record._id}`}>Create Delivery</Link>
+                            href={`/dashboard/deliveries/new/${record._id}`}>Create Delivery</Link>
 
                     </Button>
                     <Popconfirm title="Are you sure?" onConfirm={() => handleDeleteDb(record._id!)}>

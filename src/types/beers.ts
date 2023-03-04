@@ -12,7 +12,7 @@ export type BeerData = NewBeerData & {
     key?: any;
 };
 
-export type EditBeetData = Partial<BeerData>;
+export type EditBeerData = Partial<BeerData>;
 
 export type GrainsData = [{
     name: string;
@@ -42,11 +42,12 @@ export type NewBeerData = {
     brewedOn: string | Date,
     availableOn: string | Date,
     qty: {
-        '12oz'?: number,
-        '24oz'?: number,
-        '5Galkegs?'?: number,
-        '10GalKegs'?: number,
-        '15GalKegs'?: number,
+        '355ml'?: number,
+        '473ml'?: number,
+        '650ml'?: number,
+        '19Lkegs'?: number,
+        '38Lkegs'?: number,
+        '57Lkegs'?: number,
         total: number;
     };
     grains: GrainsData,

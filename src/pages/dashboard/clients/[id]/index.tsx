@@ -10,7 +10,7 @@ interface EditClientPageProps {
 
 export const getServerSideProps: GetServerSideProps<EditClientPageProps> = async (context) => {
     try {
-        console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
+        // console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
         const clientId = context.params!.id as string;;
         const clientData = await getClientData(clientId);
         return {
