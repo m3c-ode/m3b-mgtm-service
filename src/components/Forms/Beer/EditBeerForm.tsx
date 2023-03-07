@@ -39,6 +39,9 @@ const EditBeerForm = ({ data }: Props) => {
     const onFinish = async (values: any) => {
         console.log("edit form values", values);
 
+        const formData = form.getFieldsValue();
+        console.log("🚀 ~ file: EditBeerForm.tsx:43 ~ onFinish ~ formData:", formData);
+
         // TODO: volume verification before update
 
         const data: EditBeerData = {
@@ -50,12 +53,12 @@ const EditBeerForm = ({ data }: Props) => {
             brewedOn: values.brewedOn.format('YYYY-MM-DD'),
             availableOn: values.availableOn.format('YYYY-MM-DD'),
             qty: {
-                '355ml': values.qty['355ml'],
-                '473ml': values.qty['473ml'],
-                '650ml': values.qty['650ml'],
-                '19Lkegs': values.qty['19Lkegs'],
-                '38Lkegs': values.qty['38Lkegs'],
-                '57Lkegs': values.qty['57Lkegs'],
+                '355ml': formData.qty['355ml'],
+                '473ml': formData.qty['473ml'],
+                '650ml': formData.qty['650ml'],
+                '19Lkegs': formData.qty['19Lkegs'],
+                '38Lkegs': formData.qty['38Lkegs'],
+                '57Lkegs': formData.qty['57Lkegs'],
                 total: values.qty['total'],
             },
             abv: values.abv,
@@ -245,19 +248,13 @@ const EditBeerForm = ({ data }: Props) => {
                 <div className={styles.preFormHeader}>
                     <h3>Bottling information</h3>
                 </div>
-                {/* <Form.List
-                    name={'qty'}
-                    // initialValue={[undefined]}
-                >
-                    {(fields, { add, remove }) => (
-                        <>
-                            {fields.map(({ key, name }, index) => (
-                                <> */}
                 {/* <div className={styles.volumes}> */}
                 {/* <div className={styles.units}> */}
                 <BeerVolumesFields
                     layout={volumeLayout}
                     form={form}
+                    quantityData={data}
+                    edit
                 />
                 {/* <Row>
                     <Col span={8}>

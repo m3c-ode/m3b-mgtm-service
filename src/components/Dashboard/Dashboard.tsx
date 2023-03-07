@@ -33,6 +33,9 @@ const Dashboard: React.FC = ({ children }: Props) => {
     // TODO: could add href
     const getPathDetails = (pathname: string) => {
         const paths = pathname.split("/").filter(p => p.length > 0);
+        if (paths.includes('[clientId]')) {
+            return paths.slice(0, paths.indexOf('[clientId]')).map(path => capitalize(path));
+        };
         return paths.map(path => capitalize(path));
     };
     const breadcrumbs = getPathDetails(pathname);

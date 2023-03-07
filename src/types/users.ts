@@ -6,7 +6,7 @@ export type UserData = {
     businessId?: string;
     company?: string;
     addresses: AddressData[];
-    role: 
+    role?: UserRolesEnum;
 };
 
 export enum UserRolesEnum {

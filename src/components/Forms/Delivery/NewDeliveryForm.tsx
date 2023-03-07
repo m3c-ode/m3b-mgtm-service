@@ -18,6 +18,11 @@ type Props = {
     userInfo?: string;
 };
 
+const volumeLayout = {
+    labelCol: { span: 12 },
+    // wrapperCol: { span: 20 },
+};
+
 const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
     const [form] = Form.useForm();
 
@@ -182,6 +187,7 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
                                             quantityData={selectedBeer}
                                             fieldName={field.name}
                                             field={field}
+                                            layout={volumeLayout}
                                         />
                                         {/* } */}
                                         <AiOutlineMinusCircle
