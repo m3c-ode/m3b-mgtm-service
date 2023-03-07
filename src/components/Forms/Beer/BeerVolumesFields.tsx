@@ -1,4 +1,4 @@
-import { Col, Form, FormInstance, FormListFieldData, InputNumber, Row } from 'antd';
+import { Col, Form, FormInstance, FormListFieldData, InputNumber, Row, Space } from 'antd';
 import React from 'react';
 import { BeerData } from '../../../types/beers';
 
@@ -11,14 +11,14 @@ type Props = {
 };
 
 const BeerVolumesFields = ({ form, layout: volumeLayout, quantityData, fieldName, field }: Props) => {
-    console.log("🚀 ~ file: BeerVolumesFields.tsx:14 ~ BeerVolumesFields ~ fieldName:", fieldName);
+    // console.log("🚀 ~ file: BeerVolumesFields.tsx:14 ~ BeerVolumesFields ~ fieldName:", fieldName);
     console.log("🚀 ~ file: BeerVolumesFields.tsx:14 ~ BeerVolumesFields ~ quantityData:", quantityData?.qty);
-    console.log(typeof quantityData?.qty['355ml']);
     return (
         <>
 
             <Row>
                 <Col span={8}>
+                    {/* <Space> */}
                     <Form.Item
                         {...volumeLayout}
                         {...field}
@@ -29,7 +29,9 @@ const BeerVolumesFields = ({ form, layout: volumeLayout, quantityData, fieldName
                         }
                     >
                         <InputNumber min={0} max={quantityData?.qty['355ml']} />
+                        {quantityData && <span> (available: {quantityData?.qty['355ml']})</span>}
                     </Form.Item>
+                    {/* </Space> */}
                 </Col>
                 <Col span={8}>
                     <Form.Item
@@ -42,6 +44,7 @@ const BeerVolumesFields = ({ form, layout: volumeLayout, quantityData, fieldName
                         }
                     >
                         <InputNumber min={0} max={quantityData?.qty['473ml']} />
+                        {quantityData && <span> (available: {quantityData?.qty['473ml']})</span>}
                     </Form.Item>
                 </Col>
 
@@ -56,6 +59,7 @@ const BeerVolumesFields = ({ form, layout: volumeLayout, quantityData, fieldName
                         }
                     >
                         <InputNumber min={0} max={quantityData?.qty['650ml']} />
+                        {quantityData && <span> (available: {quantityData?.qty['650ml']})</span>}
                     </Form.Item>
                 </Col>
             </Row>
@@ -70,6 +74,7 @@ const BeerVolumesFields = ({ form, layout: volumeLayout, quantityData, fieldName
                             : ['qty', '19Lkegs']
                         }                    >
                         <InputNumber min={0} max={quantityData?.qty['19Lkegs']} />
+                        {quantityData && <span> (available: {quantityData?.qty['19Lkegs']})</span>}
                     </Form.Item>
                 </Col>
                 <Col span={8}>
@@ -83,6 +88,7 @@ const BeerVolumesFields = ({ form, layout: volumeLayout, quantityData, fieldName
                         }
                     >
                         <InputNumber min={0} max={quantityData?.qty['38Lkegs']} />
+                        {quantityData && <span> (available: {quantityData?.qty['38Lkegs']})</span>}
                     </Form.Item>
                 </Col>
                 <Col span={8}>
@@ -96,6 +102,7 @@ const BeerVolumesFields = ({ form, layout: volumeLayout, quantityData, fieldName
                         }
                     >
                         <InputNumber min={0} max={quantityData?.qty['57Lkegs']} />
+                        {quantityData && <span> (available: {quantityData?.qty['57Lkegs']})</span>}
                     </Form.Item>
                 </Col>
             </Row>

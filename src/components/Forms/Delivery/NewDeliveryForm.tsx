@@ -208,7 +208,7 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
                                     }}
                                     block
                                     icon={<AiOutlinePlusCircle />}>
-                                    Add Beers or Product
+                                    {' '} Add Beers or Product
                                 </Button>
                             </Form.Item>
                         </>
