@@ -7,6 +7,7 @@ import { dbUpdateBeer } from '../../../../lib/beers';
 import { updateBeerData } from '../../../pages/api/services';
 import { EditBeerData, BeersStatusEnum, BeersStylesEnum } from '../../../types/beers';
 import Dashboard from '../../Dashboard';
+import BeerVolumesFields from './BeerVolumesFields';
 import styles from './styles.module.scss';
 const { TextArea } = Input;
 const { Option } = Select;
@@ -254,7 +255,11 @@ const EditBeerForm = ({ data }: Props) => {
                                 <> */}
                 {/* <div className={styles.volumes}> */}
                 {/* <div className={styles.units}> */}
-                <Row>
+                <BeerVolumesFields
+                    layout={volumeLayout}
+                    form={form}
+                />
+                {/* <Row>
                     <Col span={8}>
                         <Form.Item
                             {...volumeLayout}
@@ -312,7 +317,7 @@ const EditBeerForm = ({ data }: Props) => {
                             <InputNumber />
                         </Form.Item>
                     </Col>
-                </Row>
+                </Row> */}
                 <Divider />
                 <Form.Item style={{ display: 'flex', justifyContent: 'center', paddingRight: '2.5rem' }}>
                     <Button type="primary" htmlType="submit">

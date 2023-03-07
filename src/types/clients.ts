@@ -16,7 +16,7 @@ export type NewClientInput = {
 
 export type ClientData = NewClientInput & {
     _id?: string;
-    address: AddressData;
+    address: AddressData | NewAddressInput;
     createdOn?: string | Date;
     updatedOn?: string | Date;
 };

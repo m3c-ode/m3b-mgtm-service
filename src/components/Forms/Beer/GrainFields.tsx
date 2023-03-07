@@ -88,7 +88,7 @@ const GrainFields = ({ form }: Props) => {
                                     <Form.Item
                                         label={index === 0 ? 'name' : ''}
                                         name={[name, 'name']}
-                                        rules={[{ required: true, message: 'Missing name of grain name' }]}
+                                        rules={[{ required: true, message: 'Missing name of grain type' }]}
                                         style={{ width: '75%' }}
                                     >
                                         <Input

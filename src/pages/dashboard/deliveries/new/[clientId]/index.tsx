@@ -26,11 +26,17 @@ interface NewDeliveryPageProps {
 // `getStaticPaths` requires using `getStaticProps`
 export const getServerSideProps: GetServerSideProps<NewDeliveryPageProps> = async (context) => {
     try {
-        console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
+        // console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
         const clientId = context.params!.clientId as string;;
         const clientData = await getClientData(clientId);
-        const beersData = await getBeersAsync();
+        console.log("🚀 ~ file: index.tsx:32 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ clientData:", clientData);
+
+        // TODO: Get user info, for address...
         const userInfo = 'test';
+
+
+        const beersData = await getBeersAsync();
+        console.log("🚀 ~ file: index.tsx:39 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ beersData:", beersData);
         return {
             // Passed to the page component as props
             props: { clientData, beersData, userInfo },
@@ -55,7 +61,7 @@ const NewDelivery = ({ clientData, beersData, userInfo }: InferGetServerSideProp
         <>
             {clientData && beersData &&
                 <NewDeliveryForm
-                    // data={beerData}
+                    userInfo={userInfo}
                     clientData={clientData}
                     beersData={beersData}
 

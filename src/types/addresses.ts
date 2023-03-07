@@ -4,7 +4,7 @@ export type NewAddressInput = {
     name?: string,
     company?: string,
     street1: string,
-    street2: string,
+    street2?: string,
     city: string,
     zip: string,
     state: string,
