@@ -1,6 +1,6 @@
 import { Form, Divider, Input, Select, Button, InputNumber } from 'antd';
 import form from 'antd/es/form';
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { addressParser } from '../../../../lib/functions';
@@ -11,6 +11,9 @@ import { NewDeliveryInput } from '../../../types/deliveries';
 import Dashboard from '../../Dashboard';
 import BeerVolumesFields from '../Beer/BeerVolumesFields';
 import formStyles from '../styles.module.scss';
+// import styles from './styles.module.scss';
+
+const { Option } = Select;
 
 type Props = {
     clientData?: ClientData;
@@ -19,7 +22,7 @@ type Props = {
 };
 
 const volumeLayout = {
-    labelCol: { span: 12 },
+    labelCol: { span: 14 },
     // wrapperCol: { span: 20 },
 };
 
@@ -40,23 +43,36 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
 
     const availableBeers = beersData?.filter((beer) => beer.status === BeersStatusEnum.Ready);
 
-    const [selectedBeers, setSelectedBeers] = useState<BeerData[] | undefined>(undefined);
-    const [selectedBeer, setSelectedBeer] = useState<BeerData | undefined>(undefined);
+
+    const [selectedBeers, setSelectedBeers] = useState<BeerData[]>([]);
+    console.log("🚀 ~ file: NewDeliveryForm.tsx:46 ~ selectedBeers:", selectedBeers);
+    // const [selectedBeer, setSelectedBeer] = useState<BeerData | undefined>(undefined);
+
+    const availableOptions = availableBeers!.filter((beer) => {
+        // if (selectedBeers.length > 0) {
+        const isSelected = selectedBeers?.some((selectedBeer) => selectedBeer && selectedBeer._id === beer._id);
+        return !isSelected;
+
+        // } else {
+        //     return availableBeers;
+        // }
+    });
 
     const onFinish = async (values: any) => {
         console.log("🚀 ~ file: NewDeliveryForm.tsx:12 ~ onFinish ~ values:", values);
         const formData = form.getFieldsValue(true);
         console.log("🚀 ~ file: NewDeliveryForm.tsx:14 ~ onFinish ~ formData:", formData);
-        // const newDeliveryData: NewDeliveryInput = {
-        //     // clientId: customerId,
-        //     // businessId: merchantId,
-        //     fromAddress: values.userAddress,
-        //     toAddress: values.clientAddress,
-        //     products: values.products,
+
+        const newDeliveryData: NewDeliveryInput = {
+            // clientId: customerId,
+            // businessId: merchantId,
+            fromAddress: values.userAddress,
+            toAddress: values.clientAddress,
+            products: values.products,
 
 
-        // };
-        // console.log("🚀 ~ file: NewDeliveryForm.tsx:31 ~ onFinish ~ newDeliveryData:", newDeliveryData);
+        };
+        console.log("🚀 ~ file: NewDeliveryForm.tsx:31 ~ onFinish ~ newDeliveryData:", newDeliveryData);
 
         // try {
         //     const res = await createDelivery(newDeliveryData);
@@ -70,6 +86,8 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
         //     console.log(error.response);
         // }
     };
+
+
 
 
     const onFinishFailed = (errorInfo: any) => {
@@ -87,14 +105,15 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
         console.log(formRef);
     };
 
+    // TODO: Responsiveness
     return (
         <Dashboard>
             <Form
                 ref={formRef}
                 form={form}
                 name="newDeliveryForm"
-                labelCol={{ span: 3 }}
-                wrapperCol={{ span: 22 }}
+                labelCol={{ span: 4 }}
+                wrapperCol={{ span: 20 }}
                 initialValues={{
                     clientName: clientData?.name,
                     clientAddress: clientAddress,
@@ -108,25 +127,24 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
             >
                 <h2>Create a New Delivery</h2>
                 <Divider />
-                {/* <DeliveryInfoFields form={form} /> */}
                 <Form.Item
                     label="Client name: "
                     name="clientName"
-                    rules={[{ required: true, message: 'Please input your name!' }]}>
-                    {/* <Input /> */}
+                // rules={[{ required: true, message: 'Please input your name!' }]}
+                >
                     <span>{clientData?.name}</span>
                 </Form.Item>
                 <Form.Item
                     label="Client address: "
                     name="clientAddress"
-                    rules={[{ required: true, message: 'Please input your name!' }]}>
-                    {/* <Input /> */}
+                // rules={[{ required: true, message: 'Please input your name!' }]}
+                >
                     <span>{clientAddress}</span>
                 </Form.Item>
                 <Form.Item
                     label="Your addresses: "
                     name="userAddress"
-                    rules={[{ required: true, message: 'Please input your name!' }]}>
+                    rules={[{ required: true, message: 'Please select an address to ship from!' }]}>
                     <Select
                         placeholder="Select an address to deliver from"
                         allowClear
@@ -153,59 +171,96 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
                     ]}
                     initialValue={[{}]}
                 >
-
+                    {/* TODO: report issue with label of select field showing value of _id instead of name, if I don't use labelInValue */}
                     {(fields, { add, remove }) => (
                         <>
                             {fields.map((field, index) => {
                                 // return {
+                                const handleBeerSelection = (object: any) => {
+                                    console.log("🚀 ~ file: NewDeliveryForm.tsx:181 ~ handleBeerSelection ~ value:", object);
+                                    const selectedOption = availableBeers?.find((beer) => beer._id === object.value);
+                                    setSelectedBeers(prevSelectedBeers => {
+                                        const newSelectedBeers = [...prevSelectedBeers];
+                                        newSelectedBeers[field.name] = selectedOption!;
+                                        return newSelectedBeers;
+                                    });
+                                };
 
                                 console.log("🚀 ~ file: NewDeliveryForm.tsx:206 ~ NewDeliveryForm ~ field:", field);
                                 return (
                                     <>
-                                        {/* <div className={styles.beerItems}> */}
-
-                                        <Form.Item
-                                            label={'Beer: '}
-                                            name={[field.name, 'name']}
-                                            rules={[{ required: true, message: 'Please select product' }]}
-                                        // style={{ width: '25%', maxWidth: '115px' }}
-                                        >
-                                            <Select
-                                                placeholder="Select a beer product from the list"
-                                                allowClear
-                                                onChange={value => setSelectedBeer(availableBeers?.find((beer) => beer.name === value))}
-                                                options={availableBeers?.map((beer, index) => {
-                                                    return { label: beer.name, value: beer.name, key: index };
-                                                })}
+                                        <div className={formStyles.beerItems}>
+                                            <Form.Item
+                                                labelCol={{ span: 3 }}
+                                                wrapperCol={{ span: 21 }}
+                                                label={'Beer: '}
+                                                // name={[field.name, 'id']}
+                                                rules={[{ required: true, message: 'Please select product' }]}
+                                                style={{ width: '95%' }}
                                             >
 
-                                            </Select>
-                                        </Form.Item>
-                                        {/* {selectedBeer && */}
-                                        <BeerVolumesFields
-                                            form={form}
-                                            quantityData={selectedBeer}
-                                            fieldName={field.name}
-                                            field={field}
-                                            layout={volumeLayout}
-                                        />
-                                        {/* } */}
-                                        <AiOutlineMinusCircle
-                                            style={{
-                                                fontSize: '1rem',
-                                                margin: '0 2rem 25px 5px',
-                                                visibility: index == 0 ? 'hidden' : 'visible'
-                                            }}
-                                            onClick={() => {
-                                                // getTotalWeight(name);
-                                                remove(field.name);
-                                            }} />
-                                        {/* </div> */}
+                                                <Form.Item
+                                                    // label={'Beer: '}
+                                                    name={[field.name, 'id']}
+                                                    rules={[{ required: true, message: 'Please select product' }]}
+                                                    style={{ width: '100%' }}
+                                                // noStyle
+                                                >
+                                                    <Select
+                                                        placeholder="Select a beer product from the list"
+                                                        allowClear
+                                                        // value={selectedBeers && selectedBeers[field.name]?._id}
+                                                        // onChange={value => setSelectedBeer(availableBeers?.find((beer) => beer.name === value))}
+                                                        // onChange={value => setSelectedBeers(selectedBeers => [...selectedBeers, availableBeers?.find((beer) => beer._id === value)!])}
+                                                        onChange={handleBeerSelection
+                                                        }
+                                                        // onSelect={ }
+                                                        labelInValue={true}
+                                                        options={availableOptions?.map((beer, index) => {
+                                                            return { value: beer._id, label: beer.name, key: index };
+                                                        })}
+                                                    // style={{ width: '80%' }}
+                                                    >
+                                                        {/* {availableOptions?.map((beer, index) => (
+                                                            <Option
+                                                                key={index}
+                                                                value={beer._id}
+                                                                label={beer.name}
+                                                            >
+                                                                {beer.name}
+                                                            </Option>
+                                                        ))} */}
+
+                                                    </Select>
+                                                </Form.Item>
+                                                <BeerVolumesFields
+                                                    form={form}
+                                                    quantityData={selectedBeers[field.name]}
+                                                    fieldName={field.name}
+                                                    field={field}
+                                                    layout={volumeLayout}
+                                                />
+                                            </Form.Item>
+                                            <AiOutlineMinusCircle
+                                                style={{
+                                                    fontSize: '1.5rem',
+                                                    margin: 'auto 0',
+                                                    visibility: index == 0 ? 'hidden' : 'visible',
+                                                    width: '1.5rem'
+                                                }}
+                                                onClick={() => {
+                                                    // getTotalWeight(name);
+                                                    remove(field.name);
+                                                }} />
+                                        </div>
                                     </>
                                 );
                             })
                             }
-                            <Form.Item>
+                            <Form.Item
+                                // labelCol={{ span: 24 }}
+                                wrapperCol={{ offset: 2 }}
+                            >
                                 <Button
                                     type="dashed"
                                     onClick={(e: any) => {
@@ -213,14 +268,15 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
                                         add();
                                     }}
                                     block
-                                    icon={<AiOutlinePlusCircle />}>
+                                    icon={<AiOutlinePlusCircle />}
+                                    style={{ width: '90%' }}
+                                >
                                     {' '} Add Beers or Product
                                 </Button>
                             </Form.Item>
                         </>
 
-                    )
-                    }
+                    )}
                 </Form.List>
                 <Form.Item style={{ display: 'flex', justifyContent: 'center', paddingRight: '2.5rem' }}>
                     <Button type="primary" htmlType="submit">
@@ -228,7 +284,7 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
                     </Button>
                 </Form.Item>
             </Form>
-        </Dashboard >
+        </Dashboard>
     );
 };
 

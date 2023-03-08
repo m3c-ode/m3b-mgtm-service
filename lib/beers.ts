@@ -45,3 +45,7 @@ export const dbUpdateBeer = async (id: string | ObjectId, beerData: BeerData) =>
     const updatedBeer = await collection.findOne({ _id: new ObjectId(id) });
     return updatedBeer;
 };
+
+export const updateBeerQuantity = async (id: string, quantity: number) => {
+
+};
