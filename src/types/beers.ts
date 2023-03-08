@@ -41,18 +41,20 @@ export type NewBeerData = {
     status: BeersStatusEnum,
     brewedOn: string | Date,
     availableOn: string | Date,
-    qty: {
-        '355ml'?: number,
-        '473ml'?: number,
-        '650ml'?: number,
-        '19Lkegs'?: number,
-        '38Lkegs'?: number,
-        '57Lkegs'?: number,
-        total: number;
-    };
+    qty: BeerVolumes,
     grains: GrainsData,
     hops: HopsData;
 };
+
+export interface BeerVolumes {
+    '355ml'?: number,
+    '473ml'?: number,
+    '650ml'?: number,
+    '19Lkegs'?: number,
+    '38Lkegs'?: number,
+    '57Lkegs'?: number,
+    total?: number;
+}
 
 
 export enum BeersStylesEnum {

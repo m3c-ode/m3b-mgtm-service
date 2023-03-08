@@ -1,9 +1,11 @@
 import { Form, Divider, Input, Select, Button, InputNumber } from 'antd';
 import form from 'antd/es/form';
+import { useRouter } from 'next/router';
 import React, { useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { addressParser } from '../../../../lib/functions';
+import { createDelivery } from '../../../pages/api/services';
 import { AddressData } from '../../../types/addresses';
 import { BeerData, BeersStatusEnum } from '../../../types/beers';
 import { ClientData } from '../../../types/clients';
@@ -27,6 +29,8 @@ const volumeLayout = {
 };
 
 const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
+
+    const router = useRouter();
     const [form] = Form.useForm();
 
     const formRef = useRef<any>(null);
@@ -64,27 +68,30 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
         console.log("🚀 ~ file: NewDeliveryForm.tsx:14 ~ onFinish ~ formData:", formData);
 
         const newDeliveryData: NewDeliveryInput = {
-            // clientId: customerId,
+            clientId: clientData?._id,
             // businessId: merchantId,
             fromAddress: values.userAddress,
             toAddress: values.clientAddress,
             products: values.products,
-
-
         };
         console.log("🚀 ~ file: NewDeliveryForm.tsx:31 ~ onFinish ~ newDeliveryData:", newDeliveryData);
 
-        // try {
-        //     const res = await createDelivery(newDeliveryData);
-        //     console.log("🚀 ~ file: NewDeliveryForm.tsx:56 ~ onFinish ~ res:", res);
+        // TODO: Create confirmaton modal
 
-        //     if (res.status === 201) toast.success("Delivery creation successful");
+        try {
+            const res = await createDelivery(newDeliveryData);
+            console.log("🚀 ~ file: NewDeliveryForm.tsx:56 ~ onFinish ~ res:", res);
 
-        // } catch (error: any) {
-        //     // toast.error(JSON.parse(error.request.responseText).message as string);
-        //     toast.error(error.response.data.message);
-        //     console.log(error.response);
-        // }
+            if (res.status === 201) {
+                toast.success("Delivery creation successful");
+                router.push('/dashboard/deliveries');
+            };
+
+        } catch (error: any) {
+            console.log(error);
+            toast.error(error.response.data.message);
+            // toast.error(JSON.parse(error.request.responseText).message as string);
+        }
     };
 
 
@@ -177,7 +184,7 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
                             {fields.map((field, index) => {
                                 // return {
                                 const handleBeerSelection = (object: any) => {
-                                    console.log("🚀 ~ file: NewDeliveryForm.tsx:181 ~ handleBeerSelection ~ value:", object);
+                                    // console.log("🚀 ~ file: NewDeliveryForm.tsx:181 ~ handleBeerSelection ~ value:", object);
                                     const selectedOption = availableBeers?.find((beer) => beer._id === object.value);
                                     setSelectedBeers(prevSelectedBeers => {
                                         const newSelectedBeers = [...prevSelectedBeers];
@@ -201,7 +208,7 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
 
                                                 <Form.Item
                                                     // label={'Beer: '}
-                                                    name={[field.name, 'id']}
+                                                    name={[field.name, 'beer']}
                                                     rules={[{ required: true, message: 'Please select product' }]}
                                                     style={{ width: '100%' }}
                                                 // noStyle
@@ -280,7 +287,7 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
                 </Form.List>
                 <Form.Item style={{ display: 'flex', justifyContent: 'center', paddingRight: '2.5rem' }}>
                     <Button type="primary" htmlType="submit">
-                        Save
+                        Confirm
                     </Button>
                 </Form.Item>
             </Form>

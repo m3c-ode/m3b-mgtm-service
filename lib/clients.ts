@@ -12,6 +12,7 @@ export const createNewClient = async (data: NewClientInput) => {
 export const getAllClientsAsync = async () => {
     const collection = await getDbCollection('clients');
     const clients = await collection.find({}).toArray();
+    console.log("🚀 ~ file: clients.ts:15 ~ getAllClientsAsync ~ clients:", clients);
     return JSON.parse(JSON.stringify(clients));
 };
 

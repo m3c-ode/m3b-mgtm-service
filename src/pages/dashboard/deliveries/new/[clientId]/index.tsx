@@ -29,14 +29,14 @@ export const getServerSideProps: GetServerSideProps<NewDeliveryPageProps> = asyn
         // console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
         const clientId = context.params!.clientId as string;;
         const clientData = await getClientData(clientId);
-        console.log("🚀 ~ file: index.tsx:32 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ clientData:", clientData);
+        // console.log("🚀 ~ file: index.tsx:32 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ clientData:", clientData);
 
         // TODO: Get user info, for address...
         const userInfo = 'test';
 
 
         const beersData = await getBeersAsync();
-        console.log("🚀 ~ file: index.tsx:39 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ beersData:", beersData);
+        // console.log("🚀 ~ file: index.tsx:39 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ beersData:", beersData);
         return {
             // Passed to the page component as props
             props: { clientData, beersData, userInfo },

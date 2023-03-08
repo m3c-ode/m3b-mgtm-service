@@ -1,5 +1,6 @@
 import { ObjectId, Timestamp } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
+import { adjustInventoryVolumes } from "../../../../lib/deliveries";
 // import { doesDeliveryExist } from "../../../../lib/deliveries";
 import getDbCollection from "../../../../lib/getCollection";
 import { NewDeliveryInput } from "../../../types/deliveries";
@@ -13,17 +14,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const newDelivery: NewDeliveryInput = req.body;
 
                 // Check if volume are allowed
+                await adjustInventoryVolumes(newDelivery);
 
-
-                // const doesExist = await doesDeliveryExist(newDelivery.name, newDelivery.email, newDelivery.address.street1);
-                // if (doesExist) {
-                //     return res.status(409).json({ message: 'Error creating Delivery: Delivery with same credentials already exists' });
-                // }
-                // const result = await (Array.isArray(newDelivery)
-                //     ? collection.insertMany(newDelivery)
-                //     : collection.insertOne({ ...newDelivery, createdOn: new Date() },
-                //     ));
-                const result = await collection.insertOne({ ...newDelivery, createdOn: new Date() });
+                console.log("🚀 ~ file: [[...params]].ts:37 ~ handler ~ adjustInventoryVolumes:", adjustInventoryVolumes);
+                const result = await collection.insertOne({ ...newDelivery, status: "Pending", createdOn: new Date() });
                 res.status(201)
                     .json(result);
 

@@ -11,3 +11,5 @@ export { createBeer, getAllBeers, updateBeerData, deleteBeer } from './beers';
 export {
     createClient, fetchAllClients, updateClientInfo, deleteClient
 } from './clients';
+
+export { createDelivery, fetchAllDeliveries, updateDeliveryInfo, deleteDelivery } from './deliveries';

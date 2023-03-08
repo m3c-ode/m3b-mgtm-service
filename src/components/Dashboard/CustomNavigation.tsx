@@ -45,8 +45,8 @@ const CustomNavigation = (props: Props) => {
         },
         {
             key: `${BASE_DASHBOARD_PATH}/deliveries`,
-            label: 'Deliveries',
-            // label: (<Link href={`${BASE_DASHBOARD_PATH}/deliveries`}>Deliveries</Link>),
+            // label: 'Deliveries',
+            label: (<Link href={`${BASE_DASHBOARD_PATH}/deliveries`}>Deliveries</Link>),
             icon: React.createElement(TbTruckDelivery),
         },
         {

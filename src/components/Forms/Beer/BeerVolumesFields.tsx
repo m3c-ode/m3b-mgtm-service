@@ -15,7 +15,7 @@ type Props = {
 };
 
 const BeerVolumesFields = ({ form, layout: volumeLayout, quantityData, fieldName, field, edit }: Props) => {
-    console.log("🚀 ~ file: BeerVolumesFields.tsx:14 ~ BeerVolumesFields ~ quantityData:", quantityData?.qty);
+    // console.log("🚀 ~ file: BeerVolumesFields.tsx:14 ~ BeerVolumesFields ~ quantityData:", quantityData?.qty);
 
     // TODO: Responsiveness
     return (
