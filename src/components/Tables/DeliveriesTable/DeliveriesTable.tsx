@@ -4,10 +4,10 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import styles from '../styles.module.scss';
 import toast from 'react-hot-toast';
-import type { DeliveryData, DeliveriesTableProps } from '../../../types/deliveries';
+import type { DeliveryData, DeliveriesTableProps, DeliveryProducts } from '../../../types/deliveries';
 import type { AddressData } from '../../../types/addresses';
 import { deleteDelivery, fetchAllDeliveries } from '../../../pages/api/services/deliveries';
-import { addressParser } from '../../../../lib/functions';
+import { addressParser, dateTableParser } from '../../../../lib/functions';
 import { ClientData } from '../../../types/clients';
 
 type Props = {};
@@ -50,6 +50,59 @@ const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clien
 
     }];
 
+    const productsColumns: ColumnsType<DeliveryProducts> = [
+        {
+            title: 'Beer Name',
+            key: 'beerName',
+            dataIndex: 'beer.label',
+            render: (text, record) => record.beer.label
+        },
+        {
+            title: 'Quantities',
+            key: 'qties',
+            dataIndex: 'qty',
+            children: [
+                {
+                    title: '355 ml',
+                    key: '355ml',
+                    dataIndex: 'qty.355ml',
+                    render: (text, record) => record.qty['355ml']
+                },
+                {
+                    title: '473 ml',
+                    dataIndex: 'qty.473ml',
+                    render: (text, record) => record.qty['473ml']
+                },
+                {
+                    title: '650 ml',
+                    dataIndex: 'qty.650ml',
+                    key: '650ml',
+                    render: (text, record) => record.qty['650ml']
+                },
+                {
+                    title: '19L Keg',
+                    dataIndex: 'qty.19Lkegs',
+                    key: '19Lkegs',
+                    render: (text, record) => record.qty['19Lkegs']
+                },
+                {
+                    title: '38L Keg',
+                    dataIndex: 'qty.38Lkegs',
+                    key: '38Lkegs',
+                    render: (text, record) => record.qty['38Lkegs']
+                },
+                {
+                    title: '57L Keg',
+                    dataIndex: 'qty.57Lkegs',
+                    key: '57Lkegs',
+                    render: (text, record) => record.qty['57Lkegs']
+                }
+
+            ]
+        },
+
+    ];
+
     const deliveryInfocolumns: ColumnsType<DeliveryData> = [
 
         {
@@ -61,12 +114,6 @@ const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clien
             title: 'From',
             dataIndex: 'fromAddress',
             key: 'fromAddress',
-            // render(value: AddressData, record, index) {
-            //     // TODO: check if works
-            //     // const { street1, street2, city, state, zip, country } = value;
-            //     // return `${street2 ? street2 + ', ' : ''}${street1}, ${city}, ${state}`;
-            //     return addressParser(value);
-            // },
         },
         {
             title: 'To',
@@ -78,11 +125,12 @@ const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clien
             dataIndex: 'status',
             key: 'status',
         },
-        // {
-        //     title: 'Products',
-        //     dataIndex: 'products',
-        //     key: 'products',
-        // },
+        {
+            title: 'Created On',
+            dataIndex: 'createdOn',
+            key: 'createdOn',
+            render: (value) => dateTableParser(value)
+        },
         {
             title: 'Actions',
             key: 'actions',
@@ -94,7 +142,7 @@ const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clien
                     >
                         <Link
                             className={styles.tableButton}
-                            href={`/dashboard/deliveries/${record._id}`}>Update Info</Link>
+                            href={`/dashboard/deliveries/${record._id}?clientId=${record.clientId}`}>Update Info</Link>
 
                     </Button>
                     <Button
@@ -120,12 +168,22 @@ const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clien
     ];
 
     const expandedRowRender = (record: ClientData) => {
-        // const childrenColumns = record.name === 'Hops' ? columns.concat(actions) : columns.slice(0, 3).concat(actions);
+
+        const expandedRowRender = (record: DeliveryData) => {
+            return (
+                <Table
+                    columns={productsColumns}
+                    dataSource={record.products}
+                    // dataSource={record.children}
+                    pagination={false}
+                />
+            );
+        };
         return (
             <Table
                 columns={deliveryInfocolumns}
                 dataSource={currentData?.filter((delivery) => delivery.clientId === record._id)}
-                // dataSource={record.children}
+                expandable={{ expandedRowRender }}
                 pagination={false}
             />
         );

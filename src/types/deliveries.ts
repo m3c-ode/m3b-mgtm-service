@@ -14,12 +14,14 @@ export type NewDeliveryInput = {
     clientId?: string;
     fromAddress?: string | AddressData;
     toAddress?: string | AddressData;
-    products?: DeliveryInput[];
+    products?: DeliveryProducts[];
 };
 
-export type DeliveryInput = {
+export type DeliveryProducts = {
     beer: {
+        // beer name
         label: string,
+        // beer _id
         value: string,
     },
     qty: BeerVolumes,

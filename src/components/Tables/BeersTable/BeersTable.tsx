@@ -7,6 +7,7 @@ import styles from '../styles.module.scss';
 import { deleteBeer, getAllBeers } from '../../../pages/api/services';
 import { ObjectId } from 'mongodb';
 import toast from 'react-hot-toast';
+import { dateTableParser } from '../../../../lib/functions';
 
 
 // type BeersTableProps = {}
@@ -51,15 +52,7 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
             title: 'Brewed On',
             dataIndex: 'brewedOn',
             key: 'brewedOn',
-            render: (value, record) => {
-                if (typeof value === 'string') {
-                    if (value.includes("T")) {
-                        return value.split("T")[0];
-                    } else return value;
-                } else {
-                    return new Date(value).toISOString().split('T')[0];
-                }
-            }
+            render: (value, record) => dateTableParser(value)
         },
         {
             title: 'Available On',
