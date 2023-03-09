@@ -26,21 +26,21 @@ const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clien
 
 
     const handleDeleteDb = async (id: string) => {
-        // try {
-        //     const delRes = await deleteDelivery(id);
-        //     if (delRes.data.deletedCount === 0) {
-        //         return toast.error("Error deleting delivery");
-        //     }
-        //     toast.success("Delivery entry deleted");
-        //     const res = await fetchAllDeliveries();
-        //     const deliveryData = res.data;
-        //     setCurrentData(deliveryData);
+        try {
+            const delRes = await deleteDelivery(id);
+            if (delRes.data.deletedCount === 0) {
+                return toast.error("Error deleting delivery");
+            }
+            toast.success("Delivery entry deleted");
+            const res = await fetchAllDeliveries();
+            const deliveryData = res.data;
+            setCurrentData(deliveryData);
 
-        // } catch (error: any) {
-        //     console.log("🚀 ~ file: DeliveriesTable.tsx:43 ~ handleDeleteDb ~ error", error);
-        //     toast.error('Error deleting delivery');
-        //     throw new Error(error).message;
-        // }
+        } catch (error: any) {
+            console.log("🚀 ~ file: DeliveriesTable.tsx:43 ~ handleDeleteDb ~ error", error);
+            toast.error('Error deleting delivery');
+            throw new Error(error).message;
+        }
     };
 
     const parentColumns: ColumnsType<ClientData> = [{
@@ -142,7 +142,7 @@ const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clien
                     >
                         <Link
                             className={styles.tableButton}
-                            href={`/dashboard/deliveries/${record._id}?clientId=${record.clientId}`}>Update Info</Link>
+                            href={`/dashboard/deliveries/${record._id}?clientId=${record.clientId}`}>Details</Link>
 
                     </Button>
                     <Button
@@ -151,7 +151,7 @@ const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clien
                     >
                         <Link
                             className={styles.tableButton}
-                            href={`/dashboard/deliveries/new/${record._id}`}>Create Delivery</Link>
+                            href={`/dashboard/deliveries/new/${record._id}`}>Start Delivery</Link>
 
                     </Button>
                     <Popconfirm title="Are you sure?" onConfirm={() => handleDeleteDb(record._id!)}>

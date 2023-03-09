@@ -6,7 +6,7 @@ import { getClientData } from '../../../../../lib/clients';
 import { ClientData } from '../../../../types/clients';
 import type { BeerData } from '../../../../types/beers';
 import EditDeliveryForm from '../../../../components/Forms/Delivery/EditDeliveryForm';
-import { DeliveryData } from '../../../../types/deliveries';
+import { DeliveryData, DeliveryStatusEnums } from '../../../../types/deliveries';
 import { getDeliveryData } from '../../../../../lib/deliveries';
 
 interface EditDeliveryPageProps {
@@ -14,6 +14,7 @@ interface EditDeliveryPageProps {
     clientData?: ClientData;
     beersData?: BeerData[];
     deliveryData?: DeliveryData;
+    canEdit?: boolean;
 }
 
 // Generates `/beers/1` and `/beers/2` - used only with SSG
@@ -33,6 +34,9 @@ export const getServerSideProps: GetServerSideProps<EditDeliveryPageProps> = asy
         const { clientId, id: deliveryId } = context.query;
         // const deliveryId = context.params!.id as string;
         const deliveryData = await getDeliveryData(deliveryId as string);
+        let canEdit = false;
+
+        if (deliveryData.status === DeliveryStatusEnums.Pending) canEdit = true;
 
         // const clientId = context.params!.clientId as string;
         const clientData = await getClientData(clientId as string);
@@ -46,7 +50,7 @@ export const getServerSideProps: GetServerSideProps<EditDeliveryPageProps> = asy
         // console.log("🚀 ~ file: index.tsx:39 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ beersData:", beersData);
         return {
             // Passed to the page component as props
-            props: { deliveryData, beersData, userInfo, clientData },
+            props: { deliveryData, beersData, userInfo, clientData, canEdit },
 
         };
 
@@ -57,14 +61,14 @@ export const getServerSideProps: GetServerSideProps<EditDeliveryPageProps> = asy
                 beersData: undefined,
                 deliveryData: undefined,
                 clientData: undefined,
-                error: 'Error fetching in beers/id'
+                error: 'Error fetching in information for delivery'
             },
 
         };
     }
 };
 
-const NewDelivery = ({ deliveryData, beersData, clientData, userInfo }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const NewDelivery = ({ deliveryData, beersData, clientData, userInfo, canEdit }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     return (
         <>
             {deliveryData && beersData &&
@@ -73,6 +77,7 @@ const NewDelivery = ({ deliveryData, beersData, clientData, userInfo }: InferGet
                     clientData={clientData}
                     beersData={beersData}
                     deliveryData={deliveryData}
+                    canEdit={canEdit}
                 />
             }
         </>

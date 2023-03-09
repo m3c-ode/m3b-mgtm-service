@@ -12,9 +12,10 @@ type Props = {
     fieldName?: number;
     field?: FormListFieldData;
     edit?: boolean;
+    initialValues?: any;
 };
 
-const BeerVolumesFields = ({ form, layout: volumeLayout, quantityData, fieldName, field, edit }: Props) => {
+const BeerVolumesFields = ({ form, layout: volumeLayout, quantityData, fieldName, field, edit, initialValues }: Props) => {
     // console.log("🚀 ~ file: BeerVolumesFields.tsx:14 ~ BeerVolumesFields ~ quantityData:", quantityData?.qty);
 
     // TODO: Responsiveness

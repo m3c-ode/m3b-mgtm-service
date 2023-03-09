@@ -28,6 +28,12 @@ export type DeliveryProducts = {
 };
 
 export type DeliveryData = NewDeliveryInput & {
-    _id: string;
-    status: "Pending" | "In Transit" | "Delivered";
+    _id?: string;
+    status: DeliveryStatusEnums;
 };
+
+export enum DeliveryStatusEnums {
+    Pending = "Pending",
+    InTransit = "In Transit",
+    Delivered = 'Delivered'
+}

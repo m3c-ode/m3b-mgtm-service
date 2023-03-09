@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { adjustInventoryVolumes } from "../../../../lib/deliveries";
 // import { doesDeliveryExist } from "../../../../lib/deliveries";
 import getDbCollection from "../../../../lib/getCollection";
-import { NewDeliveryInput } from "../../../types/deliveries";
+import { DeliveryData, DeliveryStatusEnums, NewDeliveryInput } from "../../../types/deliveries";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     const collection = await getDbCollection("deliveries");
@@ -14,9 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const newDelivery: NewDeliveryInput = req.body;
 
                 // Check if volume are allowed
-                await adjustInventoryVolumes(newDelivery);
-
-                console.log("🚀 ~ file: [[...params]].ts:37 ~ handler ~ adjustInventoryVolumes:", adjustInventoryVolumes);
                 const result = await collection.insertOne({ ...newDelivery, status: "Pending", createdOn: new Date() });
                 res.status(201)
                     .json(result);
@@ -33,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const delivery = await collection.deleteOne({ _id: new ObjectId(_id) });
                 res.json(delivery);
             } catch (error) {
-                res.status(500).json({ message: 'Error deleting product' });
+                res.status(500).json({ message: 'Error deleting delivery' });
             }
             break;
         case 'GET':
@@ -42,13 +39,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 res.status(200).json(deliverys);
             } catch (error) {
                 console.log("🚀 ~ file: index.ts:22 ~ handler ~ get error", error);
-                res.status(500).json({ message: 'Error fetching deliverys' });
+                res.status(500).json({ message: 'Error fetching deliveries' });
             }
             break;
         case 'PATCH':
             try {
-                const updateData = req.body;
+                const updateData: DeliveryData = req.body;
+                console.log("🚀 ~ file: [[...params]].ts:48 ~ handler ~ updateData:", updateData);
                 delete updateData._id;
+                if (updateData.status === DeliveryStatusEnums.InTransit || updateData.status === DeliveryStatusEnums.Delivered) {
+                    await adjustInventoryVolumes(updateData);
+                    console.log("🚀 ~ file: [[...params]].ts:50 ~ handler ~ adjustInventoryVolumes:", adjustInventoryVolumes);
+                }
+
                 const [id] = req.query.params as string[];
                 await collection.updateOne({ _id: new ObjectId(id) },
                     { $set: { ...req.body, updatedOn: new Date() } },
@@ -61,7 +64,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 res.status(200).json(delivery);
             } catch (error) {
                 console.log("🚀 ~ file: index.ts:49 ~ handler ~ patch error", error);
-                res.status(500).json({ message: 'Error updating beer' });
+                res.status(500).json({ message: 'Error updating delivery' });
             }
             break;
         default:

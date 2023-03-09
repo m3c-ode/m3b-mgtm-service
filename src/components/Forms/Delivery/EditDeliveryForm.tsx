@@ -5,14 +5,15 @@ import React, { useMemo, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { addressParser } from '../../../../lib/functions';
-import { createDelivery } from '../../../pages/api/services';
+import { createDelivery, updateDeliveryInfo } from '../../../pages/api/services';
 import { AddressData } from '../../../types/addresses';
 import { BeerData, BeersStatusEnum } from '../../../types/beers';
 import { ClientData } from '../../../types/clients';
-import { DeliveryData, NewDeliveryInput } from '../../../types/deliveries';
+import { DeliveryData, DeliveryStatusEnums, NewDeliveryInput } from '../../../types/deliveries';
 import Dashboard from '../../Dashboard';
 import BeerVolumesFields from '../Beer/BeerVolumesFields';
 import formStyles from '../styles.module.scss';
+import util from 'util';
 // import styles from './styles.module.scss';
 
 const { Option } = Select;
@@ -22,6 +23,7 @@ type Props = {
     beersData?: BeerData[];
     userInfo?: string;
     deliveryData: DeliveryData;
+    canEdit?: boolean;
 };
 
 const volumeLayout = {
@@ -29,14 +31,16 @@ const volumeLayout = {
     // wrapperCol: { span: 20 },
 };
 
-const EditDeliveryForm = ({ deliveryData, beersData, userInfo }: Props) => {
+const EditDeliveryForm = ({ deliveryData, clientData, beersData, userInfo, canEdit }: Props) => {
+    // console.dir(deliveryData, { depth: null }); // use strign template too concatenate message if needed. or use uti.inspect
+    console.log('delivery data,', util.inspect(deliveryData, { depth: null }));
 
     const router = useRouter();
     const [form] = Form.useForm();
 
     const formRef = useRef<any>(null);
 
-    // const clientAddress = addressParser(clientData?.address!);
+    const clientAddress = addressParser(clientData?.address!);
 
     const userAddresses: AddressData[] = [{
         street1: '7347 Fraser st',
@@ -54,8 +58,14 @@ const EditDeliveryForm = ({ deliveryData, beersData, userInfo }: Props) => {
 
     const availableBeers = beersData?.filter((beer) => beer.status === BeersStatusEnum.Ready);
 
+    const IsPreviouslySelectedBeer = (beerId: string) => {
+        return deliveryData.products?.some(product => product.beer.value === beerId);
+    };
 
-    const [selectedBeers, setSelectedBeers] = useState<BeerData[]>([]);
+    const previouslySelectedBeers = availableBeers?.filter((beer) => IsPreviouslySelectedBeer(beer._id));
+    console.log("🚀 ~ file: EditDeliveryForm.tsx:65 ~ previouslySelectedBeers:", previouslySelectedBeers);
+
+    const [selectedBeers, setSelectedBeers] = useState<BeerData[]>(previouslySelectedBeers!);
     console.log("🚀 ~ file: NewDeliveryForm.tsx:46 ~ selectedBeers:", selectedBeers);
     // const [selectedBeer, setSelectedBeer] = useState<BeerData | undefined>(undefined);
 
@@ -74,31 +84,31 @@ const EditDeliveryForm = ({ deliveryData, beersData, userInfo }: Props) => {
         const formData = form.getFieldsValue(true);
         console.log("🚀 ~ file: NewDeliveryForm.tsx:14 ~ onFinish ~ formData:", formData);
 
-        // const newDeliveryData: NewDeliveryInput = {
-        //     clientId: clientData?._id,
-        //     // businessId: merchantId,
-        //     fromAddress: values.userAddress,
-        //     toAddress: values.clientAddress,
-        //     products: values.products,
-        // };
-        // console.log("🚀 ~ file: NewDeliveryForm.tsx:31 ~ onFinish ~ newDeliveryData:", newDeliveryData);
+        const editedDeliveryData: DeliveryData = {
+            _id: deliveryData._id,
+            clientId: clientData?._id,
+            // businessId: merchantId,
+            fromAddress: values.userAddress,
+            toAddress: values.clientAddress,
+            products: values.products,
+            status: values.status,
+        };
+        console.log("🚀 ~ file: EditDeliveryForm.tsx:89 ~ onFinish ~ editedDeliveryData:", editedDeliveryData);
 
-        // // TODO: Create confirmaton modal
+        try {
+            const res = await updateDeliveryInfo(deliveryData._id!, editedDeliveryData);
+            console.log("🚀 ~ file: NewDeliveryForm.tsx:56 ~ onFinish ~ res:", res);
 
-        // try {
-        //     const res = await createDelivery(newDeliveryData);
-        //     console.log("🚀 ~ file: NewDeliveryForm.tsx:56 ~ onFinish ~ res:", res);
+            if (res.status === 200) {
+                toast.success("Delivery update successful");
+                router.push('/dashboard/deliveries');
+            };
 
-        //     if (res.status === 201) {
-        //         toast.success("Delivery creation successful");
-        //         router.push('/dashboard/deliveries');
-        //     };
-
-        // } catch (error: any) {
-        //     console.log(error);
-        //     toast.error(error.response.data.message);
-        //     // toast.error(JSON.parse(error.request.responseText).message as string);
-        // }
+        } catch (error: any) {
+            console.log(error);
+            toast.error(error.response.data.message);
+            // toast.error(JSON.parse(error.request.responseText).message as string);
+        }
     };
 
 
@@ -120,18 +130,21 @@ const EditDeliveryForm = ({ deliveryData, beersData, userInfo }: Props) => {
     };
 
     // TODO: Responsiveness
+    // TODO: Reusable component with New Form version
     return (
         <Dashboard>
             <div className={formStyles.preFormHeader}>
-                <h2>Client details</h2>
+                <h2>Delivery details</h2>
                 <Divider />
-                <Checkbox
-                    className={formStyles.checkBox}
-                    checked={!isFormDisabled}
-                    onChange={(e) => setIsFormDisabled(!e.target.checked)}
-                >
-                    Edit mode
-                </Checkbox>
+                {canEdit &&
+                    <Checkbox
+                        className={formStyles.checkBox}
+                        checked={!isFormDisabled}
+                        onChange={(e) => setIsFormDisabled(!e.target.checked)}
+                    >
+                        Edit mode
+                    </Checkbox>
+                }
             </div>
             <Form
                 ref={formRef}
@@ -140,9 +153,11 @@ const EditDeliveryForm = ({ deliveryData, beersData, userInfo }: Props) => {
                 labelCol={{ span: 4 }}
                 wrapperCol={{ span: 20 }}
                 initialValues={{
-                    // clientName: clientData?.name,
-                    // clientAddress: clientAddress,
-
+                    clientName: clientData?.name,
+                    clientAddress: clientAddress,
+                    userAddress: deliveryData.fromAddress,
+                    products: deliveryData.products,
+                    status: deliveryData.status,
                 }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
@@ -151,21 +166,20 @@ const EditDeliveryForm = ({ deliveryData, beersData, userInfo }: Props) => {
                 layout="horizontal"
                 disabled={isFormDisabled}
             >
-                <h2>Create a New Delivery</h2>
-                <Divider />
+                {/* <Divider /> */}
                 <Form.Item
                     label="Client name: "
                     name="clientName"
                 // rules={[{ required: true, message: 'Please input your name!' }]}
                 >
-                    {/* <span>{clientData?.name}</span> */}
+                    <span>{clientData?.name}</span>
                 </Form.Item>
                 <Form.Item
                     label="Client address: "
                     name="clientAddress"
                 // rules={[{ required: true, message: 'Please input your name!' }]}
                 >
-                    {/* <span>{clientAddress}</span> */}
+                    <span>{clientAddress}</span>
                 </Form.Item>
                 <Form.Item
                     label="Your addresses: "
@@ -177,6 +191,20 @@ const EditDeliveryForm = ({ deliveryData, beersData, userInfo }: Props) => {
                         onChange={value => { console.log(value); return value; }}
                         options={userAddresses.map((add, index) => {
                             return { label: addressParser(add), value: addressParser(add) };
+                        })}
+                    >
+                    </Select>
+                </Form.Item>
+                <Form.Item
+                    label="Delivery status: "
+                    name="status"
+                    rules={[{ required: true, message: 'Please select the delivery status!' }]}>
+                    <Select
+                        // placeholder="Select an address to deliver from"
+                        allowClear
+                        onChange={value => { console.log(value); return value; }}
+                        options={Object.values(DeliveryStatusEnums).map((status, index) => {
+                            return { label: status, value: status };
                         })}
                     >
                     </Select>
