@@ -27,12 +27,6 @@ const CustomNavigation = (props: Props) => {
             icon: React.createElement(IoBeerOutline),
         },
         {
-            key: `${BASE_DASHBOARD_PATH}/recipes`,
-            label: (<Link href={`${BASE_DASHBOARD_PATH}/recipes`}>Recipes</Link>),
-            // icon: <IoBeerOutline />,
-            icon: React.createElement(AiOutlineProfile),
-        },
-        {
             key: `${BASE_DASHBOARD_PATH}/products`,
             label: (<Link href={`${BASE_DASHBOARD_PATH}/products`}>Ingredients/Products</Link>),
             icon: React.createElement(GiHops),
@@ -48,6 +42,12 @@ const CustomNavigation = (props: Props) => {
             // label: 'Deliveries',
             label: (<Link href={`${BASE_DASHBOARD_PATH}/deliveries`}>Deliveries</Link>),
             icon: React.createElement(TbTruckDelivery),
+        },
+        {
+            key: `${BASE_DASHBOARD_PATH}/recipes`,
+            label: (<Link href={`${BASE_DASHBOARD_PATH}/recipes`}>Recipes</Link>),
+            // icon: <IoBeerOutline />,
+            icon: React.createElement(AiOutlineProfile),
         },
         {
             key: `${BASE_DASHBOARD_PATH}/orders`,

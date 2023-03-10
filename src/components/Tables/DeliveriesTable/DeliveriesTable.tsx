@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import styles from '../styles.module.scss';
 import toast from 'react-hot-toast';
-import type { DeliveryData, DeliveriesTableProps, DeliveryProducts } from '../../../types/deliveries';
+import { DeliveryData, DeliveriesTableProps, DeliveryProducts, DeliveryStatusEnums } from '../../../types/deliveries';
 import type { AddressData } from '../../../types/addresses';
 import { deleteDelivery, fetchAllDeliveries } from '../../../pages/api/services/deliveries';
 import { addressParser, dateTableParser } from '../../../../lib/functions';
@@ -104,12 +104,11 @@ const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clien
     ];
 
     const deliveryInfocolumns: ColumnsType<DeliveryData> = [
-
-        {
-            title: 'ID',
-            dataIndex: '_id',
-            key: '_id',
-        },
+        // {
+        //     title: 'ID',
+        //     dataIndex: '_id',
+        //     key: '_id',
+        // },
         {
             title: 'From',
             dataIndex: 'fromAddress',
@@ -142,18 +141,24 @@ const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clien
                     >
                         <Link
                             className={styles.tableButton}
-                            href={`/dashboard/deliveries/${record._id}?clientId=${record.clientId}`}>Details</Link>
+                            href={`/dashboard/deliveries/${record._id}?clientId=${record.clientId}`}
+                        >
+                            {record.status === DeliveryStatusEnums.Pending ? 'Update Info' : 'Details'}
+                            {/* Details */}
+                        </Link>
 
                     </Button>
-                    <Button
-                        type="text"
-                        className={styles.updateButton}
-                    >
-                        <Link
-                            className={styles.tableButton}
-                            href={`/dashboard/deliveries/new/${record._id}`}>Start Delivery</Link>
+                    {record.status === DeliveryStatusEnums.Pending &&
+                        <Button
+                            type="text"
+                            className={styles.updateButton}
+                        >
+                            <Link
+                                className={styles.tableButton}
+                                href={`/dashboard/deliveries/map/${record._id}`}>Start Delivery</Link>
 
-                    </Button>
+                        </Button>
+                    }
                     <Popconfirm title="Are you sure?" onConfirm={() => handleDeleteDb(record._id!)}>
                         <Button
                             type="primary"
