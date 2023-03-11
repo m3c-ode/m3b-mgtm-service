@@ -276,7 +276,7 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
                                     }}
                                     block
                                     icon={<AiOutlinePlusCircle />}
-                                    style={{ width: '90%' }}
+                                // style={{ width: '90%' }}
                                 >
                                     {' '} Add Beers or Product
                                 </Button>
@@ -285,7 +285,11 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
 
                     )}
                 </Form.List>
-                <Form.Item style={{ display: 'flex', justifyContent: 'center', paddingRight: '2.5rem' }}>
+                <Form.Item style={{
+                    display: 'flex', justifyContent: 'center',
+                    marginLeft: '8%',
+                    // paddingRight: '2.5rem'
+                }}>
                     <Button type="primary" htmlType="submit">
                         Confirm
                     </Button>

@@ -323,20 +323,25 @@ const EditDeliveryForm = ({ deliveryData, clientData, beersData, userInfo, canEd
                                     }}
                                     block
                                     icon={<AiOutlinePlusCircle />}
-                                    style={{ width: '90%' }}
+                                    style={{ width: '100%' }}
                                 >
                                     {' '} Add Beers or Product
+                                </Button>
+                            </Form.Item>
+                            <Form.Item
+                                style={{
+                                    display: 'flex', justifyContent: 'center',
+                                    marginLeft: '8%'
+                                }}
+                            >
+                                <Button type="primary" htmlType="submit">
+                                    Confirm
                                 </Button>
                             </Form.Item>
                         </>
 
                     )}
                 </Form.List>
-                <Form.Item style={{ display: 'flex', justifyContent: 'center', paddingRight: '2.5rem' }}>
-                    <Button type="primary" htmlType="submit">
-                        Confirm
-                    </Button>
-                </Form.Item>
             </Form>
         </Dashboard>
     );

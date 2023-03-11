@@ -1,11 +1,16 @@
-import { Divider, Space } from 'antd';
+import { Button, Divider, Space } from 'antd';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import { AiOutlineCheck } from 'react-icons/ai';
+import { updateDeliveryInfo } from '../../pages/api/services';
 import { ClientData } from '../../types/clients';
-import { DeliveryData } from '../../types/deliveries';
+import { DeliveryData, DeliveryStatusEnums } from '../../types/deliveries';
 import { UserData } from '../../types/users';
 import Dashboard from '../Dashboard';
 import styles from './styles.module.scss';
+
 
 type Props = {
     deliveryData: DeliveryData;
@@ -17,8 +22,30 @@ const DeliveryMap = ({ deliveryData, clientData, userData }: Props) => {
     const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const mapRef = useRef<HTMLDivElement>(null);
+    const [isDelivered, setIsDelivered] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     const { fromAddress, toAddress } = deliveryData!;
+
+    const processDelivery = async () => {
+        // Update delivery status
+        setIsLoading(true);
+        try {
+            const res = await updateDeliveryInfo(deliveryData._id!, { ...deliveryData, status: DeliveryStatusEnums.Delivered });
+            console.log("🚀 ~ file: DeliveryMap.tsx:32 ~ processDelivery ~ res:", res);
+            if (res.status === 200) {
+                // toast.success("Delivery update successful");
+                setIsLoading(false);
+                setIsDelivered(true);
+                // router.push('/dashboard/deliveries');
+            };
+        } catch (error: any) {
+            console.log(error);
+            setIsLoading(false);
+            toast.error(error.response.data.message);
+        }
+    };
 
     useEffect(() => {
         // Initialize the directions service
@@ -67,36 +94,48 @@ const DeliveryMap = ({ deliveryData, clientData, userData }: Props) => {
         <div>
             <Dashboard>
                 <div>
-                    <h2>Delivery map</h2>
+                    <h2 className={styles.title}>Delivery map</h2>
                     <Divider />
                 </div>
                 <div>
                     {/* <Space direction='vertical'> */}
                     <div>
-                        <label className={styles.label} htmlFor="">From: </label><span>{deliveryData.fromAddress}</span>
+                        <label className={styles.label} htmlFor="">From: </label><span>{directions ? directions.routes[0].legs[0].start_address : deliveryData.fromAddress}</span>
                     </div>
                     <div>
-                        <label className={styles.label} htmlFor="">To: </label><span>{deliveryData.toAddress}</span>
+                        <label className={styles.label} htmlFor="">To: </label><span>{directions ? directions.routes[0].legs[0].end_address : deliveryData.toAddress}</span>
                     </div>
                     {/* </Space> */}
                 </div>
-                <div>MAP</div>
+                {/* TODO: Add "complete Button" */}
                 <div ref={mapRef} style={{ height: "500px" }}></div>
                 {directions && (
-                    <div>
-                        <h2>Directions:</h2>
-                        <Divider />
-                        <p>Distance: {directions.routes[0].legs[0].distance?.text}</p>
-                        <p>Duration: {directions.routes[0].legs[0].duration?.text}</p>
-                        <Divider />
-                        <ul>
-                            {directions.routes[0].legs[0].steps.map((step, index) => (
-                                <li dangerouslySetInnerHTML={{ __html: step.instructions }} key={index}></li>
-                                // <li key={index}>{step.instructions}</li>
-                            ))}
-                        </ul>
-                    </div>
+                    <>
+                        <div>
+                            <h2 className={styles.directions}>Directions:</h2>
+                            <Divider />
+                            <p className={styles.route}>Distance: {directions.routes[0].legs[0].distance?.text}</p>
+                            <p className={styles.route}>Duration: {directions.routes[0].legs[0].duration?.text}</p>
+                            <Divider />
+                            <ul>
+                                {directions.routes[0].legs[0].steps.map((step, index) => (
+                                    <li dangerouslySetInnerHTML={{ __html: step.instructions }} key={index}></li>
+                                    // <li key={index}>{step.instructions}</li>
+                                ))}
+                            </ul>
+                        </div>
+                        <Button
+                            type='primary'
+                            onClick={processDelivery}
+                            className={styles.completeButton}
+                            icon={isDelivered && <AiOutlineCheck />}
+                            loading={isLoading}
+                        >
+                            {!isDelivered ? " Complete Delivery" : " Delivery Completed!"}
+                        </Button>
+                    </>
                 )}
+
             </Dashboard>
         </div>
     );
