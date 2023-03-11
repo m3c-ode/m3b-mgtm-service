@@ -8,4 +8,4 @@ export const deleteDelivery = (deliveryId: string) => axios.delete(`/api/deliver
 
 export const fetchAllDeliveries = () => axios.get('/api/deliveries');
 
-export const updateDeliveryInfo = (deliveryId: string, deliveryData: DeliveryData) => axios.patch(`/api/deliveries/${deliveryId}`, { ...deliveryData });
+export const updateDeliveryInfo = (deliveryId: string, deliveryData: Partial<DeliveryData>) => axios.patch(`/api/deliveries/${deliveryId}`, { ...deliveryData });

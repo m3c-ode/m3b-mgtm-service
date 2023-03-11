@@ -17,9 +17,14 @@ type Props = {
     data: EditBeerData;
 };
 
-const volumeLayout = {
+// const volumeLayout = {
+//     labelCol: { span: 9 },
+//     // wrapperCol: { span: 2 },
+// };
+
+const numbersLayout = {
     labelCol: { span: 9 },
-    // wrapperCol: { span: 2 },
+    wrapperCol: { span: 10 }
 };
 
 const EditBeerForm = ({ data }: Props) => {
@@ -30,6 +35,7 @@ const EditBeerForm = ({ data }: Props) => {
 
     // extract data
     const { _id, name, description, style, status, abv, ibu, brewedOn, availableOn, qty } = data;
+    const [beerStatus, setBeerStatus] = useState<BeersStatusEnum>(status!);
 
     const switchMode = ({ disabled }: { disabled: boolean; }) => {
         console.log("🚀 ~ file: EditBeerForm.tsx:28 ~ switchMode ~ checked", disabled);
@@ -121,6 +127,7 @@ const EditBeerForm = ({ data }: Props) => {
                 className={styles.createBeerForm}
                 onValuesChange={switchMode}
                 disabled={isFormDisabled}
+                labelWrap
             // layout="vertical"
             >
                 <Form.Item
@@ -163,7 +170,9 @@ const EditBeerForm = ({ data }: Props) => {
                     // initialValue={status}
                     rules={[{ required: true, message: 'Please input beer status!' }]}
                 >
-                    <Select>
+                    <Select
+                        onChange={(value) => setBeerStatus(value)}
+                    >
                         {Object.values(BeersStatusEnum).map((value, index) => (
 
                             <Option
@@ -178,9 +187,7 @@ const EditBeerForm = ({ data }: Props) => {
                 <Row>
                     <Col span={8}>
                         <Form.Item
-                            labelCol={{ span: 9 }}
-                            wrapperCol={{ span: 10 }}
-                            // labelAlign=
+                            {...numbersLayout}
                             label="Brewed On"
                             name="brewedOn"
                             // initialValue={dayjs(brewedOn)}
@@ -193,8 +200,7 @@ const EditBeerForm = ({ data }: Props) => {
                     </Col>
                     <Col span={8}>
                         <Form.Item
-                            labelCol={{ span: 9 }}
-                            wrapperCol={{ span: 10 }}
+                            {...numbersLayout}
                             label="Available On"
                             name="availableOn"
                             // initialValue={dayjs(availableOn)}
@@ -207,11 +213,9 @@ const EditBeerForm = ({ data }: Props) => {
                     </Col>
                     <Col span={8}>
                         <Form.Item
-                            labelCol={{ span: 9 }}
-                            wrapperCol={{ span: 10 }}
+                            {...numbersLayout}
                             label="Total Vol. (L)"
                             name={["qty", 'total']}
-                            // initialValue={qty!.total}
                             rules={[{ required: true, message: 'Please input total volume!' }]}
                         >
                             <InputNumber min={0} />
@@ -221,11 +225,9 @@ const EditBeerForm = ({ data }: Props) => {
                 <Row>
                     <Col span={8}>
                         <Form.Item
-                            labelCol={{ span: 9 }}
-                            wrapperCol={{ span: 10 }}
+                            {...numbersLayout}
                             label="ABV"
                             name="abv"
-                            // initialValue={abv}
                             rules={[{ required: true, message: 'Please input abv!' }]}
                         >
                             <InputNumber min={0} step={0.1} />
@@ -233,8 +235,7 @@ const EditBeerForm = ({ data }: Props) => {
                     </Col>
                     <Col span={8}>
                         <Form.Item
-                            labelCol={{ span: 9 }}
-                            wrapperCol={{ span: 10 }}
+                            {...numbersLayout}
                             label="IBU"
                             name="ibu"
                             // initialValue={ibu}
@@ -248,75 +249,30 @@ const EditBeerForm = ({ data }: Props) => {
                 <div className={styles.preFormHeader}>
                     <h3>Bottling information</h3>
                 </div>
-                {/* <div className={styles.volumes}> */}
-                {/* <div className={styles.units}> */}
-                <BeerVolumesFields
-                    layout={volumeLayout}
-                    form={form}
-                    quantityData={data}
-                    edit
-                />
-                {/* <Row>
-                    <Col span={8}>
-                        <Form.Item
-                            {...volumeLayout}
-                            label={'355 ml'}
-                            name={['qty', '355ml']}
-                        >
-                            <InputNumber />
-                        </Form.Item>
-                    </Col>
-                    <Col span={8}>
-                        <Form.Item
-                            {...volumeLayout}
-                            name={['qty', '473ml']}
-                            label={'473ml'}
-                        >
-                            <InputNumber />
-                        </Form.Item>
-                    </Col>
+                {
+                    beerStatus === BeersStatusEnum.Ready
+                        ?
+                        (
+                            <>
+                                <BeerVolumesFields
+                                    layout={numbersLayout}
+                                    form={form}
+                                    quantityData={data}
+                                    edit
+                                />
+                                <Divider />
+                            </>
+                        )
+                        : (
 
-                    <Col span={8}>
-                        <Form.Item
-                            {...volumeLayout}
-                            name={['qty', '650ml']}
-                            label={'650ml'}
-                        >
-                            <InputNumber />
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={8}>
-                        <Form.Item
-                            {...volumeLayout}
-                            name={['qty', '19Lkegs']}
-                            label={'19L Kegs'}
-                        >
-                            <InputNumber />
-                        </Form.Item>
-                    </Col>
-                    <Col span={8}>
-                        <Form.Item
-                            {...volumeLayout}
-                            name={['qty', '38Lkegs']}
-                            label={'38L Kegs'}
-                        >
-                            <InputNumber />
-                        </Form.Item>
-                    </Col>
-                    <Col span={8}>
-                        <Form.Item
-                            {...volumeLayout}
-                            name={['qty', '57Lkegs']}
-                            label={'57L Kegs'}
-                        >
-                            <InputNumber />
-                        </Form.Item>
-                    </Col>
-                </Row> */}
-                <Divider />
-                <Form.Item style={{ display: 'flex', justifyContent: 'center', paddingRight: '2.5rem' }}>
+                            <div className={styles.notReadyMsg}> Beer not ready to be bottled</div>
+                        )
+
+                }
+                <Form.Item style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                }}>
                     <Button type="primary" htmlType="submit">
                         Save
                     </Button>

@@ -34,13 +34,6 @@ const HopsFields = ({ form }: Props) => {
     return (
         <>
             <h3>Hops and Schedule</h3>
-            {/* <div className={styles.grainsLabels}>
-                    //     <span className={styles.grainsLabel} style={{ width: '50%' }}>Variety</span>
-                    //     <span className={styles.grainsLabel} style={{ width: '50%' }}>Type</span>
-                    //     <span className={styles.grainsLabel} style={{ width: '25%', maxWidth: '140px' }}>Weight</span>
-                    //     <span className={styles.grainsLabel} style={{ width: '25%' }}>A.A</span>
-                    //     <span className={styles.grainsLabel} style={{ width: '25%' }}>Boil Time</span>
-                    // </div> */}
             <Form.List
                 name="hops"
                 rules={[
@@ -68,14 +61,12 @@ const HopsFields = ({ form }: Props) => {
                                         <Form.Item
                                             // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
                                             // wrapperCol={{ span: 8 }}
-                                            // {...formItemLayout}
-                                            label={'Variety'}
+                                            // TODO: Adjust labels with responsiveness
+                                            label={index === 0 ? 'Variety' : ''}
                                             // labelCol={(index === 0 ? { span: 24 } : { span: 0, offset: 4 })}
-                                            // wrapperCol={{ span: 8 }}
                                             name={[name, 'variety']}
                                             rules={[{ required: true, message: 'Missing variety' }]}
                                             style={{ width: '50%',/*  maxWidth: '115px' */ }}
-
                                         >
                                             <Input
                                                 // style={{ width: '100%' }}
@@ -84,15 +75,11 @@ const HopsFields = ({ form }: Props) => {
                                         </Form.Item>
                                         <Form.Item
                                             // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                                            // wrapperCol={{ span: 8 }}
-                                            // {...formItemLayout}
-                                            label={'Type'}
+                                            label={index === 0 ? 'Type' : ''}
                                             // labelCol={(index === 0 ? { span: 24 } : { span: 0, offset: 4 })}
-                                            // wrapperCol={{ span: 8 }}
                                             name={[name, 'type']}
                                             rules={[{ required: true, message: 'Missing type' }]}
                                             style={{ width: '40%',/*  maxWidth: '115px' */ }}
-
                                         >
                                             <Input
                                                 // style={{ width: '100%' }}
@@ -105,7 +92,7 @@ const HopsFields = ({ form }: Props) => {
                                         <Form.Item
                                             // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
                                             // wrapperCol={{ span: 48 }}
-                                            label={'Weight (oz)'}
+                                            label={index === 0 ? 'Weight (oz)' : ''}
                                             name={[name, 'weight']}
                                             rules={[{ required: true, message: 'Missing weight of hops' }]}
                                             style={{ width: '25%', minWidth: '110px' }}
@@ -117,7 +104,7 @@ const HopsFields = ({ form }: Props) => {
                                         <Form.Item
                                             // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
                                             // wrapperCol={{ span: 48 }}
-                                            label={'A.A %'}
+                                            label={index === 0 ? 'A.A %' : ''}
                                             name={[name, 'a.a']}
                                             rules={[{ required: true, message: 'Missing a.a of hops' }]}
                                             style={{ width: '25%', minWidth: '95px' }}
@@ -127,7 +114,7 @@ const HopsFields = ({ form }: Props) => {
                                         <Form.Item
                                             // {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
                                             // wrapperCol={{ span: 48 }}
-                                            label={'Boil Time (min)'}
+                                            label={index === 0 ? 'Boil Time (min)' : ''}
                                             name={[name, 'boilTime']}
                                             rules={[{ required: true, message: 'Missing boilTime of hops' }]}
                                             style={{ width: '25%', minWidth: '80px' }}
@@ -135,20 +122,14 @@ const HopsFields = ({ form }: Props) => {
                                             <InputNumber min={0} step={1} style={{ width: '70%' }} placeholder="5" />
                                         </Form.Item>
                                         <AiOutlineMinusCircle
+                                            // TODO: adjust depending on label responsiveness
                                             style={{
                                                 // position: 'relative', top: 'rem', 
                                                 fontSize: '1.5rem',
-                                                // marginTop: '5px',
-                                                // marginLeft: '5px',
-                                                // marginBottom: '25px',
-                                                margin: '41px 0 25px 0',
+                                                margin: '3px 0 25px 0',
                                                 // padding: '1px',
                                                 minWidth: '30px',
-
-                                                // paddingLeft: '5px',
                                                 visibility: index == 0 ? 'hidden' : 'visible'
-
-
                                             }}
                                             onClick={() => {
                                                 getTotalWeight(name);
@@ -172,12 +153,6 @@ const HopsFields = ({ form }: Props) => {
                 )}
             </Form.List>
             <Row
-                style={{
-                    // gap: '1rem',
-                    // justifyContent: 'space-between',
-                    // margin: '0 1rem'
-
-                }}
             >
                 <Col md={12} sm={24} >
                     <Form.Item

@@ -1,4 +1,5 @@
 import { Form, Divider, Select } from 'antd';
+import { useRouter } from 'next/router';
 import React, { useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { createClient } from '../../../pages/api/services';
@@ -13,6 +14,8 @@ type Props = {};
 
 const NewClientForm = (props: Props) => {
     const [form] = Form.useForm();
+
+    const router = useRouter();
 
     const formRef = useRef<any>(null);
 
@@ -42,7 +45,10 @@ const NewClientForm = (props: Props) => {
             const res = await createClient(newClientData);
             console.log("🚀 ~ file: NewClientForm.tsx:56 ~ onFinish ~ res:", res);
 
-            if (res.status === 201) toast.success("Client creation successful");
+            if (res.status === 201) {
+                toast.success("Client creation successful");
+                router.push('/dashboard/clients');
+            }
 
         } catch (error: any) {
             // toast.error(JSON.parse(error.request.responseText).message as string);
