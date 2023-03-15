@@ -1,12 +1,17 @@
+import { ObjectId } from 'mongodb';
 import { AddressData } from "./addresses";
 
 export type UserData = {
-    _id: string;
-    name?: string;
-    businessId?: string;
-    company?: string;
-    addresses: AddressData[];
-    role?: UserRolesEnum;
+    _id: string | ObjectId;
+    name: string;
+    email: string;
+    pwd?: string;
+    domain?: string;
+    // businessId?: string | ObjectId;
+    // company?: string;
+    // business?: BusinessData;
+    addresses?: AddressData[];
+    role: UserRolesEnum;
 };
 
 export enum UserRolesEnum {
@@ -15,3 +20,9 @@ export enum UserRolesEnum {
     BUser = 'business user',
     Client = 'client'
 }
+
+// export type BusinessData = {
+//     _id: string | ObjectId;
+//     domain: string;
+//     name: string;
+// };

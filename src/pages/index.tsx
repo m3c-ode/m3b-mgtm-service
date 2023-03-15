@@ -5,6 +5,7 @@ import utilStyles from '../styles/utils.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const APP_NAME = 'm3b - management system';
 
@@ -130,7 +131,31 @@ export default function Home({
           <div className="row justify-content-center">
             <div className="col-lg-6">
               <div className="accessButton mb-4">
+                {/* TODO: change redirection to a signIn function with admin credentials */}
                 <Link className='btn btn-lg btn-outline-light' href={'/dashboard/beers'}>Access your Dashboard</Link>
+                <button className='btn btn-lg btn-outline-light' onClick={
+                  // () => signIn()
+                  async () => {
+                    await signIn('credentials', {
+                      // userInfo.email/passwor,d from a state variable
+                      email: 'admin@m3b-ms.ca',
+                      password: '1111',
+                      callbackUrl: '/dashboard/beers'
+                    });
+                  }
+                }>Access your Dashboard</button>
+              </div>
+              <div>
+                <button onClick={
+                  () => signIn()
+                  // async () => {
+                  //   await signIn('credentials', {
+                  // userInfo.email/passwor,d from a state variable
+                  //     email: 'nnheo@example.com',
+                  //     password: '123456789',
+                  //   })
+                  // }
+                }>Login test</button>
               </div>
               {/* <p className="lead">The background images used in this template are sourced from Unsplash and are open
                 source and free to use.</p> */}
