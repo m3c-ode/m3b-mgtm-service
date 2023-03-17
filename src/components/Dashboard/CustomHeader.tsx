@@ -4,6 +4,7 @@ import Image from 'next/image';
 import styles from './styles.module.scss';
 import { AiOutlineMenu, AiOutlineSetting, AiOutlineBell, AiOutlineUserSwitch, AiOutlineUser } from 'react-icons/ai';
 import { MdLogout } from 'react-icons/md';
+import { signOut, useSession } from 'next-auth/react';
 
 
 
@@ -31,10 +32,30 @@ const topRightItems: MenuProps['items'] = [
         key: '3',
         icon: <MdLogout />,
         label: 'Logout',
+        onClick: () => signOut(
+            {
+                callbackUrl: '/api/auth/signin?callbackUrl=/dashboard/beers'
+                // callbackUrl: `http://localhost:3000/api/auth/signin`
+                // callbackUrl: `${window.location.origin}`
+                // callbackUrl: 'credentials'
+            }
+
+        )
     },
 ];
 
 const CustomHeader = (props: Props) => {
+
+    // const { data: { user: { email } = {} } = {} } = useSession() || {};
+    // const { data: { user: { email } = {} } = {} } = useSession() || {};
+
+    const { data } = useSession();
+    // if (session.data) {
+    //     const { user: { email } = {} } = session?.data ?? {}
+    // }
+
+    const email = data?.user?.email;
+
     return (
         <Header className={styles.header}>
             <div className={styles.topLeft}>
@@ -60,7 +81,7 @@ const CustomHeader = (props: Props) => {
             <div className={styles.topRight}>
                 {/* TODO: add a search bar feature? */}
                 <div className={styles.userName}>
-                    user@example.ca
+                    {email}
                 </div>
                 <AiOutlineBell
                     style={{

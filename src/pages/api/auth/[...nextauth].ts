@@ -3,6 +3,9 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import getDbCollection from "../../../../lib/getCollection";
 import { UserData } from "../../../types/users";
+import { useUserStore } from "../../../stores/user";
+import { JWT } from "next-auth/jwt";
+import { redirect } from "next/dist/server/api-utils";
 
 export const authOptions: NextAuthOptions = {
     // Configure one or more authentication providers
@@ -24,6 +27,7 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
+                // const setUserInfo = useUserStore(state => state.setUserInfo);
                 console.log("🚀 ~ file: [...nextauth].ts:25 ~ authorize ~ credentials:", credentials);
 
                 // Add logic here to look up the user from the credentials supplied. We will check against the DB see if the user's exist.
@@ -43,18 +47,26 @@ export const authOptions: NextAuthOptions = {
                         // If you return null then an error will be displayed advising the user to check their details.
                         throw new Error("Invalid Login");
                         // return null;
-                    } else {
-                        // Any object returned will be saved in `user` property of the JWT
-                        return {
-                            id: user?._id as string,
-                            ...user
-                        };
-
-                        // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
                     }
+                    // else {
+                    // Maybe not needed with session info
+                    // setUserInfo(user);
+                    // Any object returned will be saved in `user` property of the JWT
+                    return {
+                        id: user?._id as string,
+                        name: user.name,
+                        email: user.email,
+                        role: user.role,
+                        domain: user.domain
+                        // ...user
+                    };
+
+                    // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+                    // }
                 } catch (error) {
                     console.log("🚀 ~ file: [...nextauth].ts:58 ~ authorize ~ error:", error);
-                    throw new Error("Invalid Login");
+                    // throw new Error("Invalid Login");
+                    return null;
                 }
             },
         })
@@ -63,13 +75,30 @@ export const authOptions: NextAuthOptions = {
     session: {
         strategy: 'jwt'
     },
-    // secret: process.env.NEXTAUTH_SECRET,
-    // To customize our pages
-    // pages: {
-    //     signIn: '/auth/signin',
-    // error: '/auth/error',
-    // signOut: '/auth/signout'
-    // }
+    callbacks: {
+        async jwt({ token, user }: { token: JWT, user?: any | UserData; }) {
+            // console.log("🚀 ~ file: [...nextauth].ts:78 ~ jwt ~ token:", token);
+            // console.log("🚀 ~ file: [...nextauth].ts:78 ~ jwt ~ user:", user);
+            // update token
+            if (user?.role) {
+                token.role = user.role;
+            }
+            if (user?.domain) {
+                token.domain = user.domain;
+            }
+            // return final token
+            return token;
+        },
+        async session({ session, token, user }: { session: any, token: JWT, user: any; }) {
+            if (token.role) (session.user.role = token.role);
+            if (token.domain) session.user.domain = token.domain;
+            return session;
+        },
+
+        // async redirect({ url, baseUrl }) {
+        //     return baseUrl + '/dashboard/beers';
+        // },
+    },
 };
 
 export default NextAuth(authOptions);

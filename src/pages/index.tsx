@@ -132,7 +132,7 @@ export default function Home({
             <div className="col-lg-6">
               <div className="accessButton mb-4">
                 {/* TODO: change redirection to a signIn function with admin credentials */}
-                <Link className='btn btn-lg btn-outline-light' href={'/dashboard/beers'}>Access your Dashboard</Link>
+                {/* <Link className='btn btn-lg btn-outline-light' href={'/dashboard/beers'}>Access your Dashboard</Link> */}
                 <button className='btn btn-lg btn-outline-light' onClick={
                   // () => signIn()
                   async () => {
@@ -143,20 +143,27 @@ export default function Home({
                       callbackUrl: '/dashboard/beers'
                     });
                   }
-                }>Access your Dashboard</button>
+                }>Access Dashboard as Admin</button>
+                <div className="accessButton mt-4">
+
+                  <button className='btn btn-lg btn-outline-light' onClick={
+                    // () => signIn()
+                    () =>
+                      signIn('Credentials', {
+                        callbackUrl: '/dashboard/beers'
+                      }
+                      )
+                  }>Login</button>
+                </div>
               </div>
-              <div>
-                <button onClick={
-                  () => signIn()
-                  // async () => {
-                  //   await signIn('credentials', {
-                  // userInfo.email/passwor,d from a state variable
-                  //     email: 'nnheo@example.com',
-                  //     password: '123456789',
-                  //   })
-                  // }
-                }>Login test</button>
-              </div>
+              {/* <div>
+                <button onClick={() =>
+                  signIn('Credentials', {
+                    callbackUrl: '/dashboard/beers'
+                  }
+                  )}
+                >Login test</button>
+              </div> */}
               {/* <p className="lead">The background images used in this template are sourced from Unsplash and are open
                 source and free to use.</p> */}
               {isConnected ? (

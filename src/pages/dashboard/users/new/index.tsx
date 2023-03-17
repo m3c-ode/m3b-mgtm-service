@@ -1,11 +1,11 @@
 import React from 'react';
-import NewUserForm from '../../../components/Forms/Users/NewUserForm';
+import CreateUserForm from '../../../../components/Forms/Users';
 
 type Props = {};
 
 const NewUserPage = (props: Props) => {
     return (
-        <NewUserForm />
+        <CreateUserForm />
     );
 };
 

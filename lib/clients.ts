@@ -12,7 +12,7 @@ export const createNewClient = async (data: NewClientInput) => {
 export const getAllClientsAsync = async () => {
     const collection = await getDbCollection('clients');
     const clients = await collection.find({}).toArray();
-    console.log("🚀 ~ file: clients.ts:15 ~ getAllClientsAsync ~ clients:", clients);
+    // console.log("🚀 ~ file: clients.ts:15 ~ getAllClientsAsync ~ clients:", clients);
     return JSON.parse(JSON.stringify(clients));
 };
 
@@ -32,7 +32,7 @@ export const doesClientExist = async (name: string, email: string, street1: stri
             }
         )
         ;
-    console.log("🚀 ~ file: clients.ts:35 ~ doesClientExist ~ res:", res);
+    // console.log("🚀 ~ file: clients.ts:35 ~ doesClientExist ~ res:", res);
     if (res) return true;
     else return false;
 };

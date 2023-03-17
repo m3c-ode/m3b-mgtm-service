@@ -10,6 +10,7 @@ import { getAllBeers } from '../../api/services';
 import toast from 'react-hot-toast';
 import { getBeersAsync } from '../../../../lib/beers';
 import clientPromise from '../../../../lib/mongodb';
+import { useSession } from 'next-auth/react';
 // import { getDbCollection } from './api/services/beers';
 
 interface BeerPageProps {
@@ -19,6 +20,7 @@ interface BeerPageProps {
 }
 
 export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (context) => {
+    // console.log("🚀 ~ file: index.tsx:23 ~ constgetServerSideProps:GetServerSideProps<BeerPageProps>= ~ context:", context);
     try {
         const beersList = await getBeersAsync();
         return {
@@ -42,7 +44,10 @@ export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (cont
 type Props = {};
 
 const Page = ({ beersList, isLoading, error }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    console.log("🚀 ~ file: dashboard.tsx:76 ~ Page ~ beersList:", beersList);
+    // console.log("🚀 ~ file: dashboard.tsx:76 ~ Page ~ beersList:", beersList);
+
+    const session = useSession();
+    console.log("🚀 ~ file: index.tsx:49 ~ Page ~ session:", session);
 
     //  Client Side data fetching
     // const [beersList, setBeersList] = useState<BeerData[] | null>(null);

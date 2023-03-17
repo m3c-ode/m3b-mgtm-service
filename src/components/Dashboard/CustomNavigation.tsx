@@ -1,25 +1,51 @@
-import { Divider, Menu, MenuProps } from 'antd';
+import { Divider, Menu } from 'antd';
+import { MenuProps } from 'antd/lib/menu';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { IoBeerOutline, IoPeopleOutline } from 'react-icons/io5';
 import { TbTruckDelivery, TbFileInvoice } from 'react-icons/tb';
 import { MdOutlineProductionQuantityLimits } from 'react-icons/md';
 import { GiHops } from 'react-icons/gi';
-import { AiOutlineProfile } from 'react-icons/ai';
+import { AiOutlineProfile, AiOutlineUser } from 'react-icons/ai';
 import styles from './styles.module.scss';
 import Link from 'next/link';
+import { ItemType, MenuItemGroupType, MenuItemType } from 'antd/es/menu/hooks/useItems';
+import { IconBaseProps } from 'react-icons';
+import { useSession } from 'next-auth/react';
+import { UserRolesEnum } from '../../types/users';
 
 
 type Props = {};
 
+// interface CustomMenuItems /* extends MenuItemType */ {
+//     key: string;
+//     label: JSX.Element | string,
+//     icon: React.FunctionComponentElement<IconBaseProps>,
+//     isHidden?: boolean;
+// }
+
+// interface CustomMenuItemsMap {
+//     [key: string]: CustomMenuItems;
+// }
+
+interface MenuItemWithHidden extends MenuProps {
+    isHidden: boolean;
+}
+
+type ItemTypeWithHidden = ItemType & { isHidden?: boolean; };
+
 const CustomNavigation = (props: Props) => {
     const router = useRouter();
     const { pathname } = router;
-    console.log("🚀 ~ file: CustomNavigation.tsx:15 ~ CustomNavigation ~ pathname", pathname);
+    // console.log("🚀 ~ file: CustomNavigation.tsx:15 ~ CustomNavigation ~ pathname", pathname);
+
+    const { data } = useSession();
+    const userRole = data?.user?.role;
 
     const BASE_DASHBOARD_PATH = "/dashboard";
 
-    const navigationItems: MenuProps['items'] = [
+    // const navigationItems: CustomMenuItemsMap = [
+    const navigationItems: ItemTypeWithHidden[] = [
         {
             key: `${BASE_DASHBOARD_PATH}/beers`,
             label: (<Link href={`${BASE_DASHBOARD_PATH}/beers`}>Beers</Link>),
@@ -42,6 +68,13 @@ const CustomNavigation = (props: Props) => {
             // label: 'Deliveries',
             label: (<Link href={`${BASE_DASHBOARD_PATH}/deliveries`}>Deliveries</Link>),
             icon: React.createElement(TbTruckDelivery),
+        },
+        {
+            key: `${BASE_DASHBOARD_PATH}/users`,
+            label: (<Link href={`${BASE_DASHBOARD_PATH}/users`}>Users</Link>),
+            // icon: <IoBeerOutline />,
+            icon: React.createElement(AiOutlineUser),
+            isHidden: userRole === UserRolesEnum.BUser,
         },
         {
             key: `${BASE_DASHBOARD_PATH}/recipes`,
@@ -76,7 +109,7 @@ const CustomNavigation = (props: Props) => {
                 mode="inline"
                 defaultSelectedKeys={[pathname]}
                 style={{ height: '100%', borderRight: 0 }}
-                items={navigationItems}
+                items={navigationItems.filter((item, index) => !item.isHidden)}
             />
         </div>
     );

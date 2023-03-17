@@ -1,11 +1,17 @@
 import { ObjectId } from 'mongodb';
 import { AddressData } from "./addresses";
 
+export type UsersTableProps = {
+    data?: UserData[];
+    domains?: string[];
+    isLoading: boolean;
+    title?: () => JSX.Element;
+};
+
 export type UserData = {
     _id: string | ObjectId;
     name: string;
     email: string;
-    pwd?: string;
     domain?: string;
     // businessId?: string | ObjectId;
     // company?: string;
@@ -14,11 +20,20 @@ export type UserData = {
     role: UserRolesEnum;
 };
 
+export type CreateUserInput = {
+    name: string;
+    email: string;
+    pwd?: string;
+    domain: string;
+    addresses?: AddressData[];
+    role: UserRolesEnum;
+};
+
 export enum UserRolesEnum {
-    Admin = "admin",
-    BOwner = 'business owner',
-    BUser = 'business user',
-    Client = 'client'
+    Admin = "Admin",
+    BOwner = 'Business Owner',
+    BUser = 'Business User',
+    Client = 'Client'
 }
 
 // export type BusinessData = {
