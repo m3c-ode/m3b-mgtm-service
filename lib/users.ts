@@ -44,7 +44,7 @@ export const getUserDataFromCredentials = async (email: string, password: string
     }
 };
 
-export const getAllUsersAsync = async () => {
+export const getAllUsersAsync = async (): Promise<UserData[]> => {
     // gettign all the users, but not the admin
     const collection = await getDbCollection('users');
     const users = await collection.find({ role: { $ne: `${UserRolesEnum.Admin}`, $exists: true } }).toArray();
@@ -52,7 +52,7 @@ export const getAllUsersAsync = async () => {
     return JSON.parse(JSON.stringify(users.filter(user => user.role !== 'admin')));
 };
 
-export const getDomainUsers = async (domain: string) => {
+export const getDomainUsers = async (domain: string): Promise<UserData[]> => {
     // get all the users, but per domain
     const collection = await getDbCollection('users');
     const users = await collection.find({ domain: { $eq: `${domain}`, $exists: true } },
@@ -62,4 +62,24 @@ export const getDomainUsers = async (domain: string) => {
     ).toArray();
     console.log("🚀 ~ file: users.ts:15 ~ getAllUsersAsync ~ users:", users);
     return JSON.parse(JSON.stringify(users.filter(user => user.role !== 'admin')));
+};
+
+export const getDomainsList = async ()/* : Promise<string[]> */ => {
+    const collection = await getDbCollection('users');
+    const domains = await collection.aggregate([
+        {
+            $match: {
+                domain: { $exists: true, $ne: null }
+            }
+        },
+        {
+            $group: {
+                _id: '$domain',
+            }
+        },
+    ]).toArray();
+    console.log("🚀 ~ file: users.ts:81 ~ getDomainsList ~ domains:", domains);
+    // const domains = domains.map(item => item._id);
+    // return domains.map(item => item._id);
+    return domains;
 };

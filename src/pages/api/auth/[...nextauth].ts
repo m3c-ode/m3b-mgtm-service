@@ -75,8 +75,12 @@ export const authOptions: NextAuthOptions = {
     session: {
         strategy: 'jwt'
     },
+    jwt: {
+        // maxAge: 60 * 60 * 24, //1 day, 24h
+    },
     callbacks: {
-        async jwt({ token, user }: { token: JWT, user?: any | UserData; }) {
+        async jwt({ token, user }/* : { token: JWT, user?: any | UserData; } */) {
+
             // console.log("🚀 ~ file: [...nextauth].ts:78 ~ jwt ~ token:", token);
             // console.log("🚀 ~ file: [...nextauth].ts:78 ~ jwt ~ user:", user);
             // update token
@@ -89,9 +93,10 @@ export const authOptions: NextAuthOptions = {
             // return final token
             return token;
         },
-        async session({ session, token, user }: { session: any, token: JWT, user: any; }) {
-            if (token.role) (session.user.role = token.role);
-            if (token.domain) session.user.domain = token.domain;
+        async session({ session, token, user }/* : { session: any, token: JWT, user: any; } */) {
+            // session.user = session.user ?? {};
+            if (token.role && session.user) (session.user.role = token.role);
+            if (token.domain && session.user) session.user.domain = token.domain;
             return session;
         },
 

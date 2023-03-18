@@ -3,7 +3,7 @@ import { AddressData } from "./addresses";
 
 export type UsersTableProps = {
     data?: UserData[];
-    domains?: string[];
+    domains?: any[];
     isLoading: boolean;
     title?: () => JSX.Element;
 };

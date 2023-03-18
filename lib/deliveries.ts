@@ -39,3 +39,15 @@ export const getDeliveryData = async (id: string) => {
         console.log("🚀 ~ file: clients.ts:104 ~ getClientData ~ error:", error);
     }
 };
+
+export const getDomainDeliveries = async (domain: string) => {
+    // get all the deliveries, but per domain
+    const collection = await getDbCollection('deliveries');
+    const deliveries = await collection.find({ domain: { $eq: `${domain}`, $exists: true } },
+        {
+            collation: { locale: 'en', strength: 2 }
+        }
+    ).toArray();
+    console.log("🚀 ~ file: deliveries.ts:15 ~ getAllDeliveriesAsync ~ deliveries:", deliveries);
+    return JSON.parse(JSON.stringify(deliveries.filter(user => user.role !== 'admin')));
+};

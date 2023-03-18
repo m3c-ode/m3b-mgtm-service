@@ -9,6 +9,7 @@ export type RecipesTableProps = {
 export type RecipeData = {
     _id: string;
     beer: BeerData;
+    domain?: string;
     grains: any;
     hops: any;
 };

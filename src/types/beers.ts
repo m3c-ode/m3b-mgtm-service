@@ -30,7 +30,7 @@ export type HopsData = [{
 }];
 
 export type NewBeerData = {
-    id?: string,
+    domain?: string;
     name?: string,
     description?: string,
     company?: string,

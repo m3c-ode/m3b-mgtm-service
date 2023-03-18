@@ -74,3 +74,15 @@ export const updateBeerQuantity = async (id: string, qty: BeerVolumes) => {
     }
 
 };
+
+export const getDomainBeers = async (domain: string) => {
+    // get all the beers, but per domain
+    const collection = await getDbCollection('beers');
+    const beers = await collection.find({ domain: { $eq: `${domain}`, $exists: true } },
+        {
+            collation: { locale: 'en', strength: 2 }
+        }
+    ).toArray();
+    console.log("🚀 ~ file: beers.ts:15 ~ getAllBeersAsync ~ beers:", beers);
+    return JSON.parse(JSON.stringify(beers.filter(user => user.role !== 'admin')));
+};

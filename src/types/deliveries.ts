@@ -11,6 +11,7 @@ export type DeliveriesTableProps = {
 
 export type NewDeliveryInput = {
     businessId?: string;
+    domain?: string;
     clientId?: string;
     fromAddress: string | AddressData;
     toAddress: string | AddressData;

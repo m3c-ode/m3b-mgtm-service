@@ -10,6 +10,7 @@ import { deleteUser, fetchAllUsers } from '../../../pages/api/services/users';
 import { addressParser } from '../../../../lib/functions';
 
 const UsersTable: React.FC<UsersTableProps> = ({ data, isLoading, title, domains }) => {
+    console.log("🚀 ~ file: UsersTable.tsx:13 ~ data:", data);
 
     const [currentData, setCurrentData] = useState(data);
 
@@ -32,23 +33,21 @@ const UsersTable: React.FC<UsersTableProps> = ({ data, isLoading, title, domains
         }
     };
 
+    const domainsColumn: ColumnsType<string> = [
+        {
+            title: 'Domains',
+            dataIndex: '_id',
+            key: '_id',
+            // render: (domain, record) => domain
+        }
+    ];
+
     const columns: ColumnsType<UserData> = [
         {
             title: 'User Name',
             dataIndex: 'name',
             key: 'name',
         },
-        // {
-        //     title: 'Address',
-        //     dataIndex: 'address',
-        //     key: 'address',
-        //     render(value: AddressData, record, index) {
-        //         // TODO: check if works
-        //         // const { street1, street2, city, state, zip, country } = value;
-        //         // return `${street2 ? street2 + ', ' : ''}${street1}, ${city}, ${state}`;
-        //         return addressParser(value);
-        //     },
-        // },
         {
             title: 'Role',
             dataIndex: 'role',
@@ -95,13 +94,33 @@ const UsersTable: React.FC<UsersTableProps> = ({ data, isLoading, title, domains
         },
     ];
 
+    // const nestedTableData = domains?.map((domain, index) => ({
+    //     key: index,
+    //     parent: domain,
+    //     children: data
+    // }))
+
+    const expandedRowRender = (record: any, index: number) => {
+        return (
+
+            <Table
+                rowKey={(record, index) => (record._id! as string)}
+                columns={columns}
+                className={styles.tableContainer + 'ant-table ant-table-default !important'}
+                dataSource={currentData?.filter((user) => user.domain === record._id)}
+            />
+        );
+    };
+    // If user is Admin, get the table as nested, otherwise simple table
     return (
         <Table
             rowKey={(record, index) => (record._id! as string)}
-            columns={columns}
+            columns={domains ? domainsColumn : columns}
             className={styles.tableContainer + 'ant-table ant-table-default !important'}
-            dataSource={currentData}
+            dataSource={domains ? domains : currentData}
             title={title}
+            // expandable={{expandedRowRender}}
+            expandable={domains ? { expandedRowRender } : undefined}
 
         />
     );

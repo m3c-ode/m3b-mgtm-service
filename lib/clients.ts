@@ -73,3 +73,15 @@ export const getClientData = async (clientId: string) => {
     }
 
 };
+
+export const getDomainClients = async (domain: string) => {
+    // get all the clients, but per domain
+    const collection = await getDbCollection('clients');
+    const clients = await collection.find({ domain: { $eq: `${domain}`, $exists: true } },
+        {
+            collation: { locale: 'en', strength: 2 }
+        }
+    ).toArray();
+    console.log("🚀 ~ file: clients.ts:15 ~ getAllClientsAsync ~ clients:", clients);
+    return JSON.parse(JSON.stringify(clients.filter(user => user.role !== 'admin')));
+};

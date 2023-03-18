@@ -11,6 +11,7 @@ export type NewClientInput = {
     name: string;
     address: NewAddressInput;
     email: string;
+    domain?: string;
     type: ClientTypeEnum;
 };
 
