@@ -113,7 +113,6 @@ export const getDomainAddress = async (domain: string)/* : Promise<string> */ =>
     } catch (error) {
         console.log("🚀 ~ file: users.ts:114 ~ getDomainAddress ~ error:", error);
         throw new Error('Could not retrieve domain address');
-
     }
 
 };
