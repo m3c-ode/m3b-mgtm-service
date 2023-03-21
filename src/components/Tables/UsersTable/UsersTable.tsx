@@ -111,6 +111,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ data, isLoading, title, domains
             />
         );
     };
+
     // If user is Admin, get the table as nested, otherwise simple table
     return (
         <Table

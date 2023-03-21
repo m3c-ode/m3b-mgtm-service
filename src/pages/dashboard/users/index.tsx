@@ -4,11 +4,12 @@ import UsersTable from '../../../components/Tables/UsersTable';
 import TableHeader from '../../../components/Tables/TableHeader';
 import toast from 'react-hot-toast';
 import { GetServerSideProps, GetServerSidePropsResult, InferGetServerSidePropsType } from 'next';
-import { getAllUsersAsync, getDomainsList, getDomainUsers } from '../../../../lib/users';
+import { getAllUsersAsync, getDomainsList, getDomainUsers, getUserDataFromEmail } from '../../../../lib/users';
 import { UserData, UserRolesEnum } from '../../../types/users';
 import { IoAddOutline } from 'react-icons/io5';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../api/auth/[...nextauth]';
+import { useUserStore } from '../../../stores/user';
 
 interface UserPageProps {
     usersList?: UserData[];
@@ -20,9 +21,18 @@ interface UserPageProps {
 export const getServerSideProps: GetServerSideProps<UserPageProps> = async (context) => {
     // IF user is admin - get all users and create the domain array
     // otherwise, get domain users
+    // Users page only accessible to Admins and BOwner.
     const session = await getServerSession(context.req, context.res, authOptions);
-    const { role: userRole, domain } = session?.user ?? {};
-    if (!session || userRole === UserRolesEnum.BUser) {
+    const { role: userRole, domain, email } = session?.user ?? {};
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        };
+    }
+    if (userRole === UserRolesEnum.BUser) {
         return {
             redirect: {
                 destination: '/dashboard/beers',
@@ -43,9 +53,13 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (cont
                 },
             };
         }
-        // (userRole === UserRolesEnum.BOwner) {
-        // if (userRole === UserRolesEnum.BOwner) {
+        // If Bowner, get own domain users and fetch own data (address) to provide to Buser
         const usersList = await getDomainUsers(domain!);
+        // If doesn'T work, pass it as a prop and assign it in component
+        const setUserInfo = useUserStore(state => state.setUserInfo);
+        const BOwnerInfo = await getUserDataFromEmail(email!);
+        console.log("🚀 ~ file: index.tsx:60 ~ constgetServerSideProps:GetServerSideProps<UserPageProps>= ~ BOwnerInfo:", BOwnerInfo);
+        setUserInfo(BOwnerInfo);
         return {
             props: {
                 usersList: JSON.parse(JSON.stringify(usersList)),

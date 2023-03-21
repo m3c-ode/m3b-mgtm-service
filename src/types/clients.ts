@@ -3,6 +3,7 @@ import { AddressData, NewAddressInput } from "./addresses";
 
 export type ClientsTableProps = {
     data?: ClientData[];
+    domains?: any[];
     isLoading: boolean;
     title?: () => JSX.Element;
 };

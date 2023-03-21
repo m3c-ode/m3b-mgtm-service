@@ -28,3 +28,10 @@ export const dateTableParser = (value: string | Date) => {
         return new Date(value).toISOString().split('T')[0];
     }
 };
+
+export const parsePhoneNumber = (value?: string) => {
+    // if (!value) return undefined;
+    const phoneNumber = value?.toString().replace(/\D/g, '');
+    // return parseInt(phoneNumber!)!;
+    return phoneNumber!;
+};

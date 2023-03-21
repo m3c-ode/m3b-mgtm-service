@@ -1,4 +1,4 @@
-import { Button, Form, Input, Radio, RadioChangeEvent, Select } from 'antd';
+import { Button, Divider, Form, Input, Radio, RadioChangeEvent, Select } from 'antd';
 import { useRouter } from 'next/router';
 import { useContext, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -7,8 +7,8 @@ import toast from 'react-hot-toast';
 import { useUserStore } from '../../../stores/user';
 // import { CreateMerchantInput } from '../../../types';
 // import { CreateUserInput } from '../../../types/user';
-import { CreateUserInput, UserRolesEnum } from '../../../types/users';
-import CreateUserFields from './CreateUserFields';
+import { CreateUserInput, UserData, UserRolesEnum } from '../../../types/users';
+import UserInfoFields from './UserInfoFields';
 // import { handleRole } from '../../../utils';
 // import CreateMerchantFields from './CreateMerchantFields';
 // import CreateSmsUserFields from './CreateSmsUserField';
@@ -17,11 +17,14 @@ import formStyles from '../styles.module.scss';
 import { useSession } from 'next-auth/react';
 import Dashboard from '../../Dashboard';
 import { createUser } from '../../../pages/api/services/users';
+import CreateAddressFields from '../Clients/CreateAddressFields';
 const { Option } = Select;
 
-type Props = {};
+type Props = {
+    data?: UserData;
+};
 
-function CreateUserForm({ }: Props) {
+function CreateUserForm({ data }: Props) {
     // const { userRole } = useContext(UserDataContext);
 
     // const userInfo = useUserStore((state) => state.userInfo)!;
@@ -29,6 +32,8 @@ function CreateUserForm({ }: Props) {
     // const { role: userRole, domain } = userInfo;
 
     const { data: sessionData, status }: { data: any, status: string; } = useSession();
+    const userData = useUserStore(state => state.userInfo);
+    console.log("🚀 ~ file: CreateUserForm.tsx:34 ~ CreateUserForm ~ userData:", userData);
     console.log("🚀 ~ file: CreateUserForm.tsx:31 ~ CreateUserForm ~ sessionData:", sessionData);
     let userRole: string = '';
     if (sessionData) {
@@ -84,6 +89,24 @@ function CreateUserForm({ }: Props) {
             name: values.name,
             email: values?.email.toLowerCase(),
             domain: values?.domain ? values.domain.toLowerCase() : sessionData.user.domain.toLowerCase(),
+            // address: values?.address ? values.address : userData?.address,
+            address: {
+                // company: values?.company ? values?.company : userData?.address?.company,
+                street1: values?.street1 ? values?.street1.toUpperCase() : userData?.address?.street1,
+                street2: values?.street2 ? values?.street2.toUpperCase() : userData?.address?.street2,
+                city: values?.city ? values?.city.toUpperCase() : userData?.address?.city,
+                state: values?.state ? values?.state.toUpperCase() : userData?.address?.state,
+                zip: values?.zip ? values?.zip.toUpperCase() : userData?.address?.zip,
+                country: values?.country ? values?.country.toUpperCase() : userData?.address?.country,
+                // street2: values?.street2?.toUpperCase(),
+                // city: values?.city.toUpperCase(),
+                // state: values?.state.toUpperCase(),
+                // zip: values?.zip.toUpperCase(),
+                // country: values?.country.toUpperCase(),
+                phone: values?.phone ? values?.phone : userData?.address?.phone,
+                notes: values?.notes ? values?.notes : userData?.address?.notes,
+
+            },
             pwd: values?.password,
             role: values.role,
         };
@@ -182,6 +205,7 @@ function CreateUserForm({ }: Props) {
         <Dashboard>
             <Form
                 ref={formRef}
+                form={form}
                 name="createUser"
                 initialValues={{}}
                 onFinish={onSubmit}
@@ -192,6 +216,8 @@ function CreateUserForm({ }: Props) {
                 labelWrap
                 layout="horizontal">
                 <h2>Create a New User</h2>
+                <Divider />
+                <h3>User Info</h3>
                 <Form.Item
                     label="Role: "
                     labelAlign="right"
@@ -249,7 +275,14 @@ function CreateUserForm({ }: Props) {
                         <Input />
                     </Form.Item>
                 )}
-                <CreateUserFields form={form} />
+                <UserInfoFields form={form} />
+                {userRole === UserRolesEnum.Admin &&
+                    <>
+                        <Divider />
+                        <h3>Business Address Info</h3>
+                        <CreateAddressFields data={data?.address} form={form} />
+                    </>
+                }
                 {/* {newUserRole && newUserRole === 'BusinessOwner' && <CreateBusinessFields />}
                 {signupMethod === 'sms' && newUserRole === 'BusinessUser' ? <CreateSmsUserFields /> : <CreateEmailUserFields />} */}
                 <Form.Item

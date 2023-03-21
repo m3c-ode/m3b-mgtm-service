@@ -1,8 +1,28 @@
+import { add } from "date-fns";
+import { ObjectId } from "mongodb";
 import { UserData, UserRolesEnum } from "../src/types/users";
 import getDbCollection from "./getCollection";
 
-export const getUserDataWithId = (id: string) => {
+export const getUserDataFromId = async (userId: string): Promise<UserData> => {
+    try {
+        const collection = await getDbCollection("users");
+        const client = await collection.findOne({ _id: new ObjectId(userId) });
+        return JSON.parse(JSON.stringify(client));
+    } catch (error) {
+        console.log("🚀 ~ file: clients.ts:104 ~ getClientData ~ error:", error);
+        throw new Error('Error fetching user info');
+    }
+};
 
+export const getUserDataFromEmail = async (email: string): Promise<UserData> => {
+    try {
+        const collection = await getDbCollection("users");
+        const user = collection.findOne({ email });
+        return JSON.parse(JSON.stringify(user));
+    } catch (error) {
+        console.log("🚀 ~ file: users.ts:14 ~ getUserDataFromEmail ~ error:", error);
+        throw new Error("Couldn't find User");
+    }
 };
 
 export const doesDomainExist = async (domain: string) => {
@@ -36,7 +56,7 @@ export const doesUserExist = async (email: string) => {
 export const getUserDataFromCredentials = async (email: string, password: string) => {
     try {
         const collection = await getDbCollection("users");
-        const user = await collection.findOne({ $and: [{ email }, { pwd: password }] }) as UserData;
+        const user = await collection.findOne({ $and: [{ email }, { pwd: password }] });
         return user;
     } catch (error) {
         console.log("🚀 ~ file: [...nextauth].ts:58 ~ authorize ~ error:", error);
@@ -82,4 +102,18 @@ export const getDomainsList = async ()/* : Promise<string[]> */ => {
     // const domains = domains.map(item => item._id);
     // return domains.map(item => item._id);
     return domains;
+};
+
+export const getDomainAddress = async (domain: string)/* : Promise<string> */ => {
+    const collection = await getDbCollection('users');
+    try {
+        const address = await collection.findOne({ $and: [{ domain }, { role: UserRolesEnum.BOwner }] });
+        console.log("🚀 ~ file: users.ts:111 ~ getDomainAddress ~ address:", address);
+        return JSON.parse(JSON.stringify(address));
+    } catch (error) {
+        console.log("🚀 ~ file: users.ts:114 ~ getDomainAddress ~ error:", error);
+        throw new Error('Could not retrieve domain address');
+
+    }
+
 };

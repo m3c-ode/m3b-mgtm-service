@@ -28,11 +28,12 @@
 import { DefaultSession, DefaultUser, DefaultJWT } from 'next-auth';
 declare module 'next-auth' {
     interface Session {
-        user?: DefaultSession & { role: string; domain?: string; };
+        user?: DefaultSession & { role: string; domain?: string; email?: string; };
     }
     interface User extends DefaultUser {
         role: string;
         domain?: string;
+        email?: string;
     }
 
     // interface JWT /* extends DefaultJWT */ {

@@ -9,14 +9,16 @@ export type UsersTableProps = {
 };
 
 export type UserData = {
-    _id: string | ObjectId;
+    _id: string;
     name: string;
     email: string;
     domain?: string;
+    pwd?: string;
     // businessId?: string | ObjectId;
     // company?: string;
     // business?: BusinessData;
     addresses?: AddressData[];
+    address?: AddressData;
     role: UserRolesEnum;
 };
 
@@ -26,6 +28,7 @@ export type CreateUserInput = {
     pwd?: string;
     domain: string;
     addresses?: AddressData[];
+    address?: AddressData;
     role: UserRolesEnum;
 };
 
