@@ -48,7 +48,7 @@ export default function Home({
       <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossOrigin="anonymous" />
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient bg-opacity">
         <div className="container">
-          <a className="navbar-brand" href="#!">m3.code portfolio</a>
+          <span className="navbar-brand">m3.code portfolio</span>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
           {/* <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -66,7 +66,7 @@ export default function Home({
       }}>
         <div className="text-center my-5">
           <img className="img-fluid rounded-circle mb-4" src="/images/logom3b.png" alt="logo" width={144} height={144} />
-          <h1 className="text-white fs-3 fw-bolder">m3b - management service</h1>
+          <h1 className="text-white fs-3 fw-bolder">m3b - brewery management service</h1>
           <p className="text-white-50 mb-0">A portfolio application</p>
         </div>
       </header>
@@ -79,26 +79,32 @@ export default function Home({
         priority
         style={{ marginTop: '2rem' }}
       /> */}
-      <section className="py-5">
+      <section className="py-3">
         <div className="container my-5">
           <div className="row justify-content-center">
             <div className="col-lg-7">
-              <h2 className='blue'>Welcome to m3.beer management system!</h2>
-              <p className="lead py-2">This app is a personal project currently part of my portfolio. It's an example of CRUD app tailored for the beer beverage industry.</p>
+              <h2 className='blue'>Welcome to m3.beer's management system!</h2>
+              <p className="lead py-2">This app is a personal project currently part of my portfolio. It's an example of CRUD app tailored for the beer beverage industry. Namely, for beverage companies like breweries to manage their whole business from inventory management to deliveries, to invoicing...</p>
               <p className=''>It is coded using the NextJS Meta framework connected to a MongoDB Database. It's still under progress, as many features could be added.</p>
               <p className="mb-2">Using this platform, you'll be able to:</p>
               <ul>
                 <li>Create and manage your products</li>
                 <li>Check and manage your inventory</li>
+                <li>Admin and Users access</li>
                 <li>Create and manage your clients</li>
+                <li>Create Delivery directions and management</li>
               </ul>
               <p className="mb-2">Potential features:</p>
               <ul>
                 <li>Recipe management</li>
-                <li>Delivery management</li>
-                <li>Admin and Company access</li>
                 <li>Orders and Invoices management</li>
                 <li>Personalized shopping page for clients</li>
+              </ul>
+              <p className="mb-2">Useflow:</p>
+              <ul>
+                <li>You may login as an Admin user, to have access to all the app's features. From the Admin's access, you may create a new User tenant or domain, with an associated account, and then use the app being another type of user (Business Owner)</li>
+                <li>If you've rceated a new Business Owner, you may log out of the Admin access then login in with your newly created Account. You will have the perspective of a Business owner, being able to interact with the whole application, and creating and managing Business Users (Users attached to the business who are not Owners)</li>
+                <li>On the third level, you may create a Business User who will be able to interact with its domain's app, but not manage the Users under the same domain.</li>
               </ul>
             </div>
           </div>
