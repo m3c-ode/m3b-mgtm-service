@@ -16,6 +16,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import { UserRolesEnum } from '../../../types/users';
 import { getDomainsList } from '../../../../lib/users';
+import { useDomainStore } from '../../../stores/domain';
 // import { getDbCollection } from './api/services/beers';
 
 interface BeerPageProps {
@@ -76,6 +77,9 @@ const Page = ({ beersList, isLoading, error, domainsList }: InferGetServerSidePr
 
     const session = useSession();
     console.log("🚀 ~ file: index.tsx:49 ~ Page ~ session:", session);
+
+    const setDomainsList = useDomainStore(state => state.setDomainsList);
+    domainsList && setDomainsList(domainsList.map(domain => domain._id));
 
     //  Client Side data fetching
     // const [beersList, setBeersList] = useState<BeerData[] | null>(null);

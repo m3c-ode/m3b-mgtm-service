@@ -6,10 +6,16 @@ import { getClientData } from '../../../../../../lib/clients';
 import { ClientData } from '../../../../../types/clients';
 import type { BeerData } from '../../../../../types/beers';
 import NewDeliveryForm from '../../../../../components/Forms/Delivery/NewDeliveryForm';
+import { UserRolesEnum } from '../../../../../types/users';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../../../api/auth/[...nextauth]';
+import { getAllDomainsAddresses, getDomainAddress, getDomainsList } from '../../../../../../lib/users';
+import { AddressData } from '../../../../../types/addresses';
 
 interface NewDeliveryPageProps {
     userInfo?: string;
     clientData?: ClientData;
+    domainAddress?: string | AddressData;
     beersData?: BeerData[];
 }
 
@@ -25,10 +31,42 @@ interface NewDeliveryPageProps {
 
 // `getStaticPaths` requires using `getStaticProps`
 export const getServerSideProps: GetServerSideProps<NewDeliveryPageProps> = async (context) => {
+
+    // when admin, fetch domains and addresses
+    const session = await getServerSession(context.req, context.res, authOptions);
+    const { role: userRole, domain } = session?.user ?? {};
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        };
+    }
     try {
-        // console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
+        // if (userRole === UserRolesEnum.Admin) {
+        //     // console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
+        //     // const domainsList = await getAllDomainsAddresses();
+        //     const clientId = context.params!.clientId as string;
+        //     const clientData = await getClientData(clientId);
+        //     const domainAddress = await getDomainAddress(clientData.domain);
+        //     // console.log("🚀 ~ file: index.tsx:32 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ clientData:", clientData);
+
+        //     // TODO: Get user info, for address...
+        //     const userInfo = 'test';
+
+
+        //     const beersData = await getBeersAsync();
+        //     // console.log("🚀 ~ file: index.tsx:39 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ beersData:", beersData);
+        //     return {
+        //         // Passed to the page component as props
+        //         props: { clientData, beersData, userInfo, domainAddress },
+
+        //     };
+        // }
         const clientId = context.params!.clientId as string;;
         const clientData = await getClientData(clientId);
+        const domainAddress = await getDomainAddress(clientData.domain);
         // console.log("🚀 ~ file: index.tsx:32 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ clientData:", clientData);
 
         // TODO: Get user info, for address...
@@ -39,10 +77,9 @@ export const getServerSideProps: GetServerSideProps<NewDeliveryPageProps> = asyn
         // console.log("🚀 ~ file: index.tsx:39 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ beersData:", beersData);
         return {
             // Passed to the page component as props
-            props: { clientData, beersData, userInfo },
+            props: { clientData, beersData, userInfo, domainAddress },
 
         };
-
     } catch (error) {
         console.log('error fetching in beers/id', error);
         return {
@@ -56,7 +93,7 @@ export const getServerSideProps: GetServerSideProps<NewDeliveryPageProps> = asyn
     }
 };
 
-const NewDelivery = ({ clientData, beersData, userInfo }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const NewDelivery = ({ clientData, beersData, userInfo, domainAddress }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     return (
         <>
             {clientData && beersData &&
@@ -64,7 +101,7 @@ const NewDelivery = ({ clientData, beersData, userInfo }: InferGetServerSideProp
                     userInfo={userInfo}
                     clientData={clientData}
                     beersData={beersData}
-
+                    domainAddress={domainAddress}
                 />
             }
         </>

@@ -1,7 +1,10 @@
 import { Button, Col, DatePicker, Form, Input, InputNumber, Row, Select } from 'antd';
 import dayjs from 'dayjs';
+import { useSession } from 'next-auth/react';
 import React from 'react';
 import { BeersStylesEnum } from '../../../types/beers';
+import { UserRolesEnum } from '../../../types/users';
+import SelectDomainField from '../Select/SelectDomainField';
 
 const { Option } = Select;
 
@@ -15,6 +18,9 @@ type Props = {};
 
 const BeerInfoFields = (props: Props) => {
 
+    const { data: sessionData, status }: { data: any, status: string; } = useSession();
+    const userRole = sessionData?.user?.role;
+
     return (
         <>
             <Form.Item
@@ -24,6 +30,9 @@ const BeerInfoFields = (props: Props) => {
             >
                 <Input />
             </Form.Item>
+            {userRole === UserRolesEnum.Admin &&
+                <SelectDomainField />
+            }
             <Form.Item
                 label="Style"
                 name="style"

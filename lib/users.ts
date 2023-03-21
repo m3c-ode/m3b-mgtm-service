@@ -101,19 +101,34 @@ export const getDomainsList = async ()/* : Promise<string[]> */ => {
     console.log("🚀 ~ file: users.ts:81 ~ getDomainsList ~ domains:", domains);
     // const domains = domains.map(item => item._id);
     // return domains.map(item => item._id);
-    return domains;
+    return JSON.parse(JSON.stringify(domains));
 };
 
 export const getDomainAddress = async (domain: string)/* : Promise<string> */ => {
     const collection = await getDbCollection('users');
     try {
-        const address = await collection.findOne({ $and: [{ domain }, { role: UserRolesEnum.BOwner }] });
-        console.log("🚀 ~ file: users.ts:111 ~ getDomainAddress ~ address:", address);
-        return JSON.parse(JSON.stringify(address));
+        const owner = await collection.findOne({ $and: [{ domain }, { role: UserRolesEnum.BOwner }] }) as unknown as UserData;
+        console.log("🚀 ~ file: users.ts:111 ~ getDomainAddress ~ address:", owner);
+        return JSON.parse(JSON.stringify(owner.address));
     } catch (error) {
         console.log("🚀 ~ file: users.ts:114 ~ getDomainAddress ~ error:", error);
         throw new Error('Could not retrieve domain address');
 
     }
 
+};
+
+export const getAllDomainsAddresses = async () => {
+    const collection = await getDbCollection('users');
+    try {
+        // Find all Bowners. Extract the address and send
+        const ownerslist = await collection.find({ role: UserRolesEnum.BOwner }).toArray() as unknown as UserData[];
+        const domainsAddresses = ownerslist.map(ownerData => ({ name: ownerData.domain, address: ownerData.address }));
+        console.log("🚀 ~ file: users.ts:126 ~ getAllDomainsAddresses ~ ownerslist:", ownerslist);
+        return JSON.parse(JSON.stringify(domainsAddresses));
+    } catch (error) {
+        console.log("🚀 ~ file: users.ts:114 ~ getDomainAddress ~ error:", error);
+        throw new Error('Could not retrieve domain address');
+
+    }
 };
