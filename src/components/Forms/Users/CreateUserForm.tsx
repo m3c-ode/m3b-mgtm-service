@@ -2,22 +2,15 @@ import { Button, Divider, Form, Input, Radio, RadioChangeEvent, Select } from 'a
 import { useRouter } from 'next/router';
 import { useContext, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-// import UserDataContext from '../../../context/user';
-// import { createEmailUser, createMerchant, createSmsUser } from '../../../pages/api/services';
 import { useUserStore } from '../../../stores/user';
-// import { CreateMerchantInput } from '../../../types';
-// import { CreateUserInput } from '../../../types/user';
 import { CreateUserInput, UserData, UserRolesEnum } from '../../../types/users';
 import UserInfoFields from './UserInfoFields';
-// import { handleRole } from '../../../utils';
-// import CreateMerchantFields from './CreateMerchantFields';
-// import CreateSmsUserFields from './CreateSmsUserField';
-// import CreateEmailUserFields from './CreateUserFields';
 import formStyles from '../styles.module.scss';
 import { useSession } from 'next-auth/react';
 import Dashboard from '../../Dashboard';
 import { createUser } from '../../../pages/api/services/users';
 import CreateAddressFields from '../Clients/CreateAddressFields';
+import SelectDomainField from '../Select/SelectDomainField';
 const { Option } = Select;
 
 type Props = {
@@ -25,7 +18,6 @@ type Props = {
 };
 
 function CreateUserForm({ data }: Props) {
-    // const { userRole } = useContext(UserDataContext);
 
     // const userInfo = useUserStore((state) => state.userInfo)!;
     // console.log("🚀 ~ file: CreateUserForm.tsx:25 ~ CreateUserForm ~ userInfo:", userInfo);
@@ -51,13 +43,8 @@ function CreateUserForm({ data }: Props) {
         {
             value: UserRolesEnum.BUser,
             label: 'Business User',
-            isHidden: userRole !== UserRolesEnum.BOwner,
+            isHidden: userRole !== UserRolesEnum.BOwner && userRole !== UserRolesEnum.Admin,
         },
-        // {
-        //     value: UserRolesEnum.Admin,
-        //     label: 'Administrator',
-        //     isHidden: userRole === UserRolesEnum.Admin,
-        // },
     ];
 
     const [newBusiness, setNewBusiness] = useState({});
@@ -128,56 +115,6 @@ function CreateUserForm({ data }: Props) {
                 router.push('/dashboard/users');
             }
 
-            // Manage creation roles depending on role and Permissions on both aut0 and backend
-            // Only Platform manager can populate the businesss DB and send request to create a business. They also create a MO user.
-            // if (userRole === 'admin') {
-            // console.log('business data', newBusinessData);
-            // const businessRes = await createBusiness(newBusinessData);
-            // console.log('create merch res', businessRes);
-            // if (!businessRes.data.result) {
-            //     toast.error(businessRes.data.message as string);
-            //     return;
-            // }
-            // toast.success('Business domain succesfully created');
-            // setNewBusiness(businessRes.data.result);
-            // console.log('new business', businessRes.data.result);
-            // console.log('current context business id', businessId);
-
-            // //retrieve businessId from newly created business then inject in the User creation
-            // if (!businessId) {
-            //     businessId = businessRes.data.result.id;
-            //     console.log('updated business id with new business', businessId);
-            // }
-            //     newUserData.domain = domain;
-            //     console.log('new user from PM', newUserData);
-            //     const userRes = await createEmailUser(newUserData);
-            //     console.log('user result', userRes);
-            //     if (!userRes.data.result) {
-            //         toast.error(userRes.data.message as string);
-            //         return;
-            //     }
-            //     toast.success('Business user succesfully created');
-            //     setNewUser(userRes.data.result);
-            //     return;
-            // }
-
-            // Businesss can only create Users
-            // if (userRole === UserRolesEnum.BOwner || userRole === UserRolesEnum.BUser) {
-            //     newUserData.businessId = businessId;
-            //     console.log('user data to be sent', newUserData);
-            //     let userRes: any = {};
-            //     if (signupMethod === 'email') userRes = await createEmailUser(newUserData);
-            //     if (signupMethod === 'sms') userRes = await createSmsUser(newUserData);
-
-            //     console.log('user result', userRes);
-            //     if (!userRes.data.result) {
-            //         toast.error(userRes.data.message as string);
-            //         // throw new Error(userRes.data.result.error);
-            //         return;
-            //     }
-            //     toast.success('User succesfully created');
-            //     setNewUser(userRes.data.result);
-            // }
         } catch (error: any) {
             console.error('error creating user', error);
             toast.error(error.response.data.message);
@@ -267,7 +204,7 @@ function CreateUserForm({ data }: Props) {
                     </Radio.Group>
                     </Form.Item>
                 )} */}
-                {userRole === UserRolesEnum.Admin && (
+                {userRole === UserRolesEnum.Admin && newUserRole === UserRolesEnum.BOwner && (
                     <Form.Item
                         label="Domain: "
                         name="domain"
@@ -275,8 +212,11 @@ function CreateUserForm({ data }: Props) {
                         <Input />
                     </Form.Item>
                 )}
+                {userRole === UserRolesEnum.Admin && newUserRole === UserRolesEnum.BUser && (
+                    <SelectDomainField />
+                )}
                 <UserInfoFields form={form} />
-                {userRole === UserRolesEnum.Admin &&
+                {userRole === UserRolesEnum.Admin && newUserRole === UserRolesEnum.BOwner &&
                     <>
                         <Divider />
                         <h3>Business Address Info</h3>

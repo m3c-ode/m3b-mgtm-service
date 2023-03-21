@@ -1,4 +1,4 @@
-import { Divider, Menu } from 'antd';
+import { Divider, Menu, Tooltip } from 'antd';
 import { MenuProps } from 'antd/lib/menu';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -78,20 +78,22 @@ const CustomNavigation = (props: Props) => {
         },
         {
             key: `${BASE_DASHBOARD_PATH}/recipes`,
-            label: (<Link href={`${BASE_DASHBOARD_PATH}/recipes`}>Recipes</Link>),
+            label: (<Tooltip title='Coming soon!' placement='right'>
+                <Link href={`${BASE_DASHBOARD_PATH}/recipes`}>Recipes</Link>
+            </Tooltip>),
             // icon: <IoBeerOutline />,
             icon: React.createElement(AiOutlineProfile),
         },
         {
             key: `${BASE_DASHBOARD_PATH}/orders`,
-            label: 'Orders',
+            label: (<Tooltip title='Coming soon!' placement='right'>Orders</Tooltip>),
             // label: (<Link href={`${BASE_DASHBOARD_PATH}/orders`}>Orders</Link>),
             icon: React.createElement(MdOutlineProductionQuantityLimits),
         },
         {
             key: `${BASE_DASHBOARD_PATH}/invoices`,
             // label: (<Link href={`${BASE_DASHBOARD_PATH}/invoices`}>Invoices</Link>),
-            label: 'Invoices',
+            label: (<Tooltip title='Coming soon!' placement='right'>Invoices</Tooltip>),
             icon: React.createElement(TbFileInvoice),
         },
 
