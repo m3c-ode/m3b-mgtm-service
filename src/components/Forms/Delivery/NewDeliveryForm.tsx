@@ -74,6 +74,7 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo, domainAddress }: Pro
 
         const newDeliveryData: NewDeliveryInput = {
             clientId: clientData?._id,
+            domain: clientData?.domain,
             // businessId: merchantId,
             fromAddress: values.userAddress,
             toAddress: values.clientAddress,
