@@ -5,6 +5,7 @@ import { ClientData } from "./clients";
 export type DeliveriesTableProps = {
     deliveriesData?: DeliveryData[];
     clientsData?: ClientData[];
+    domains?: any[];
     isLoading?: boolean;
     title?: () => JSX.Element;
 };

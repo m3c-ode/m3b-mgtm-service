@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 export type BeersTableProps = {
     data: BeerData[];
     isLoading: boolean;
+    domains?: any[];
     title?: () => JSX.Element;
 
 };

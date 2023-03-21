@@ -49,5 +49,5 @@ export const getDomainDeliveries = async (domain: string) => {
         }
     ).toArray();
     console.log("🚀 ~ file: deliveries.ts:15 ~ getAllDeliveriesAsync ~ deliveries:", deliveries);
-    return JSON.parse(JSON.stringify(deliveries.filter(user => user.role !== 'admin')));
+    return JSON.parse(JSON.stringify(deliveries));
 };

@@ -47,6 +47,18 @@ export const dbUpdateBeer = async (id: string | ObjectId, beerData: BeerData) =>
     return updatedBeer;
 };
 
+export const updateBeersDomain = async (domain: string) => {
+    const collection = await getDbCollection("beers");
+    try {
+        const res = await collection.updateMany({}, { $set: { domain } });
+        console.log("🚀 ~ file: beers.ts:54 ~ updateBeersDomain ~ res:", res);
+
+    } catch (error) {
+        console.log("🚀 ~ file: beers.ts:57 ~ updateBeersDomain ~ error:", error);
+        throw new Error('Error updating beers domain');
+    }
+};
+
 export const updateBeerQuantity = async (id: string, qty: BeerVolumes) => {
     const collection = await getDbCollection("beers");
     try {
@@ -84,5 +96,5 @@ export const getDomainBeers = async (domain: string) => {
         }
     ).toArray();
     console.log("🚀 ~ file: beers.ts:15 ~ getAllBeersAsync ~ beers:", beers);
-    return JSON.parse(JSON.stringify(beers.filter(user => user.role !== 'admin')));
+    return JSON.parse(JSON.stringify(beers));
 };

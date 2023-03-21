@@ -12,7 +12,7 @@ import { dateTableParser } from '../../../../lib/functions';
 
 // type BeersTableProps = {}
 
-const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
+const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title, domains }) => {
 
     const [currentData, setCurrentData] = useState(data);
 
@@ -31,6 +31,15 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
             throw new Error(error).message;
         }
     };
+
+    const domainsColumn: ColumnsType<string> = [
+        {
+            title: 'Domains',
+            dataIndex: '_id',
+            key: '_id',
+            // render: (domain, record) => domain
+        }
+    ];
 
     const columns: ColumnsType<BeerData> = [
         {
@@ -131,14 +140,28 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
         },
     ];
 
+    const expandedRowRender = (record: any, index: number) => {
+        return (
+
+            <Table
+                rowKey={(record, index) => (record._id! as string)}
+                columns={columns}
+                className={styles.tableContainer + 'ant-table ant-table-default !important'}
+                dataSource={currentData?.filter((beer) => beer.domain === record._id)}
+            />
+        );
+    };
+
     return (
         <Table
             rowKey={record => record._id}
             className={styles.tableContainer}
-            columns={columns}
-            dataSource={currentData}
-            loading={isLoading}
+            columns={domains ? domainsColumn : columns}
+            dataSource={domains ? domains : currentData}
             title={title}
+            // expandable={{expandedRowRender}}
+            expandable={domains ? { expandedRowRender, defaultExpandedRowKeys: ['m3beer'] } : undefined}
+            loading={isLoading}
         />
     );
 };

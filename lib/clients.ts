@@ -83,5 +83,5 @@ export const getDomainClients = async (domain: string) => {
         }
     ).toArray();
     console.log("🚀 ~ file: clients.ts:15 ~ getAllClientsAsync ~ clients:", clients);
-    return JSON.parse(JSON.stringify(clients.filter(user => user.role !== 'admin')));
+    return JSON.parse(JSON.stringify(clients));
 };

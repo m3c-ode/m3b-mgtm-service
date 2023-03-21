@@ -121,7 +121,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ data, isLoading, title, domains
             dataSource={domains ? domains : currentData}
             title={title}
             // expandable={{expandedRowRender}}
-            expandable={domains ? { expandedRowRender } : undefined}
+            expandable={domains ? { expandedRowRender, defaultExpandedRowKeys: ['m3beer'] } : undefined}
 
         />
     );

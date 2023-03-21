@@ -124,7 +124,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title, dom
             dataSource={domains ? domains : currentData}
             title={title}
             // expandable={{expandedRowRender}}
-            expandable={domains ? { expandedRowRender } : undefined}
+            expandable={domains ? { expandedRowRender, defaultExpandedRowKeys: ['m3beer'] } : undefined}
 
         />
     );
