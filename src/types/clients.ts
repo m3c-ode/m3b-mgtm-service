@@ -3,6 +3,7 @@ import { AddressData, NewAddressInput } from "./addresses";
 
 export type ClientsTableProps = {
     data?: ClientData[];
+    domains?: any[];
     isLoading: boolean;
     title?: () => JSX.Element;
 };
@@ -11,6 +12,7 @@ export type NewClientInput = {
     name: string;
     address: NewAddressInput;
     email: string;
+    domain?: string;
     type: ClientTypeEnum;
 };
 

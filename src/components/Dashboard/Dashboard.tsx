@@ -1,5 +1,5 @@
 import React from 'react';
-import type { MenuProps } from 'antd';
+import { MenuProps, Spin } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { Divider } from 'antd';
 import Link from 'next/link';
@@ -8,6 +8,7 @@ import CustomHeader from './CustomHeader';
 import { Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import { capitalize } from '../../../lib/functions';
+import { useSession } from 'next-auth/react';
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -22,6 +23,10 @@ type Props = {
 };
 
 const Dashboard: React.FC = ({ children }: Props) => {
+
+    //TODO:  Do authentication check here.
+    const { data: session, status } = useSession();
+
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -39,6 +44,12 @@ const Dashboard: React.FC = ({ children }: Props) => {
         return paths.map(path => capitalize(path));
     };
     const breadcrumbs = getPathDetails(pathname);
+
+    // if (status === 'unauthenticated') {
+    //     return (
+    //         <div> This is a protected page. You need to be logged in</div>
+    //     );
+    // }
 
     return (
         <Layout>

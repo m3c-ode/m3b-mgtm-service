@@ -1,12 +1,18 @@
 import { ObjectId, Timestamp } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
-import { adjustInventoryVolumes } from "../../../../lib/deliveries";
+import { getServerSession } from "next-auth";
+import { adjustInventoryVolumes, getDomainDeliveries } from "../../../../lib/deliveries";
 // import { doesDeliveryExist } from "../../../../lib/deliveries";
 import getDbCollection from "../../../../lib/getCollection";
+import { getDomainUsers } from "../../../../lib/users";
 import { DeliveryData, DeliveryStatusEnums, NewDeliveryInput } from "../../../types/deliveries";
+import { UserRolesEnum } from "../../../types/users";
+import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     const collection = await getDbCollection("deliveries");
+    const session = await getServerSession(req, res, authOptions);
+    const { role: userRole, domain, email } = session?.user ?? {};
 
     switch (req.method) {
         case 'POST':
@@ -35,8 +41,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             break;
         case 'GET':
             try {
-                const deliverys = await collection.find({}).toArray();
-                res.status(200).json(deliverys);
+                if (userRole === UserRolesEnum.Admin) {
+                    const deliveries = await collection.find({}).toArray();
+                    res.status(200).json(deliveries);
+                }
+                if (userRole === UserRolesEnum.BOwner) {
+                    const usersList = await getDomainDeliveries(domain!);
+                    res.status(200).json(usersList);
+                }
             } catch (error) {
                 console.log("🚀 ~ file: index.ts:22 ~ handler ~ get error", error);
                 res.status(500).json({ message: 'Error fetching deliveries' });

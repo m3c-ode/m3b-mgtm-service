@@ -107,7 +107,6 @@ const DeliveryMap = ({ deliveryData, clientData, userData }: Props) => {
                     </div>
                     {/* </Space> */}
                 </div>
-                {/* TODO: Add "complete Button" */}
                 <div ref={mapRef} style={{ height: "500px" }}></div>
                 {directions && (
                     <>

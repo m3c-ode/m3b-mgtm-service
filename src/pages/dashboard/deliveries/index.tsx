@@ -6,27 +6,57 @@ import type { DeliveryData } from '../../../types/deliveries';
 import { IoAddOutline } from 'react-icons/io5';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import toast from 'react-hot-toast';
-import { getAllDeliveriesAsync } from '../../../../lib/deliveries';
+import { getAllDeliveriesAsync, getDomainDeliveries } from '../../../../lib/deliveries';
 import { ClientData } from '../../../types/clients';
-import { getAllClientsAsync } from '../../../../lib/clients';
+import { getAllClientsAsync, getDomainClients } from '../../../../lib/clients';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../api/auth/[...nextauth]';
+import { UserRolesEnum } from '../../../types/users';
+import { getDomainsList } from '../../../../lib/users';
+import { getSession, useSession } from 'next-auth/react';
+import AdminDeliveriesTable from '../../../components/Tables/DeliveriesTable/AdminDeliveriesTable';
 
 
 interface DeliveryPageProps {
     deliveriesList?: DeliveryData[];
     clientsList?: ClientData[],
     isLoading?: boolean;
+    domainsList?: any[];
     error?: any;
 };
 
 export const getServerSideProps: GetServerSideProps<DeliveryPageProps> = async (context) => {
+    const session = await getServerSession(context.req, context.res, authOptions);
+    const { role: userRole, domain } = session?.user ?? {};
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        };
+    }
     try {
-        const clientsList = await getAllClientsAsync();
-        const deliveriesList = await getAllDeliveriesAsync();
+        if (userRole === UserRolesEnum.Admin) {
+            const domainsList = await getDomainsList();
+            const clientsList = await getAllClientsAsync();
+            const deliveriesList = await getAllDeliveriesAsync();
+            return {
+                props: {
+                    deliveriesList,
+                    clientsList,
+                    domainsList
+                    // deliveriesList: JSON.parse(JSON.stringify(deliveriesList)),
+                    // isLoading
+                },
+            };
+        }
+        const clientsList = await getDomainClients(domain!);
+        const deliveriesList = await getDomainDeliveries(domain!);
         return {
             props: {
                 deliveriesList,
                 clientsList,
-                // deliveriesList: JSON.parse(JSON.stringify(deliveriesList)),
                 // isLoading
             },
         };
@@ -43,9 +73,13 @@ export const getServerSideProps: GetServerSideProps<DeliveryPageProps> = async (
 };
 type Props = {};
 
-const DeliveriesPage = ({ deliveriesList, clientsList, isLoading, error }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const DeliveriesPage = ({ deliveriesList, clientsList, isLoading, error, domainsList }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     // console.log("🚀 ~ file: index.tsx:47 ~ DeliveriesPage ~ clientsList:", clientsList);
     // console.log("🚀 ~ file: index.tsx:47 ~ DeliveriesPage ~ deliveriesList:", deliveriesList);
+
+    const { data } = useSession();
+    console.log("🚀 ~ file: index.tsx:80 ~ DeliveriesPage ~ data:", data);
+    const userRole = data?.user?.role;
 
     if (error) {
         console.log("🚀 ~ file: index.tsx:60 ~ Deliveries ~ error:", error);
@@ -67,7 +101,15 @@ const DeliveriesPage = ({ deliveriesList, clientsList, isLoading, error }: Infer
         />;
     return (
         <Dashboard>
-            {deliveriesList && clientsList &&
+            {deliveriesList && clientsList && userRole === UserRolesEnum.Admin ?
+                <AdminDeliveriesTable
+                    deliveriesData={deliveriesList}
+                    clientsData={clientsList}
+                    title={TableTitle}
+                    isLoading={false}
+                    domains={domainsList}
+                />
+                :
                 <DeliveriesTable
                     deliveriesData={deliveriesList}
                     clientsData={clientsList}

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import type { BeersTableProps, BeerData } from '../../../types/beers';
 import styles from '../styles.module.scss';
-import { deleteBeer, getAllBeers } from '../../../pages/api/services';
+import { deleteBeer, getAllBeers as fetchBeersList } from '../../../pages/api/services';
 import { ObjectId } from 'mongodb';
 import toast from 'react-hot-toast';
 import { dateTableParser } from '../../../../lib/functions';
@@ -12,7 +12,7 @@ import { dateTableParser } from '../../../../lib/functions';
 
 // type BeersTableProps = {}
 
-const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
+const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title, domains }) => {
 
     const [currentData, setCurrentData] = useState(data);
 
@@ -20,7 +20,7 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
         try {
             const delRes = await deleteBeer(id);
             toast.success("Beer Successfully Deleted");
-            const res = await getAllBeers();
+            const res = await fetchBeersList();
             const beerData = res.data;
             setCurrentData(beerData);
 
@@ -31,6 +31,15 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
             throw new Error(error).message;
         }
     };
+
+    const domainsColumn: ColumnsType<string> = [
+        {
+            title: 'Domains',
+            dataIndex: '_id',
+            key: '_id',
+            // render: (domain, record) => domain
+        }
+    ];
 
     const columns: ColumnsType<BeerData> = [
         {
@@ -131,14 +140,28 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title }) => {
         },
     ];
 
+    const expandedRowRender = (record: any, index: number) => {
+        return (
+
+            <Table
+                rowKey={(record, index) => (record._id! as string)}
+                columns={columns}
+                className={styles.tableContainer + 'ant-table ant-table-default !important'}
+                dataSource={currentData?.filter((beer) => beer.domain === record._id)}
+            />
+        );
+    };
+
     return (
         <Table
             rowKey={record => record._id}
             className={styles.tableContainer}
-            columns={columns}
-            dataSource={currentData}
-            loading={isLoading}
+            columns={domains ? domainsColumn : columns}
+            dataSource={domains ? domains : currentData}
             title={title}
+            // expandable={{expandedRowRender}}
+            expandable={domains ? { expandedRowRender, defaultExpandedRowKeys: ['m3beer'] } : undefined}
+            loading={isLoading}
         />
     );
 };

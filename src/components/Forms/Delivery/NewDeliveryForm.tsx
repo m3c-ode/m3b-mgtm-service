@@ -21,6 +21,7 @@ type Props = {
     clientData?: ClientData;
     beersData?: BeerData[];
     userInfo?: string;
+    domainAddress?: string | AddressData;
 };
 
 const volumeLayout = {
@@ -28,7 +29,7 @@ const volumeLayout = {
     // wrapperCol: { span: 20 },
 };
 
-const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
+const NewDeliveryForm = ({ clientData, beersData, userInfo, domainAddress }: Props) => {
 
     const router = useRouter();
     const [form] = Form.useForm();
@@ -37,13 +38,17 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
 
     const clientAddress = addressParser(clientData?.address!);
 
-    const userAddresses: AddressData[] = [{
-        street1: '7347 Fraser st',
-        city: 'Vancouver',
-        zip: 'V5X3W1',
-        state: 'BC',
-        country: 'Canada',
-    }];
+    const userAddresses: AddressData[] = [
+        // {
+        // street1: '7347 Fraser st',
+        // city: 'Vancouver',
+        // zip: 'V5X3W1',
+        // state: 'BC',
+        // country: 'Canada',
+        // }
+    ];
+
+    domainAddress && userAddresses.push(domainAddress as AddressData);
 
     const availableBeers = beersData?.filter((beer) => beer.status === BeersStatusEnum.Ready);
 
@@ -69,6 +74,7 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo }: Props) => {
 
         const newDeliveryData: NewDeliveryInput = {
             clientId: clientData?._id,
+            domain: clientData?.domain,
             // businessId: merchantId,
             fromAddress: values.userAddress,
             toAddress: values.clientAddress,

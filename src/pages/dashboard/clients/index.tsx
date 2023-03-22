@@ -6,22 +6,47 @@ import type { ClientData } from '../../../types/clients';
 import { IoAddOutline } from 'react-icons/io5';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import toast from 'react-hot-toast';
-import { getAllClientsAsync } from '../../../../lib/clients';
+import { getAllClientsAsync, getDomainClients } from '../../../../lib/clients';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../api/auth/[...nextauth]';
+import { UserRolesEnum } from '../../../types/users';
+import { getDomainsList } from '../../../../lib/users';
 
 
 interface ClientPageProps {
     clientsList?: ClientData[];
+    domainsList?: any[];
     isLoading?: boolean;
     error?: any;
 };
 
 export const getServerSideProps: GetServerSideProps<ClientPageProps> = async (context) => {
+    const session = await getServerSession(context.req, context.res, authOptions);
+    const { role: userRole, domain } = session?.user ?? {};
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        };
+    }
     try {
-        const clientsList = await getAllClientsAsync();
+        if (userRole === UserRolesEnum.Admin) {
+            const domainsList = await getDomainsList();
+            const clientsList = await getAllClientsAsync();
+            return {
+                props: {
+                    clientsList: JSON.parse(JSON.stringify(clientsList)),
+                    domainsList
+                    // isLoading
+                },
+            };
+        }
+        const clientsList = await getDomainClients(domain!);
         return {
             props: {
-                clientsList: JSON.parse(JSON.stringify(clientsList)),
-                // isLoading
+                clientsList
             },
         };
     } catch (error: any) {
@@ -36,7 +61,7 @@ export const getServerSideProps: GetServerSideProps<ClientPageProps> = async (co
     }
 };
 
-const Clients = ({ clientsList, isLoading, error }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Clients = ({ clientsList, isLoading, error, domainsList }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
     if (error) {
         console.log("🚀 ~ file: index.tsx:60 ~ Clients ~ error:", error);
@@ -63,6 +88,7 @@ const Clients = ({ clientsList, isLoading, error }: InferGetServerSidePropsType<
                     data={clientsList}
                     title={TableTitle}
                     isLoading={false}
+                    domains={domainsList}
                 />
             }
         </Dashboard>

@@ -6,10 +6,10 @@ import styles from '../styles.module.scss';
 import toast from 'react-hot-toast';
 import type { ClientData, ClientsTableProps } from '../../../types/clients';
 import type { AddressData } from '../../../types/addresses';
-import { deleteClient, fetchAllClients } from '../../../pages/api/services/clients';
+import { deleteClient, fetchAllClients as fetchClientsList } from '../../../pages/api/services/clients';
 import { addressParser } from '../../../../lib/functions';
 
-const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) => {
+const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title, domains }) => {
 
     const [currentData, setCurrentData] = useState(data);
 
@@ -21,7 +21,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
                 return toast.error("Error deleting client");
             }
             toast.success("Client entry deleted");
-            const res = await fetchAllClients();
+            const res = await fetchClientsList();
             const clientData = res.data;
             setCurrentData(clientData);
 
@@ -31,6 +31,15 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
             throw new Error(error).message;
         }
     };
+
+    const domainsColumn: ColumnsType<string> = [
+        {
+            title: 'Domains',
+            dataIndex: '_id',
+            key: '_id',
+            // render: (domain, record) => domain
+        }
+    ];
 
     const columns: ColumnsType<ClientData> = [
         {
@@ -95,13 +104,28 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title }) =
         },
     ];
 
+    const expandedRowRender = (record: any, index: number) => {
+        return (
+
+            <Table
+                // rowKey={(record, index) => (record._id! as string)}
+
+                columns={columns}
+                className={styles.tableContainer + 'ant-table ant-table-default !important'}
+                dataSource={currentData?.filter((client) => client.domain === record._id)}
+            />
+        );
+    };
+
     return (
         <Table
-            rowKey={(record, index) => (record._id!)}
-            columns={columns}
+            // rowKey={(record, index) => (record._id!)}
+            columns={domains ? domainsColumn : columns}
             className={styles.tableContainer + 'ant-table ant-table-default !important'}
-            dataSource={currentData}
+            dataSource={domains ? domains : currentData}
             title={title}
+            // expandable={{expandedRowRender}}
+            expandable={domains ? { expandedRowRender, defaultExpandedRowKeys: ['m3beer'] } : undefined}
 
         />
     );

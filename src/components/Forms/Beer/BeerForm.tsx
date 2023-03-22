@@ -10,6 +10,7 @@ import HopsFields from './HopsFields';
 import styles from './styles.module.scss';
 import { useRouter } from 'next/router';
 import { createBeer } from '../../../pages/api/services';
+import { useDomainStore } from '../../../stores/domain';
 
 const { Step } = Steps;
 
@@ -25,6 +26,8 @@ const BeerForm = (props: Props) => {
 
     const [currentStep, setCurrentStep] = useState(BeerCreationSteps[0]);
     const [stepIndex, setStepIndex] = useState(0);
+
+
 
     const nextStep = () => {
         const formData = stepForm.getFieldsValue();
@@ -71,6 +74,7 @@ const BeerForm = (props: Props) => {
         // const currentBeerList = beerData;
         const data: NewBeerData = {
             name: formData.name,
+            domain: formData.domain,
             description: formData.description,
             style: formData.style,
             status: BeersStatusEnum.Projected,

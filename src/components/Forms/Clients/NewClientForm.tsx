@@ -26,6 +26,7 @@ const NewClientForm = (props: Props) => {
             name: values.name,
             email: values.email,
             type: values?.type,
+            domain: values?.domain,
             address: {
                 company: values.company,
                 street1: values.street1.toUpperCase(),

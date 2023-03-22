@@ -1,7 +1,10 @@
 import { Button, Form, Input, Select, FormInstance } from 'antd';
 import form from 'antd/es/form';
+import { useSession } from 'next-auth/react';
 import React from 'react';
 import { ClientData, ClientTypeEnum } from '../../../types/clients';
+import { UserRolesEnum } from '../../../types/users';
+import SelectDomainField from '../Select/SelectDomainField';
 import CreateAddressFields from './CreateAddressFields';
 
 type Props = {
@@ -10,6 +13,9 @@ type Props = {
 };
 
 const ClientInfoFields = ({ form, data }: Props) => {
+    const { data: sessionData, status }: { data: any, status: string; } = useSession();
+    const userRole = sessionData?.user?.role;
+
     return (
         <>
             <Form.Item
@@ -28,6 +34,9 @@ const ClientInfoFields = ({ form, data }: Props) => {
                 />
                 {/* <EmailInput /> */}
             </Form.Item>
+            {userRole === UserRolesEnum.Admin &&
+                <SelectDomainField />
+            }
             <Form.Item
                 label="Type: "
                 name="type"

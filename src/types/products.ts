@@ -9,6 +9,7 @@ export type ProductsTableProps = {
 export type ProductData = {
     _id: string;
     name: string;
+    domain?: string;
     quantity: number;
     receivedOn: string;
 

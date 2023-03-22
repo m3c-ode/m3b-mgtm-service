@@ -8,22 +8,53 @@ import type { BeerData } from '../../../types/beers';
 import { IoAddOutline } from 'react-icons/io5';
 import { getAllBeers } from '../../api/services';
 import toast from 'react-hot-toast';
-import { getBeersAsync } from '../../../../lib/beers';
+import { getBeersAsync, getDomainBeers, updateBeersDomain } from '../../../../lib/beers';
 import clientPromise from '../../../../lib/mongodb';
+import { useSession } from 'next-auth/react';
+import getDbCollection from '../../../../lib/getCollection';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../api/auth/[...nextauth]';
+import { UserRolesEnum } from '../../../types/users';
+import { getDomainsList } from '../../../../lib/users';
+import { useDomainStore } from '../../../stores/domain';
 // import { getDbCollection } from './api/services/beers';
 
 interface BeerPageProps {
     beersList?: BeerData[],
     isLoading?: boolean,
     error?: any;
+    domainsList?: any[];
 }
 
 export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (context) => {
+    // console.log("🚀 ~ file: index.tsx:23 ~ constgetServerSideProps:GetServerSideProps<BeerPageProps>= ~ context:", context);
+
+    const session = await getServerSession(context.req, context.res, authOptions);
+    const { role: userRole, domain } = session?.user ?? {};
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        };
+    }
+
     try {
-        const beersList = await getBeersAsync();
+        if (userRole === UserRolesEnum.Admin) {
+            const domainsList = await getDomainsList();
+            const beersList = await getBeersAsync();
+            return {
+                props: {
+                    beersList: JSON.parse(JSON.stringify(beersList)),
+                    domainsList
+                },
+            };
+        }
+        const beersList = await getDomainBeers(domain!);
         return {
             props: {
-                beersList: JSON.parse(JSON.stringify(beersList)),
+                beersList,
                 // isLoading
             },
         };
@@ -41,8 +72,14 @@ export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (cont
 
 type Props = {};
 
-const Page = ({ beersList, isLoading, error }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    console.log("🚀 ~ file: dashboard.tsx:76 ~ Page ~ beersList:", beersList);
+const Page = ({ beersList, isLoading, error, domainsList }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    // console.log("🚀 ~ file: dashboard.tsx:76 ~ Page ~ beersList:", beersList);
+
+    const session = useSession();
+    console.log("🚀 ~ file: index.tsx:49 ~ Page ~ session:", session);
+
+    const setDomainsList = useDomainStore(state => state.setDomainsList);
+    domainsList && setDomainsList(domainsList.map(domain => domain._id));
 
     //  Client Side data fetching
     // const [beersList, setBeersList] = useState<BeerData[] | null>(null);
@@ -103,6 +140,7 @@ const Page = ({ beersList, isLoading, error }: InferGetServerSidePropsType<typeo
                         data={beersList}
                         title={TableTitle}
                         isLoading={false}
+                        domains={domainsList}
                     />
                 }
                 {/* TODO: Add a spinner when loading state */}

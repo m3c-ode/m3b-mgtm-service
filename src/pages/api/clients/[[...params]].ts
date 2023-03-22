@@ -1,11 +1,16 @@
 import { ObjectId, Timestamp } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
-import { doesClientExist } from "../../../../lib/clients";
+import { getServerSession } from "next-auth";
+import { doesClientExist, getDomainClients } from "../../../../lib/clients";
 import getDbCollection from "../../../../lib/getCollection";
 import { NewClientInput } from "../../../types/clients";
+import { UserRolesEnum } from "../../../types/users";
+import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     const collection = await getDbCollection("clients");
+    const session = await getServerSession(req, res, authOptions);
+    const { role: userRole, domain, email } = session?.user ?? {};
 
     switch (req.method) {
         case 'POST':
@@ -39,8 +44,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             break;
         case 'GET':
             try {
-                const clients = await collection.find({}).toArray();
-                res.status(200).json(clients);
+                if (userRole === UserRolesEnum.Admin) {
+                    const clients = await collection.find({}).toArray();
+                    res.status(200).json(clients);
+                }
+                if (userRole === UserRolesEnum.BOwner) {
+                    const clientsList = await getDomainClients(domain!);
+                    res.status(200).json(clientsList);
+                }
             } catch (error) {
                 console.log("🚀 ~ file: index.ts:22 ~ handler ~ get error", error);
                 res.status(500).json({ message: 'Error fetching clients' });
