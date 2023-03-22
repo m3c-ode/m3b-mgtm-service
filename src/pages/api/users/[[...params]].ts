@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     ? collection.insertMany(newUser)
                     : collection.insertOne({
                         ...newUser,
-                        // pwd: await hash(newUser.pwd!, 12),
+                        pwd: await hash(newUser.pwd!, 12),
                         createdOn: new Date()
                     },
                     ));

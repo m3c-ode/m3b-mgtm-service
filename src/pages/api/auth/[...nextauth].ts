@@ -2,10 +2,11 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import getDbCollection from "../../../../lib/getCollection";
-import { UserData } from "../../../types/users";
+import { UserData, UserRolesEnum } from "../../../types/users";
 import { useUserStore } from "../../../stores/user";
 import { JWT } from "next-auth/jwt";
 import { redirect } from "next/dist/server/api-utils";
+import { compare } from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
     // Configure one or more authentication providers
@@ -37,15 +38,38 @@ export const authOptions: NextAuthOptions = {
                     email: string;
                     password: string;
                 };
+
+                // HASH password case - do not do it if admin
                 try {
-                    const user = await collection.findOne({ $and: [{ email: credentials?.email }, { pwd: credentials?.password }] }) as unknown as UserData;
+                    // const user = await collection.findOne({ $and: [{ email: credentials?.email }, { pwd: credentials?.password }] }) as unknown as UserData;
+                    const user = await collection.findOne({ email: credentials?.email }) as unknown as UserData;
                     console.log("🚀 ~ file: [...nextauth].ts:38 ~ authorize ~ user:", user);
 
                     if (!user
                         // || user.pwd !== credentials?.password
                     ) {
                         // If you return null then an error will be displayed advising the user to check their details.
-                        throw new Error("Invalid Login");
+                        throw new Error("Invalid Login - No user found with this email");
+                        // return null;
+                    }
+
+                    if (user.role === UserRolesEnum.Admin || user.domain === 'm3beer') {
+                        if (credentials?.password === user.pwd) {
+                            return {
+                                id: user?._id as string,
+                                name: user.name,
+                                email: user.email,
+                                role: user.role,
+                                domain: user.domain
+                            };
+                        }
+                        else return null;
+                    }
+
+                    const checkedPwd = compare(credentials?.password!, user.pwd!);
+
+                    if (!checkedPwd) {
+                        throw new Error("Invalid Login - Password does not match. Please contact your administrator");
                         // return null;
                     }
                     // else {
