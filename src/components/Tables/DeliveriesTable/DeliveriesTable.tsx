@@ -6,7 +6,7 @@ import styles from '../styles.module.scss';
 import toast from 'react-hot-toast';
 import { DeliveryData, DeliveriesTableProps, DeliveryProducts, DeliveryStatusEnums } from '../../../types/deliveries';
 import type { AddressData } from '../../../types/addresses';
-import { deleteDelivery, fetchAllDeliveries } from '../../../pages/api/services/deliveries';
+import { deleteDelivery, fetchAllDeliveries as fetchDeliveriesList } from '../../../pages/api/services/deliveries';
 import { addressParser, dateTableParser } from '../../../../lib/functions';
 import { ClientData } from '../../../types/clients';
 
@@ -32,7 +32,7 @@ const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clien
                 return toast.error("Error deleting delivery");
             }
             toast.success("Delivery entry deleted");
-            const res = await fetchAllDeliveries();
+            const res = await fetchDeliveriesList();
             const deliveryData = res.data;
             setCurrentData(deliveryData);
 

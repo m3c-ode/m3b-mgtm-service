@@ -87,7 +87,7 @@ const Users = ({ usersList, isLoading, error, domainsList, currentUserInfo }: In
     // If doesn'T work, pass it as a prop and assign it in component
     const setUserInfo = useUserStore(state => state.setUserInfo);
 
-    currentUserInfo && setUserInfo(currentUserInfo);
+    if (currentUserInfo) setUserInfo(currentUserInfo);
 
     console.log("🚀 ~ file: index.tsx:68 ~ Users ~ error:", error);
     if (error) {

@@ -70,7 +70,7 @@ function CreateUserForm({ data }: Props) {
     };
 
     const onSubmit = async (values: any) => {
-        console.log("🚀 ~ file: CreateUserForm.tsx:66 ~ onSubmit ~ values:", values);
+        // console.log("🚀 ~ file: CreateUserForm.tsx:66 ~ onSubmit ~ values:", values);
 
         const newUserData: CreateUserInput = {
             name: values.name,
@@ -97,7 +97,7 @@ function CreateUserForm({ data }: Props) {
             pwd: values?.password,
             role: values.role,
         };
-        console.log("🚀 ~ file: CreateUserForm.tsx:85 ~ onSubmit ~ newUserData:", newUserData);
+        // console.log("🚀 ~ file: CreateUserForm.tsx:85 ~ onSubmit ~ newUserData:", newUserData);
 
         try {
 

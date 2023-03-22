@@ -108,7 +108,8 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title, dom
         return (
 
             <Table
-                rowKey={(record, index) => (record._id! as string)}
+                // rowKey={(record, index) => (record._id! as string)}
+
                 columns={columns}
                 className={styles.tableContainer + 'ant-table ant-table-default !important'}
                 dataSource={currentData?.filter((client) => client.domain === record._id)}
@@ -118,7 +119,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title, dom
 
     return (
         <Table
-            rowKey={(record, index) => (record._id!)}
+            // rowKey={(record, index) => (record._id!)}
             columns={domains ? domainsColumn : columns}
             className={styles.tableContainer + 'ant-table ant-table-default !important'}
             dataSource={domains ? domains : currentData}

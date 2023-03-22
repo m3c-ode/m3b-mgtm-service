@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import type { BeersTableProps, BeerData } from '../../../types/beers';
 import styles from '../styles.module.scss';
-import { deleteBeer, getAllBeers } from '../../../pages/api/services';
+import { deleteBeer, getAllBeers as fetchBeersList } from '../../../pages/api/services';
 import { ObjectId } from 'mongodb';
 import toast from 'react-hot-toast';
 import { dateTableParser } from '../../../../lib/functions';
@@ -20,7 +20,7 @@ const BeersTable: React.FC<BeersTableProps> = ({ data, isLoading, title, domains
         try {
             const delRes = await deleteBeer(id);
             toast.success("Beer Successfully Deleted");
-            const res = await getAllBeers();
+            const res = await fetchBeersList();
             const beerData = res.data;
             setCurrentData(beerData);
 

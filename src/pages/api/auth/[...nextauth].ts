@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
                     password: string;
                 };
                 try {
-                    const user = await collection.findOne({ $and: [{ email: credentials?.email }, { pwd: credentials?.password }] }) as UserData;
+                    const user = await collection.findOne({ $and: [{ email: credentials?.email }, { pwd: credentials?.password }] }) as unknown as UserData;
                     console.log("🚀 ~ file: [...nextauth].ts:38 ~ authorize ~ user:", user);
 
                     if (!user

@@ -5,6 +5,8 @@ import getDbCollection from "../../../../lib/getCollection";
 import { CreateUserInput, UserRolesEnum } from "../../../types/users";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
+import { hash } from 'bcrypt';
+// import bcrypt from "bcrypt";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     const collection = await getDbCollection("users");
@@ -27,9 +29,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 if (userExists) {
                     return res.status(409).json({ message: 'Error creating User: User with same email already exists' });
                 }
+                // newUser.pwd = await hash(newUser.pwd, 12)
                 const result = await (Array.isArray(newUser)
                     ? collection.insertMany(newUser)
-                    : collection.insertOne({ ...newUser, createdOn: new Date() },
+                    : collection.insertOne({
+                        ...newUser,
+                        // pwd: await hash(newUser.pwd!, 12),
+                        createdOn: new Date()
+                    },
                     ));
                 res.status(201)
                     .json(result);
