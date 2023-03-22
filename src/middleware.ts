@@ -41,8 +41,8 @@ export default withAuth(
     {
         callbacks: {
             authorized: async ({ token, req }) => {
-                const session = await getSession();
-                console.log("🚀 ~ file: middleware.ts:29 ~ authorized: ~ session:", session);
+                // const session = await getSession();
+                // console.log("🚀 ~ file: middleware.ts:29 ~ authorized: ~ session:", session);
                 // const serversesh = await getServerSession(req, authOptions);
                 // console.log("🚀 ~ file: middleware.ts:46 ~ authorized: ~ serversesh:", serversesh);
                 // const test = await getCsrfToken();
