@@ -11,10 +11,10 @@ import { compare } from "bcrypt";
 export const authOptions: NextAuthOptions = {
     // Configure one or more authentication providers
     providers: [
-        GithubProvider({
-            clientId: process.env.GITHUB_ID as string,
-            clientSecret: process.env.GITHUB_SECRET as string,
-        }),
+        // GithubProvider({
+        //     clientId: process.env.GITHUB_ID as string,
+        //     clientSecret: process.env.GITHUB_SECRET as string,
+        // }),
         // ...add more providers here
         CredentialsProvider({
             // The name to display on the sign in form (e.g. "Sign in with...")
@@ -74,7 +74,6 @@ export const authOptions: NextAuthOptions = {
                     }
                     // else {
                     // Maybe not needed with session info
-                    // setUserInfo(user);
                     // Any object returned will be saved in `user` property of the JWT
                     return {
                         id: user?._id as string,
@@ -100,7 +99,7 @@ export const authOptions: NextAuthOptions = {
         strategy: 'jwt'
     },
     jwt: {
-        // maxAge: 60 * 60 * 24, //1 day, 24h
+        maxAge: 60 * 60 * 24, //1 day, 24h
     },
     callbacks: {
         async jwt({ token, user }/* : { token: JWT, user?: any | UserData; } */) {
@@ -128,6 +127,7 @@ export const authOptions: NextAuthOptions = {
         //     return baseUrl + '/dashboard/beers';
         // },
     },
+    secret: process.env.NEXTAUTH_SECRET
 };
 
 export default NextAuth(authOptions);
