@@ -78,7 +78,7 @@ const CustomNavigation = (props: Props) => {
         },
         {
             key: `${BASE_DASHBOARD_PATH}/recipes`,
-            label: (<Tooltip title='Coming soon!' placement='right'>
+            label: (<Tooltip color={'blue'} title='Coming soon!' placement='right'>
                 <Link href={`${BASE_DASHBOARD_PATH}/recipes`}>Recipes</Link>
             </Tooltip>),
             // icon: <IoBeerOutline />,
@@ -86,14 +86,14 @@ const CustomNavigation = (props: Props) => {
         },
         {
             key: `${BASE_DASHBOARD_PATH}/orders`,
-            label: (<Tooltip title='Coming soon!' placement='right'>Orders</Tooltip>),
+            label: (<Tooltip color={'blue'} title='Coming soon!' placement='right'>Orders</Tooltip>),
             // label: (<Link href={`${BASE_DASHBOARD_PATH}/orders`}>Orders</Link>),
             icon: React.createElement(MdOutlineProductionQuantityLimits),
         },
         {
             key: `${BASE_DASHBOARD_PATH}/invoices`,
             // label: (<Link href={`${BASE_DASHBOARD_PATH}/invoices`}>Invoices</Link>),
-            label: (<Tooltip title='Coming soon!' placement='right'>Invoices</Tooltip>),
+            label: (<Tooltip color={'blue'} title='Coming soon!' placement='right'>Invoices</Tooltip>),
             icon: React.createElement(TbFileInvoice),
         },
 

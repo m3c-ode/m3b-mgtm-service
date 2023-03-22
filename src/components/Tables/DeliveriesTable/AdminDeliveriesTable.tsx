@@ -12,7 +12,8 @@ import { ClientData } from '../../../types/clients';
 
 type Props = {};
 
-const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clientsData, isLoading, title }) => {
+const AdminDeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clientsData, domains, isLoading, title }) => {
+    console.log("🚀 ~ file: DeliveriesTable.tsx:16 ~ domains:", domains);
     console.log("🚀 ~ file: DeliveriesTable.tsx:16 ~ deliveriesData:", deliveriesData);
 
     const [currentData, setCurrentData] = useState(deliveriesData);
@@ -181,40 +182,54 @@ const DeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clien
         },
     ];
 
-    const expandedRowRender = (record: ClientData) => {
+    const expandedRowRender = (record: any) => {
 
-        const expandedRowRender = (record: DeliveryData) => {
+
+        const expandedRowRender = (record: ClientData) => {
+
+            const expandedRowRender = (record: DeliveryData) => {
+                return (
+                    <Table
+                        columns={productsColumns}
+                        dataSource={record.products}
+                        // dataSource={record.children}
+                        pagination={false}
+                    />
+                );
+            };
             return (
                 <Table
-                    columns={productsColumns}
-                    dataSource={record.products}
-                    // dataSource={record.children}
+                    columns={deliveryInfocolumns}
+                    dataSource={currentData?.filter((delivery) => delivery.clientId === record._id)}
+                    expandable={{ expandedRowRender }}
                     pagination={false}
                 />
             );
         };
+
         return (
             <Table
-                columns={deliveryInfocolumns}
-                dataSource={currentData?.filter((delivery) => delivery.clientId === record._id)}
+                rowKey={(record, index) => (record._id! as string)}
+                columns={parentColumns}
+                dataSource={filteredClientsData?.filter(client => client.domain === record._id)}
+                className={styles.tableContainer + 'ant-table ant-table-default !important'}
                 expandable={{ expandedRowRender }}
-                pagination={false}
             />
         );
-    };
 
+    };
     return (
         <Table
-            rowKey={(record, index) => (record._id! as string)}
-            columns={parentColumns}
-            dataSource={filteredClientsData}
+            rowKey={(record, index) => (record._id!)}
+            columns={domains ? domainsColumn : parentColumns}
             className={styles.tableContainer + 'ant-table ant-table-default !important'}
-            expandable={{ expandedRowRender }}
+            dataSource={domains ? domains : filteredClientsData}
+            expandable={{ expandedRowRender, defaultExpandedRowKeys: ['m3beer'] }}
+            // expandable={domains ? { expandedRowRender, defaultExpandedRowKeys: ['m3beer'] } : undefined}
             title={title}
+
         />
     );
-
-
 };
 
-export default DeliveriesTable;
+export default AdminDeliveriesTable;

@@ -13,6 +13,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import { UserRolesEnum } from '../../../types/users';
 import { getDomainsList } from '../../../../lib/users';
+import { getSession, useSession } from 'next-auth/react';
+import AdminDeliveriesTable from '../../../components/Tables/DeliveriesTable/AdminDeliveriesTable';
 
 
 interface DeliveryPageProps {
@@ -75,6 +77,10 @@ const DeliveriesPage = ({ deliveriesList, clientsList, isLoading, error, domains
     // console.log("🚀 ~ file: index.tsx:47 ~ DeliveriesPage ~ clientsList:", clientsList);
     // console.log("🚀 ~ file: index.tsx:47 ~ DeliveriesPage ~ deliveriesList:", deliveriesList);
 
+    const { data } = useSession();
+    console.log("🚀 ~ file: index.tsx:80 ~ DeliveriesPage ~ data:", data);
+    const userRole = data?.user?.role;
+
     if (error) {
         console.log("🚀 ~ file: index.tsx:60 ~ Deliveries ~ error:", error);
         toast.error('There was an error fetching the deliveries table data');
@@ -95,13 +101,20 @@ const DeliveriesPage = ({ deliveriesList, clientsList, isLoading, error, domains
         />;
     return (
         <Dashboard>
-            {deliveriesList && clientsList &&
-                <DeliveriesTable
+            {deliveriesList && clientsList && userRole === UserRolesEnum.Admin ?
+                <AdminDeliveriesTable
                     deliveriesData={deliveriesList}
                     clientsData={clientsList}
                     title={TableTitle}
                     isLoading={false}
                     domains={domainsList}
+                />
+                :
+                <DeliveriesTable
+                    deliveriesData={deliveriesList}
+                    clientsData={clientsList}
+                    title={TableTitle}
+                    isLoading={false}
                 />
             }
         </Dashboard>
