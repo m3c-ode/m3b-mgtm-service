@@ -21,7 +21,7 @@ type Props = {};
 //     key: string;
 //     label: JSX.Element | string,
 //     icon: React.FunctionComponentElement<IconBaseProps>,
-//     isHidden?: boolean;
+//     ishidden?: boolean;
 // }
 
 // interface CustomMenuItemsMap {
@@ -29,10 +29,10 @@ type Props = {};
 // }
 
 interface MenuItemWithHidden extends MenuProps {
-    isHidden: boolean;
+    ishidden: boolean;
 }
 
-type ItemTypeWithHidden = ItemType & { isHidden?: boolean; };
+type ItemTypeWithHidden = ItemType & { ishidden?: boolean; };
 
 const CustomNavigation = (props: Props) => {
     const router = useRouter();
@@ -74,7 +74,7 @@ const CustomNavigation = (props: Props) => {
             label: (<Link href={`${BASE_DASHBOARD_PATH}/users`}>Users</Link>),
             // icon: <IoBeerOutline />,
             icon: React.createElement(AiOutlineUser),
-            isHidden: userRole === UserRolesEnum.BUser,
+            ishidden: userRole === UserRolesEnum.BUser,
         },
         {
             key: `${BASE_DASHBOARD_PATH}/recipes`,
@@ -111,7 +111,7 @@ const CustomNavigation = (props: Props) => {
                 mode="inline"
                 defaultSelectedKeys={[pathname]}
                 style={{ height: '100%', borderRight: 0 }}
-                items={navigationItems.filter((item, index) => !item.isHidden)}
+                items={navigationItems.filter((item, index) => !item.ishidden)}
             />
         </div>
     );

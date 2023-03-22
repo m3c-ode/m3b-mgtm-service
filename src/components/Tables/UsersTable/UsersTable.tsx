@@ -6,7 +6,7 @@ import styles from '../styles.module.scss';
 import toast from 'react-hot-toast';
 import type { UserData, UsersTableProps } from '../../../types/users';
 import type { AddressData } from '../../../types/addresses';
-import { deleteUser, fetchAllUsers } from '../../../pages/api/services/users';
+import { deleteUser, fetchUsersList } from '../../../pages/api/services/users';
 import { addressParser } from '../../../../lib/functions';
 
 const UsersTable: React.FC<UsersTableProps> = ({ data, isLoading, title, domains }) => {
@@ -22,9 +22,11 @@ const UsersTable: React.FC<UsersTableProps> = ({ data, isLoading, title, domains
                 return toast.error("Error deleting user");
             }
             toast.success("User entry deleted");
-            const res = await fetchAllUsers();
+            // if user is Admin, fetchAllUsers
+            const res = await fetchUsersList();
             const userData = res.data;
             setCurrentData(userData);
+            // else fetch domain users
 
         } catch (error: any) {
             console.log("🚀 ~ file: UsersTable.tsx:43 ~ handleDeleteDb ~ error", error);

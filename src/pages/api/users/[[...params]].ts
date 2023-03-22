@@ -1,11 +1,16 @@
 import { ObjectId, Timestamp } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
-import { doesDomainExist, doesUserExist } from "../../../../lib/users";
+import { doesDomainExist, doesUserExist, getDomainUsers } from "../../../../lib/users";
 import getDbCollection from "../../../../lib/getCollection";
 import { CreateUserInput, UserRolesEnum } from "../../../types/users";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
     const collection = await getDbCollection("users");
+
+    const session = await getServerSession(req, res, authOptions);
+    const { role: userRole, domain, email } = session?.user ?? {};
 
     switch (req.method) {
         case 'POST':
@@ -46,8 +51,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             break;
         case 'GET':
             try {
-                const users = await collection.find({}).toArray();
-                res.status(200).json(users);
+                // if user is Admin, fetchAllUsers
+                if (userRole === UserRolesEnum.Admin) {
+                    const users = await collection.find({}).toArray();
+                    res.status(200).json(users);
+                }
+                if (userRole === UserRolesEnum.BOwner) {
+                    const usersList = await getDomainUsers(domain!);
+                    res.status(200).json(usersList);
+                }
+                // else fetch domain users
             } catch (error) {
                 console.log("🚀 ~ file: index.ts:22 ~ handler ~ get error", error);
                 res.status(500).json({ message: 'Error fetching users' });

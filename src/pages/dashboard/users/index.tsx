@@ -10,12 +10,14 @@ import { IoAddOutline } from 'react-icons/io5';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import { useUserStore } from '../../../stores/user';
+import { useSession } from 'next-auth/react';
 
 interface UserPageProps {
     usersList?: UserData[];
     domainsList?: any[];
     isLoading?: boolean;
     error?: any;
+    currentUserInfo?: UserData;
 };
 
 export const getServerSideProps: GetServerSideProps<UserPageProps> = async (context) => {
@@ -55,14 +57,11 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (cont
         }
         // If Bowner, get own domain users and fetch own data (address) to provide to Buser
         const usersList = await getDomainUsers(domain!);
-        // If doesn'T work, pass it as a prop and assign it in component
-        const setUserInfo = useUserStore(state => state.setUserInfo);
-        const BOwnerInfo = await getUserDataFromEmail(email!);
-        console.log("🚀 ~ file: index.tsx:60 ~ constgetServerSideProps:GetServerSideProps<UserPageProps>= ~ BOwnerInfo:", BOwnerInfo);
-        setUserInfo(BOwnerInfo);
+        const currentUserInfo = await getUserDataFromEmail(email!);
         return {
             props: {
                 usersList: JSON.parse(JSON.stringify(usersList)),
+                currentUserInfo
                 // isLoading
             },
         };
@@ -82,7 +81,14 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (cont
     }
 };
 
-const Users = ({ usersList, isLoading, error, domainsList }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Users = ({ usersList, isLoading, error, domainsList, currentUserInfo }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    console.log("🚀 ~ file: index.tsx:85 ~ Users ~ currentUserInfo:", currentUserInfo);
+
+    // If doesn'T work, pass it as a prop and assign it in component
+    const setUserInfo = useUserStore(state => state.setUserInfo);
+
+    currentUserInfo && setUserInfo(currentUserInfo);
+
     console.log("🚀 ~ file: index.tsx:68 ~ Users ~ error:", error);
     if (error) {
         toast.error(error);

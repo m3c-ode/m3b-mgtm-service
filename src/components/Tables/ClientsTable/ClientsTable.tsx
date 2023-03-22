@@ -6,7 +6,7 @@ import styles from '../styles.module.scss';
 import toast from 'react-hot-toast';
 import type { ClientData, ClientsTableProps } from '../../../types/clients';
 import type { AddressData } from '../../../types/addresses';
-import { deleteClient, fetchAllClients } from '../../../pages/api/services/clients';
+import { deleteClient, fetchAllClients as fetchClientsList } from '../../../pages/api/services/clients';
 import { addressParser } from '../../../../lib/functions';
 
 const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title, domains }) => {
@@ -21,7 +21,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title, dom
                 return toast.error("Error deleting client");
             }
             toast.success("Client entry deleted");
-            const res = await fetchAllClients();
+            const res = await fetchClientsList();
             const clientData = res.data;
             setCurrentData(clientData);
 

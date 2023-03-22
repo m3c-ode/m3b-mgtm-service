@@ -6,6 +6,6 @@ export const createUser = (userData: CreateUserInput | CreateUserInput[]) => axi
 
 export const deleteUser = (userId: string) => axios.delete(`/api/users/${userId}`);
 
-export const fetchAllUsers = () => axios.get('/api/users');
+export const fetchUsersList = () => axios.get('/api/users');
 
 export const updateUserInfo = (userId: string, userData: UserData) => axios.patch(`/api/users/${userId}`, { ...userData });

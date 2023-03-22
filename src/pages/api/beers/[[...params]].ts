@@ -3,8 +3,12 @@
 
 import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
+import { getDomainBeers } from "../../../../lib/beers";
 import clientPromise from "../../../../lib/mongodb";
 import type { BeerData, NewBeerData } from "../../../types/beers";
+import { UserRolesEnum } from "../../../types/users";
+import { authOptions } from "../auth/[...nextauth]";
 
 // base default url here?
 
@@ -31,14 +35,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // creates and use a db called "test"
     const db = client.db();
     const collection = db.collection("beers");
-    console.log("🚀 ~ file: index.ts:16 ~ handler ~ req.method", req.method);
-
+    const session = await getServerSession(req, res, authOptions);
+    const { role: userRole, domain, email } = session?.user ?? {};
 
     switch (req.method) {
         case 'GET':
             try {
-                const beers = await collection.find({}).toArray();
-                res.status(200).json(beers);
+                if (userRole === UserRolesEnum.Admin) {
+                    const beers = await collection.find({}).toArray();
+                    res.status(200).json(beers);
+                }
+                if (userRole === UserRolesEnum.BOwner) {
+                    const usersList = await getDomainBeers(domain!);
+                    res.status(200).json(usersList);
+                }
             } catch (error) {
                 console.log("🚀 ~ file: index.ts:22 ~ handler ~ get error", error);
                 res.status(500).json({ message: 'Error fetching beers' });
