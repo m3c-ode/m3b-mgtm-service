@@ -47,12 +47,12 @@ export default withAuth(
                 // console.log("🚀 ~ file: middleware.ts:46 ~ authorized: ~ serversesh:", serversesh);
                 // const test = await getCsrfToken();
                 // console.log("🚀 ~ file: middleware.ts:17 ~ test:", test);
-                const texttoken = await getToken({ req });
-                console.log("🚀 ~ file: middleware.ts:48 ~ authorized: ~ texttoken:", texttoken);
+                const testToken = await getToken({ req });
+                console.log("🚀 ~ file: middleware.ts:48 ~ authorized: ~ texttoken:", testToken);
                 console.log("🚀 ~ file: middleware.ts:16 ~ req.cookies:", req);
                 const cookie = req.cookies.get("next-auth.csrf-token");
                 console.log("🚀 ~ file: middleware.ts:17 ~ cookie:", cookie);
-                // console.log("🚀 ~ file: middleware.ts:17 ~ token:", token);
+                console.log("🚀 ~ file: middleware.ts:17 ~ token:", token);
                 if (token) { return true; }
                 // return !!session;
                 // else 
