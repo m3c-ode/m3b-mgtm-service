@@ -9,7 +9,7 @@ export const getUserDataFromId = async (userId: string): Promise<UserData> => {
         const client = await collection.findOne({ _id: new ObjectId(userId) });
         return JSON.parse(JSON.stringify(client));
     } catch (error) {
-        console.log("🚀 ~ file: clients.ts:104 ~ getClientData ~ error:", error);
+        console.log("🚀 ~ file: users.ts:12 ~ getUserDataFromId ~ error:", error);
         throw new Error('Error fetching user info');
     }
 };

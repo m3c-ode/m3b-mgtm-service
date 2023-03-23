@@ -33,7 +33,7 @@ export const getDeliveryData = async (id: string) => {
         const result = await collection.findOne({ _id: new ObjectId(id) });
         return JSON.parse(JSON.stringify(result));
     } catch (error) {
-        console.log("🚀 ~ file: clients.ts:104 ~ getClientData ~ error:", error);
+        console.log("🚀 ~ file: deliveries.ts:36 ~ getDeliveryData ~ error:", error);
     }
 };
 

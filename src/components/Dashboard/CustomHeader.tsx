@@ -7,6 +7,7 @@ import { MdLogout } from 'react-icons/md';
 import { signOut, useSession } from 'next-auth/react';
 import { useUserStore } from '../../stores/user';
 import UserSettingsModal from '../Modal';
+import { fetchUserInfo } from '../../pages/api/services';
 
 
 const { Header } = Layout;
@@ -47,8 +48,8 @@ const topRightItems: MenuProps['items'] = [
 
 const CustomHeader = (props: Props) => {
 
-    const userInfo = useUserStore(state => state.userInfo);
-    console.log("🚀 ~ file: CustomHeader.tsx:51 ~ CustomHeader ~ userInfo:", userInfo);
+    const { userInfo, setUserInfo } = useUserStore((state) => ({ userInfo: state.userInfo, setUserInfo: state.setUserInfo }));
+    // console.log("🚀 ~ file: CustomHeader.tsx:51 ~ CustomHeader ~ userInfo:", userInfo);
 
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,8 +62,21 @@ const CustomHeader = (props: Props) => {
     //     const { user: { email } = {} } = session?.data ?? {}
     // }
 
-    const showModal = (props: Props) => {
-        setIsModalOpen(true);
+    const showModal = async (props: Props) => {
+        // if (!userInfo) {
+        try {
+            const userRes = await fetchUserInfo(data?.user?.id!);
+            console.log("🚀 ~ file: CustomHeader.tsx:69 ~ showModal ~ userRes:", userRes);
+            if (userRes.status === 200) {
+                setUserInfo(userRes.data);
+            }
+            return setIsModalOpen(true);
+        } catch (error) {
+            console.log("🚀 ~ file: CustomHeader.tsx:71 ~ showModal ~ error:", error);
+            return setIsModalOpen(true);
+        }
+        // }
+        // setIsModalOpen(true);
     };
 
     const handleOk = () => {

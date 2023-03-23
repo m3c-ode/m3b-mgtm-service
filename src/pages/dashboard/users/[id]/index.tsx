@@ -1,7 +1,9 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getServerSession } from 'next-auth';
 import React from 'react';
+
 import { getUserDataFromId } from '../../../../../lib/users';
+import Dashboard from '../../../../components/Dashboard';
 import EditUserForm from '../../../../components/Forms/Users/EditUserForm';
 import type { UserData } from '../../../../types/users';
 import { authOptions } from '../../../api/auth/[...nextauth]';
@@ -50,11 +52,13 @@ const User = ({ userData }: InferGetServerSidePropsType<typeof getServerSideProp
 
     return (
         <>
-            {userData &&
-                <EditUserForm
-                    data={userData}
-                />
-            }
+            <Dashboard>
+                {userData &&
+                    <EditUserForm
+                        data={userData}
+                    />
+                }
+            </Dashboard>
         </>
     );
 };

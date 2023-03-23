@@ -63,7 +63,7 @@ const EditUserForm = ({ data: userData }: Props) => {
     };
 
     return (
-        <Dashboard>
+        <>
             <div className={styles.preFormHeader}>
                 <h2>User details</h2>
                 <Divider />
@@ -106,7 +106,7 @@ const EditUserForm = ({ data: userData }: Props) => {
                     </Button>
                 </Form.Item>
             </Form>
-        </Dashboard>
+        </>
     );
 };
 

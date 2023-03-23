@@ -67,7 +67,7 @@ export const getClientData = async (clientId: string) => {
         const client = await collection.findOne({ _id: new ObjectId(clientId) });
         return JSON.parse(JSON.stringify(client));
     } catch (error) {
-        console.log("🚀 ~ file: clients.ts:104 ~ getClientData ~ error:", error);
+        console.log("🚀 ~ file: clients.ts:70 ~ getClientData ~ error:", error);
     }
 
 };
