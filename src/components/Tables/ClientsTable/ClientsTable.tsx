@@ -114,7 +114,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title, dom
 
     return (
         <Table
-            // rowKey={(record, index) => (record._id!)}
+            rowKey={(record, index) => (record._id!)}
             columns={domains ? domainsColumn : columns}
             className={styles.tableContainer + 'ant-table ant-table-default !important'}
             dataSource={domains ? domains : currentData}

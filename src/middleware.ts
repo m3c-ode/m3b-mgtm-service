@@ -12,7 +12,7 @@ export default withAuth(
     async function middleware(req, res) {
         // console.log("🚀 ~ file: middleware.ts:9 ~ middleware ~ req:", req);
         // // return Nextreponse
-        console.log('middleware nextauth token', req.nextauth.token);
+        // console.log('middleware nextauth token', req.nextauth.token);
         // // return NextResponse.rewrite(new URL('/dashboard', req.url));
         // console.log("🚀 ~ file: middleware.ts:7 ~ middleware ~ session:", session);
         // if (session) {
