@@ -16,10 +16,6 @@ interface Grain {
     receivedOn: string;
 }
 
-// interface testGrain extends GrainsData {
-//     key: string;
-// }
-
 interface Hop {
     key: string;
     name: string;

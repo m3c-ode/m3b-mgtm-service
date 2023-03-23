@@ -20,7 +20,6 @@ const { Option } = Select;
 type Props = {
     clientData?: ClientData;
     beersData?: BeerData[];
-    userInfo?: string;
     domainAddress?: string | AddressData;
 };
 
@@ -29,7 +28,7 @@ const volumeLayout = {
     // wrapperCol: { span: 20 },
 };
 
-const NewDeliveryForm = ({ clientData, beersData, userInfo, domainAddress }: Props) => {
+const NewDeliveryForm = ({ clientData, beersData, domainAddress }: Props) => {
 
     const router = useRouter();
     const [form] = Form.useForm();
@@ -54,11 +53,8 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo, domainAddress }: Pro
 
 
     const [selectedBeers, setSelectedBeers] = useState<BeerData[]>([]);
-    console.log("🚀 ~ file: NewDeliveryForm.tsx:46 ~ selectedBeers:", selectedBeers);
-    // const [selectedBeer, setSelectedBeer] = useState<BeerData | undefined>(undefined);
 
     const availableOptions = availableBeers!.filter((beer) => {
-        // if (selectedBeers.length > 0) {
         const isSelected = selectedBeers?.some((selectedBeer) => selectedBeer && selectedBeer._id === beer._id);
         return !isSelected;
 
@@ -68,9 +64,7 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo, domainAddress }: Pro
     });
 
     const onFinish = async (values: any) => {
-        console.log("🚀 ~ file: NewDeliveryForm.tsx:12 ~ onFinish ~ values:", values);
-        const formData = form.getFieldsValue(true);
-        console.log("🚀 ~ file: NewDeliveryForm.tsx:14 ~ onFinish ~ formData:", formData);
+        // const formData = form.getFieldsValue(true);
 
         const newDeliveryData: NewDeliveryInput = {
             clientId: clientData?._id,
@@ -80,8 +74,6 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo, domainAddress }: Pro
             toAddress: values.clientAddress,
             products: values.products,
         };
-        console.log("🚀 ~ file: NewDeliveryForm.tsx:31 ~ onFinish ~ newDeliveryData:", newDeliveryData);
-
         // TODO: Create confirmaton modal
 
         try {
@@ -165,8 +157,7 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo, domainAddress }: Pro
                         options={userAddresses.map((add, index) => {
                             return { label: addressParser(add), value: addressParser(add) };
                         })}
-                    >
-                    </Select>
+                    />
                 </Form.Item>
                 <h3>Beer Inventory</h3>
                 <Divider />
@@ -198,8 +189,6 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo, domainAddress }: Pro
                                         return newSelectedBeers;
                                     });
                                 };
-
-                                console.log("🚀 ~ file: NewDeliveryForm.tsx:206 ~ NewDeliveryForm ~ field:", field);
                                 return (
                                     <>
                                         <div className={formStyles.beerItems}>
@@ -222,29 +211,13 @@ const NewDeliveryForm = ({ clientData, beersData, userInfo, domainAddress }: Pro
                                                     <Select
                                                         placeholder="Select a beer product from the list"
                                                         allowClear
-                                                        // value={selectedBeers && selectedBeers[field.name]?._id}
-                                                        // onChange={value => setSelectedBeer(availableBeers?.find((beer) => beer.name === value))}
-                                                        // onChange={value => setSelectedBeers(selectedBeers => [...selectedBeers, availableBeers?.find((beer) => beer._id === value)!])}
                                                         onChange={handleBeerSelection
                                                         }
-                                                        // onSelect={ }
                                                         labelInValue={true}
                                                         options={availableOptions?.map((beer, index) => {
                                                             return { value: beer._id, label: beer.name, key: index };
                                                         })}
-                                                    // style={{ width: '80%' }}
-                                                    >
-                                                        {/* {availableOptions?.map((beer, index) => (
-                                                            <Option
-                                                                key={index}
-                                                                value={beer._id}
-                                                                label={beer.name}
-                                                            >
-                                                                {beer.name}
-                                                            </Option>
-                                                        ))} */}
-
-                                                    </Select>
+                                                    />
                                                 </Form.Item>
                                                 <BeerVolumesFields
                                                     form={form}

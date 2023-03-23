@@ -1,16 +1,27 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { getServerSession } from 'next-auth';
 import React from 'react';
 import { getUserDataFromId } from '../../../../../lib/users';
 import EditUserForm from '../../../../components/Forms/Users/EditUserForm';
 import type { UserData } from '../../../../types/users';
+import { authOptions } from '../../../api/auth/[...nextauth]';
 
 interface EditUserPageProps {
     userData?: UserData;
 }
 
 export const getServerSideProps: GetServerSideProps<EditUserPageProps> = async (context) => {
+    const session = await getServerSession(context.req, context.res, authOptions);
+    const { role: userRole, domain, email } = session?.user ?? {};
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        };
+    }
     try {
-        // console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
         const userId = context.params!.id as string;;
         const userData = await getUserDataFromId(userId);
         return {

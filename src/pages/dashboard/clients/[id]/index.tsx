@@ -35,8 +35,6 @@ type Props = {
 };
 
 const Client = ({ clientData }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    console.log("🚀 ~ file: index.tsx:36 ~ Client ~ clientData", clientData);
-
     return (
         <>
             {clientData &&

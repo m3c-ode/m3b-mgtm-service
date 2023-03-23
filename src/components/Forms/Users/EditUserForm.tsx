@@ -23,20 +23,15 @@ const EditUserForm = ({ data: userData }: Props) => {
     const { _id, name, domain, email, role, address: { street1, street2, city, zip, country, state, phone, notes } = {} } = userData;
 
     const switchMode = ({ disabled }: { disabled: boolean; }) => {
-        console.log("🚀 ~ file: EditUserForm.tsx:28 ~ switchMode ~ checked", disabled);
         setIsFormDisabled(disabled);
     };
 
     const onFinish = async (values: any) => {
-        console.log("edit form values", values);
         const data: UserData = {
             _id: _id,
-            // userId: customerId,
-            // businessId: merchantId,
             name: values.name,
             email: values.email,
             domain: values?.domain,
-            // pwd: values?.password,
             role: values?.role,
             address: {
                 company: values.company,
@@ -49,14 +44,10 @@ const EditUserForm = ({ data: userData }: Props) => {
                 phone: values?.phone ? parsePhoneNumber(values.phone) : undefined,
                 notes: values.notes,
             },
-            // updatedOn: new Date()
         };
-        console.log("🚀 ~ file: EditUserForm.tsx:52 ~ onFinish ~ user update data", data);
         // DB change
         try {
-            const userUpdateRes = await updateUserInfo(_id!, data);
-            // const userUpdateRes = await dbUpdateUser(_id, data);
-            console.log("🚀 ~ file: EditUserForm.tsx:60 ~ onFinish ~ userUpdateRes", userUpdateRes);
+            await updateUserInfo(_id!, data);
             toast.success('User updated successfully');
             router.push('/dashboard/users');
 

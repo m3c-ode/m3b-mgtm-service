@@ -13,8 +13,6 @@ import { ClientData } from '../../../types/clients';
 type Props = {};
 
 const AdminDeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, clientsData, domains, isLoading, title }) => {
-    console.log("🚀 ~ file: DeliveriesTable.tsx:16 ~ domains:", domains);
-    console.log("🚀 ~ file: DeliveriesTable.tsx:16 ~ deliveriesData:", deliveriesData);
 
     const [currentData, setCurrentData] = useState(deliveriesData);
 
@@ -23,8 +21,6 @@ const AdminDeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, 
     };
 
     const filteredClientsData = clientsData?.filter((client) => clientWithDeliveryInfo(client._id!));
-    console.log("🚀 ~ file: DeliveriesTable.tsx:25 ~ filteredClientsData:", filteredClientsData);
-
 
     const handleDeleteDb = async (id: string) => {
         try {
@@ -114,11 +110,6 @@ const AdminDeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, 
     ];
 
     const deliveryInfocolumns: ColumnsType<DeliveryData> = [
-        // {
-        //     title: 'ID',
-        //     dataIndex: '_id',
-        //     key: '_id',
-        // },
         {
             title: 'From',
             dataIndex: 'fromAddress',
@@ -192,7 +183,6 @@ const AdminDeliveriesTable: React.FC<DeliveriesTableProps> = ({ deliveriesData, 
                     <Table
                         columns={productsColumns}
                         dataSource={record.products}
-                        // dataSource={record.children}
                         pagination={false}
                     />
                 );

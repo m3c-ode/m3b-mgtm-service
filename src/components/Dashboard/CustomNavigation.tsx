@@ -17,17 +17,6 @@ import { UserRolesEnum } from '../../types/users';
 
 type Props = {};
 
-// interface CustomMenuItems /* extends MenuItemType */ {
-//     key: string;
-//     label: JSX.Element | string,
-//     icon: React.FunctionComponentElement<IconBaseProps>,
-//     ishidden?: boolean;
-// }
-
-// interface CustomMenuItemsMap {
-//     [key: string]: CustomMenuItems;
-// }
-
 interface MenuItemWithHidden extends MenuProps {
     ishidden: string;
 }
@@ -37,7 +26,6 @@ type ItemTypeWithHidden = ItemType & { ishidden?: string; };
 const CustomNavigation = (props: Props) => {
     const router = useRouter();
     const { pathname } = router;
-    // console.log("🚀 ~ file: CustomNavigation.tsx:15 ~ CustomNavigation ~ pathname", pathname);
 
     const { data } = useSession();
     const userRole = data?.user?.role;

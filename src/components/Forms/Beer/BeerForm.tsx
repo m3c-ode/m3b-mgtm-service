@@ -31,7 +31,6 @@ const BeerForm = (props: Props) => {
 
     const nextStep = () => {
         const formData = stepForm.getFieldsValue();
-        console.log("🚀 ~ file: BeerForm.tsx:23 ~ nextStep ~ formData", formData);
         stepForm
             .validateFields()
             .then(() => setStepIndex(stepIndex + 1))
@@ -48,7 +47,6 @@ const BeerForm = (props: Props) => {
 
     const prevStep = () => {
         const formData = stepForm.getFieldsValue();
-        console.log("🚀 ~ file: BeerForm.tsx:23 ~ prevStep ~ formData", formData);
         // if (formData.grains) {
         //     stepForm.setFieldValue('grains.totalGrains', )
         // }
@@ -68,9 +66,8 @@ const BeerForm = (props: Props) => {
 
     // status will be automatically filled on creation
     const onFinish = async (values: any) => {
-        console.log('on finish', values);
         const formData = stepForm.getFieldsValue(true);
-        console.log("🚀 ~ file: BeerForm.tsx:62 ~ onFinish ~ formData", formData);
+        // console.log("🚀 ~ file: BeerForm.tsx:62 ~ onFinish ~ formData", formData);
         // const currentBeerList = beerData;
         const data: NewBeerData = {
             name: formData.name,
@@ -100,7 +97,7 @@ const BeerForm = (props: Props) => {
 
         // with MongoDB
         const beerRes = await createBeer(data);
-        console.log("🚀 ~ file: BeerForm.tsx:93 ~ onFinish ~ beerRes", beerRes);
+        // console.log("🚀 ~ file: BeerForm.tsx:93 ~ onFinish ~ beerRes", beerRes);
         router.push('/dashboard/beers');
         toast.success('Beer created successfully');
     };

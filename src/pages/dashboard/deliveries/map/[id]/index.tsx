@@ -10,7 +10,6 @@ import { DeliveryData, DeliveryStatusEnums } from '../../../../../types/deliveri
 
 
 interface DeliveryMapPageProps {
-    userInfo?: string;
     clientData?: ClientData;
     deliveryData?: DeliveryData;
     error?: any,
@@ -21,20 +20,12 @@ export const getServerSideProps: GetServerSideProps<DeliveryMapPageProps> = asyn
         const deliveryId = context.params!.id;
         const deliveryData = await getDeliveryData(deliveryId as string);
 
-        // if (deliveryData.status === DeliveryStatusEnums.Pending) canEdit = true;
 
-        // const clientId = context.params!.clientId as string;
         const clientData = await getClientData(deliveryData.clientId);
-        // console.log("🚀 ~ file: index.tsx:32 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ clientData:", clientData);
 
-        // TODO: Get user info, for address...
-        const userInfo = 'test';
-
-
-        // console.log("🚀 ~ file: index.tsx:39 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ beersData:", beersData);
         return {
             // Passed to the page component as props
-            props: { deliveryData, userInfo, clientData },
+            props: { deliveryData, clientData },
 
         };
     } catch (error) {
@@ -52,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<DeliveryMapPageProps> = asyn
 };
 
 
-const DeliveryMapPage = ({ deliveryData, clientData, error, userInfo }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const DeliveryMapPage = ({ deliveryData, clientData, error }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
     if (error) {
         console.log("🚀 ~ file: index.tsx:60 ~ Clients ~ error:", error);
@@ -65,7 +56,6 @@ const DeliveryMapPage = ({ deliveryData, clientData, error, userInfo }: InferGet
                 <DeliveryMap
                     deliveryData={deliveryData}
                     clientData={clientData}
-                    userData={userInfo!}
                 />
             }
         </>

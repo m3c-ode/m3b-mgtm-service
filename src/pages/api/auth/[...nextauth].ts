@@ -28,9 +28,6 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
-                // const setUserInfo = useUserStore(state => state.setUserInfo);
-                console.log("🚀 ~ file: [...nextauth].ts:25 ~ authorize ~ credentials:", credentials);
-
                 // Add logic here to look up the user from the credentials supplied. We will check against the DB see if the user's exist.
                 const collection = await getDbCollection("users");
                 // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
@@ -45,9 +42,7 @@ export const authOptions: NextAuthOptions = {
                     const user = await collection.findOne({ email: credentials?.email }) as unknown as UserData;
                     console.log("🚀 ~ file: [...nextauth].ts:38 ~ authorize ~ user:", user);
 
-                    if (!user
-                        // || user.pwd !== credentials?.password
-                    ) {
+                    if (!user) {
                         // If you return null then an error will be displayed advising the user to check their details.
                         throw new Error("Invalid Login - No user found with this email");
                         // return null;
@@ -103,9 +98,6 @@ export const authOptions: NextAuthOptions = {
     },
     callbacks: {
         async jwt({ token, user }/* : { token: JWT, user?: any | UserData; } */) {
-
-            // console.log("🚀 ~ file: [...nextauth].ts:78 ~ jwt ~ token:", token);
-            // console.log("🚀 ~ file: [...nextauth].ts:78 ~ jwt ~ user:", user);
             // update token
             if (user?.role) {
                 token.role = user.role;

@@ -28,7 +28,7 @@ const numbersLayout = {
 };
 
 const EditBeerForm = ({ data }: Props) => {
-    console.log("🚀 ~ file: EditBeerForm.tsx:25 ~ data:", data);
+    // console.log("🚀 ~ file: EditBeerForm.tsx:25 ~ data:", data);
     const [form] = Form.useForm();
 
     const [isFormDisabled, setIsFormDisabled] = useState(true);
@@ -38,15 +38,13 @@ const EditBeerForm = ({ data }: Props) => {
     const [beerStatus, setBeerStatus] = useState<BeersStatusEnum>(status!);
 
     const switchMode = ({ disabled }: { disabled: boolean; }) => {
-        console.log("🚀 ~ file: EditBeerForm.tsx:28 ~ switchMode ~ checked", disabled);
         setIsFormDisabled(disabled);
     };
 
     const onFinish = async (values: any) => {
-        console.log("edit form values", values);
+        // console.log("edit form values", values);
 
         const formData = form.getFieldsValue();
-        console.log("🚀 ~ file: EditBeerForm.tsx:43 ~ onFinish ~ formData:", formData);
 
         // TODO: volume verification before update
 
@@ -70,7 +68,6 @@ const EditBeerForm = ({ data }: Props) => {
             abv: values.abv,
             ibu: values.ibu,
         };
-        console.log("🚀 ~ file: EditBeerForm.tsx:52 ~ onFinish ~ beer update data", data);
         // hops: formData.hops,
         // grains: formData.grains
 
@@ -78,7 +75,6 @@ const EditBeerForm = ({ data }: Props) => {
         try {
             const beerUpdateRes = await updateBeerData(_id!, data);
             // const beerUpdateRes = await dbUpdateBeer(_id, data);
-            console.log("🚀 ~ file: EditBeerForm.tsx:60 ~ onFinish ~ beerUpdateRes", beerUpdateRes);
             toast.success('Beer updated successfully');
             router.push('/dashboard/beers');
 

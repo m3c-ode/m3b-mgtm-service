@@ -19,20 +19,12 @@ type Props = {
 
 function CreateUserForm({ data }: Props) {
 
-    // const userInfo = useUserStore((state) => state.userInfo)!;
-    // console.log("🚀 ~ file: CreateUserForm.tsx:25 ~ CreateUserForm ~ userInfo:", userInfo);
-    // const { role: userRole, domain } = userInfo;
-
     const { data: sessionData, status }: { data: any, status: string; } = useSession();
     const userData = useUserStore(state => state.userInfo);
-    console.log("🚀 ~ file: CreateUserForm.tsx:34 ~ CreateUserForm ~ userData:", userData);
-    console.log("🚀 ~ file: CreateUserForm.tsx:31 ~ CreateUserForm ~ sessionData:", sessionData);
     let userRole: string = '';
     if (sessionData) {
         userRole = sessionData?.user?.role;
     };
-    // const userRole = sessionData?.user?.role;
-    console.log("🚀 ~ file: CreateUserForm.tsx:33 ~ CreateUserForm ~ userRole:", userRole);
 
     const roles = [
         {
@@ -46,13 +38,7 @@ function CreateUserForm({ data }: Props) {
             isHidden: userRole !== UserRolesEnum.BOwner && userRole !== UserRolesEnum.Admin,
         },
     ];
-
-    const [newBusiness, setNewBusiness] = useState({});
-
-    const [newUser, setNewUser] = useState({});
-
     const [newUserRole, setNewUserRole] = useState('');
-    const [signupMethod, setSignupMethod] = useState<'email' | 'sms'>('email');
 
     const router = useRouter();
 
@@ -60,23 +46,15 @@ function CreateUserForm({ data }: Props) {
     const formRef = useRef<any>(null);
 
     const onRoleChange = (role: string) => {
-        console.log("🚀 ~ file: CreateUserForm.tsx:70 ~ onRoleChange ~ role:", role);
         setNewUserRole(role);
     };
 
-    const onSignupMethodChange = (e: RadioChangeEvent) => {
-        console.log('methode chosen', e.target.value);
-        setSignupMethod(e.target.value);
-    };
-
     const onSubmit = async (values: any) => {
-        // console.log("🚀 ~ file: CreateUserForm.tsx:66 ~ onSubmit ~ values:", values);
 
         const newUserData: CreateUserInput = {
             name: values.name,
             email: values?.email.toLowerCase(),
             domain: values?.domain ? values.domain.toLowerCase() : sessionData.user.domain.toLowerCase(),
-            // address: values?.address ? values.address : userData?.address,
             address: {
                 // company: values?.company ? values?.company : userData?.address?.company,
                 street1: values?.street1 ? values?.street1.toUpperCase() : userData?.address?.street1,
@@ -85,11 +63,6 @@ function CreateUserForm({ data }: Props) {
                 state: values?.state ? values?.state.toUpperCase() : userData?.address?.state,
                 zip: values?.zip ? values?.zip.toUpperCase() : userData?.address?.zip,
                 country: values?.country ? values?.country.toUpperCase() : userData?.address?.country,
-                // street2: values?.street2?.toUpperCase(),
-                // city: values?.city.toUpperCase(),
-                // state: values?.state.toUpperCase(),
-                // zip: values?.zip.toUpperCase(),
-                // country: values?.country.toUpperCase(),
                 phone: values?.phone ? values?.phone : userData?.address?.phone,
                 notes: values?.notes ? values?.notes : userData?.address?.notes,
 
@@ -97,7 +70,6 @@ function CreateUserForm({ data }: Props) {
             pwd: values?.password,
             role: values.role,
         };
-        // console.log("🚀 ~ file: CreateUserForm.tsx:85 ~ onSubmit ~ newUserData:", newUserData);
 
         try {
 
@@ -108,7 +80,6 @@ function CreateUserForm({ data }: Props) {
             }
 
             const res = await createUser(newUserData);
-            console.log("🚀 ~ file: CreateUserForm.tsx:111 ~ onSubmit ~ res:", res);
 
             if (res.status === 201) {
                 toast.success("User creation successful");
@@ -170,40 +141,7 @@ function CreateUserForm({ data }: Props) {
                             })
                         }
                     />
-                    {/* >
-                            {roles.map(
-                                (role, index) =>
-                                    !role.isHidden && (
-                                        <Option
-                                            key={index}
-                                            value={role.value}>
-                                            {role.label}
-                                        </Option>
-                                    )
-                            )}
-                        </Select> */}
                 </Form.Item>
-                {/* {newUserRole === 'BusinessUser' && (
-                    <Form.Item
-                    label="Sign up method: "
-                    labelAlign="right"
-                    name="method"
-                    rules={[{ required: true, message: 'Please choose the signup method!' }]}>
-                    <Radio.Group
-                    defaultValue={'email'}
-                    value={signupMethod}
-                    onChange={onSignupMethodChange}
-                    // allowClear
-                    >
-                    <Radio value="sms">Warehouse User</Radio>
-                    <Radio
-                    defaultChecked={true}
-                    value="email">
-                    Admin Panel User
-                    </Radio>
-                    </Radio.Group>
-                    </Form.Item>
-                )} */}
                 {userRole === UserRolesEnum.Admin && newUserRole === UserRolesEnum.BOwner && (
                     <Form.Item
                         label="Domain: "
@@ -223,8 +161,6 @@ function CreateUserForm({ data }: Props) {
                         <CreateAddressFields data={data?.address} form={form} />
                     </>
                 }
-                {/* {newUserRole && newUserRole === 'BusinessOwner' && <CreateBusinessFields />}
-                {signupMethod === 'sms' && newUserRole === 'BusinessUser' ? <CreateSmsUserFields /> : <CreateEmailUserFields />} */}
                 <Form.Item
                     wrapperCol={{ span: 24 }}
                     style={{ textAlign: 'center' }}

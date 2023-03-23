@@ -23,9 +23,7 @@ const UserInfoFields = ({ form, data, admin }: Props) => {
                 rules={[{ required: true, type: 'email', message: 'Please input a valid email!' }]}>
                 <Input
                     type='email'
-                // onBlur={}
                 />
-                {/* <EmailInput /> */}
             </Form.Item>
             {!admin &&
                 <>
@@ -37,9 +35,7 @@ const UserInfoFields = ({ form, data, admin }: Props) => {
                     >
                         <Input.Password
                             type='password'
-                        // onBlur={}
                         />
-                        {/* <EmailInput /> */}
                     </Form.Item>
                     <Form.Item
                         label="Confirm Password: "
@@ -58,9 +54,7 @@ const UserInfoFields = ({ form, data, admin }: Props) => {
                         ]}>
                         <Input.Password
                             type='email'
-                        // onBlur={}
                         />
-                        {/* <EmailInput /> */}
                     </Form.Item>
                 </>
             }

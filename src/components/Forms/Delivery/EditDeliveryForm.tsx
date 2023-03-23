@@ -24,6 +24,7 @@ type Props = {
     userInfo?: string;
     deliveryData: DeliveryData;
     canEdit?: boolean;
+    domainAddress?: string | AddressData;
 };
 
 const volumeLayout = {
@@ -31,7 +32,7 @@ const volumeLayout = {
     // wrapperCol: { span: 20 },
 };
 
-const EditDeliveryForm = ({ deliveryData, clientData, beersData, userInfo, canEdit }: Props) => {
+const EditDeliveryForm = ({ deliveryData, clientData, beersData, domainAddress, canEdit }: Props) => {
     // console.dir(deliveryData, { depth: null }); // use strign template too concatenate message if needed. or use uti.inspect
     console.log('delivery data,', util.inspect(deliveryData, { depth: null }));
 
@@ -42,17 +43,20 @@ const EditDeliveryForm = ({ deliveryData, clientData, beersData, userInfo, canEd
 
     const clientAddress = addressParser(clientData?.address!);
 
-    const userAddresses: AddressData[] = [{
-        street1: '7347 Fraser st',
-        city: 'Vancouver',
-        zip: 'V5X3W1',
-        state: 'BC',
-        country: 'Canada',
-    }];
+    const userAddresses: AddressData[] = [
+        // {
+        // street1: '7347 Fraser st',
+        // city: 'Vancouver',
+        // zip: 'V5X3W1',
+        // state: 'BC',
+        // country: 'Canada',
+        // }
+    ];
+
+    domainAddress && userAddresses.push(domainAddress as AddressData);
 
     const [isFormDisabled, setIsFormDisabled] = useState(true);
     const switchMode = ({ disabled }: { disabled: boolean; }) => {
-        console.log("🚀 ~ file: EditClientForm.tsx:28 ~ switchMode ~ checked", disabled);
         setIsFormDisabled(disabled);
     };
 
@@ -63,26 +67,16 @@ const EditDeliveryForm = ({ deliveryData, clientData, beersData, userInfo, canEd
     };
 
     const previouslySelectedBeers = availableBeers?.filter((beer) => IsPreviouslySelectedBeer(beer._id));
-    console.log("🚀 ~ file: EditDeliveryForm.tsx:65 ~ previouslySelectedBeers:", previouslySelectedBeers);
 
     const [selectedBeers, setSelectedBeers] = useState<BeerData[]>(previouslySelectedBeers!);
-    console.log("🚀 ~ file: NewDeliveryForm.tsx:46 ~ selectedBeers:", selectedBeers);
-    // const [selectedBeer, setSelectedBeer] = useState<BeerData | undefined>(undefined);
 
     const availableOptions = availableBeers!.filter((beer) => {
-        // if (selectedBeers.length > 0) {
         const isSelected = selectedBeers?.some((selectedBeer) => selectedBeer && selectedBeer._id === beer._id);
         return !isSelected;
-
-        // } else {
-        //     return availableBeers;
-        // }
     });
 
     const onFinish = async (values: any) => {
-        console.log("🚀 ~ file: NewDeliveryForm.tsx:12 ~ onFinish ~ values:", values);
-        const formData = form.getFieldsValue(true);
-        console.log("🚀 ~ file: NewDeliveryForm.tsx:14 ~ onFinish ~ formData:", formData);
+        // const formData = form.getFieldsValue(true);
 
         const editedDeliveryData: DeliveryData = {
             _id: deliveryData._id,
@@ -93,11 +87,9 @@ const EditDeliveryForm = ({ deliveryData, clientData, beersData, userInfo, canEd
             products: values.products,
             status: values.status,
         };
-        console.log("🚀 ~ file: EditDeliveryForm.tsx:89 ~ onFinish ~ editedDeliveryData:", editedDeliveryData);
 
         try {
             const res = await updateDeliveryInfo(deliveryData._id!, editedDeliveryData);
-            console.log("🚀 ~ file: NewDeliveryForm.tsx:56 ~ onFinish ~ res:", res);
 
             if (res.status === 200) {
                 toast.success("Delivery update successful");
@@ -188,12 +180,12 @@ const EditDeliveryForm = ({ deliveryData, clientData, beersData, userInfo, canEd
                     <Select
                         placeholder="Select an address to deliver from"
                         allowClear
-                        onChange={value => { console.log(value); return value; }}
+                        onChange={value => value}
                         options={userAddresses.map((add, index) => {
                             return { label: addressParser(add), value: addressParser(add) };
                         })}
-                    >
-                    </Select>
+                    />
+
                 </Form.Item>
                 <Form.Item
                     label="Delivery status: "
@@ -231,7 +223,6 @@ const EditDeliveryForm = ({ deliveryData, clientData, beersData, userInfo, canEd
                             {fields.map((field, index) => {
                                 // return {
                                 const handleBeerSelection = (object: any) => {
-                                    // console.log("🚀 ~ file: NewDeliveryForm.tsx:181 ~ handleBeerSelection ~ value:", object);
                                     const selectedOption = availableBeers?.find((beer) => beer._id === object.value);
                                     setSelectedBeers(prevSelectedBeers => {
                                         const newSelectedBeers = [...prevSelectedBeers];
@@ -240,7 +231,6 @@ const EditDeliveryForm = ({ deliveryData, clientData, beersData, userInfo, canEd
                                     });
                                 };
 
-                                console.log("🚀 ~ file: NewDeliveryForm.tsx:206 ~ NewDeliveryForm ~ field:", field);
                                 return (
                                     <>
                                         <div className={formStyles.beerItems}>
@@ -263,9 +253,6 @@ const EditDeliveryForm = ({ deliveryData, clientData, beersData, userInfo, canEd
                                                     <Select
                                                         placeholder="Select a beer product from the list"
                                                         allowClear
-                                                        // value={selectedBeers && selectedBeers[field.name]?._id}
-                                                        // onChange={value => setSelectedBeer(availableBeers?.find((beer) => beer.name === value))}
-                                                        // onChange={value => setSelectedBeers(selectedBeers => [...selectedBeers, availableBeers?.find((beer) => beer._id === value)!])}
                                                         onChange={handleBeerSelection
                                                         }
                                                         // onSelect={ }
@@ -274,18 +261,7 @@ const EditDeliveryForm = ({ deliveryData, clientData, beersData, userInfo, canEd
                                                             return { value: beer._id, label: beer.name, key: index };
                                                         })}
                                                     // style={{ width: '80%' }}
-                                                    >
-                                                        {/* {availableOptions?.map((beer, index) => (
-                                                            <Option
-                                                                key={index}
-                                                                value={beer._id}
-                                                                label={beer.name}
-                                                            >
-                                                                {beer.name}
-                                                            </Option>
-                                                        ))} */}
-
-                                                    </Select>
+                                                    />
                                                 </Form.Item>
                                                 <BeerVolumesFields
                                                     form={form}

@@ -15,10 +15,9 @@ import styles from './styles.module.scss';
 type Props = {
     deliveryData: DeliveryData;
     clientData: ClientData;
-    userData: UserData | string;
 };
 
-const DeliveryMap = ({ deliveryData, clientData, userData }: Props) => {
+const DeliveryMap = ({ deliveryData, clientData }: Props) => {
     const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
     const [map, setMap] = useState<google.maps.Map | null>(null);
     const mapRef = useRef<HTMLDivElement>(null);
@@ -33,7 +32,6 @@ const DeliveryMap = ({ deliveryData, clientData, userData }: Props) => {
         setIsLoading(true);
         try {
             const res = await updateDeliveryInfo(deliveryData._id!, { ...deliveryData, status: DeliveryStatusEnums.Delivered });
-            console.log("🚀 ~ file: DeliveryMap.tsx:32 ~ processDelivery ~ res:", res);
             if (res.status === 200) {
                 // toast.success("Delivery update successful");
                 setIsLoading(false);
@@ -41,7 +39,7 @@ const DeliveryMap = ({ deliveryData, clientData, userData }: Props) => {
                 // router.push('/dashboard/deliveries');
             };
         } catch (error: any) {
-            console.log(error);
+            console.log('error processing delivery', error);
             setIsLoading(false);
             toast.error(error.response.data.message);
         }
@@ -75,7 +73,6 @@ const DeliveryMap = ({ deliveryData, clientData, userData }: Props) => {
             (result, status) => {
                 if (status === google.maps.DirectionsStatus.OK) {
                     directionsRenderer.setDirections(result);
-                    console.log("🚀 ~ file: DeliveryMap.tsx:51 ~ useEffect ~ result:", result);
                     setDirections(result);
                 } else {
                     console.error(`Failed to get directions: ${status}`);

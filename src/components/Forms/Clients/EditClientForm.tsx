@@ -21,12 +21,10 @@ const EditClientForm = ({ data: clientData }: Props) => {
     const { _id, name, type, email, address: { street1, street2, city, zip, country, state, phone, notes } } = clientData;
 
     const switchMode = ({ disabled }: { disabled: boolean; }) => {
-        console.log("🚀 ~ file: EditClientForm.tsx:28 ~ switchMode ~ checked", disabled);
         setIsFormDisabled(disabled);
     };
 
     const onFinish = async (values: any) => {
-        console.log("edit form values", values);
         const data: ClientData = {
             // _id: _id,
             // clientId: customerId,
@@ -47,12 +45,10 @@ const EditClientForm = ({ data: clientData }: Props) => {
             },
             // updatedOn: new Date()
         };
-        console.log("🚀 ~ file: EditClientForm.tsx:52 ~ onFinish ~ client update data", data);
         // DB change
         try {
             const clientUpdateRes = await updateClientInfo(_id!, data);
             // const clientUpdateRes = await dbUpdateClient(_id, data);
-            console.log("🚀 ~ file: EditClientForm.tsx:60 ~ onFinish ~ clientUpdateRes", clientUpdateRes);
             toast.success('Client updated successfully');
             router.push('/dashboard/clients');
 

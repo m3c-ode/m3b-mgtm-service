@@ -13,7 +13,6 @@ import { getAllDomainsAddresses, getDomainAddress, getDomainsList } from '../../
 import { AddressData } from '../../../../../types/addresses';
 
 interface NewDeliveryPageProps {
-    userInfo?: string;
     clientData?: ClientData;
     domainAddress?: string | AddressData;
     beersData?: BeerData[];
@@ -44,40 +43,15 @@ export const getServerSideProps: GetServerSideProps<NewDeliveryPageProps> = asyn
         };
     }
     try {
-        // if (userRole === UserRolesEnum.Admin) {
-        //     // console.log("🚀 ~ file: [id].tsx:18 ~ context", context);
-        //     // const domainsList = await getAllDomainsAddresses();
-        //     const clientId = context.params!.clientId as string;
-        //     const clientData = await getClientData(clientId);
-        //     const domainAddress = await getDomainAddress(clientData.domain);
-        //     // console.log("🚀 ~ file: index.tsx:32 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ clientData:", clientData);
-
-        //     // TODO: Get user info, for address...
-        //     const userInfo = 'test';
-
-
-        //     const beersData = await getBeersAsync();
-        //     // console.log("🚀 ~ file: index.tsx:39 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ beersData:", beersData);
-        //     return {
-        //         // Passed to the page component as props
-        //         props: { clientData, beersData, userInfo, domainAddress },
-
-        //     };
-        // }
         const clientId = context.params!.clientId as string;;
         const clientData = await getClientData(clientId);
         const domainAddress = await getDomainAddress(clientData.domain);
-        // console.log("🚀 ~ file: index.tsx:32 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ clientData:", clientData);
-
-        // TODO: Get user info, for address...
-        const userInfo = 'test';
-
 
         const beersData = await getBeersAsync();
         // console.log("🚀 ~ file: index.tsx:39 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ beersData:", beersData);
         return {
             // Passed to the page component as props
-            props: { clientData, beersData, userInfo, domainAddress },
+            props: { clientData, beersData, domainAddress },
 
         };
     } catch (error) {
@@ -93,12 +67,11 @@ export const getServerSideProps: GetServerSideProps<NewDeliveryPageProps> = asyn
     }
 };
 
-const NewDelivery = ({ clientData, beersData, userInfo, domainAddress }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const NewDelivery = ({ clientData, beersData, domainAddress }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     return (
         <>
             {clientData && beersData &&
                 <NewDeliveryForm
-                    userInfo={userInfo}
                     clientData={clientData}
                     beersData={beersData}
                     domainAddress={domainAddress}

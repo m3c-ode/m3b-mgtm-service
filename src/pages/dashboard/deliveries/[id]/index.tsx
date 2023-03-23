@@ -8,6 +8,10 @@ import type { BeerData } from '../../../../types/beers';
 import EditDeliveryForm from '../../../../components/Forms/Delivery/EditDeliveryForm';
 import { DeliveryData, DeliveryStatusEnums } from '../../../../types/deliveries';
 import { getDeliveryData } from '../../../../../lib/deliveries';
+import { AddressData } from '../../../../types/addresses';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../../api/auth/[...nextauth]';
+import { getDomainAddress } from '../../../../../lib/users';
 
 interface EditDeliveryPageProps {
     userInfo?: string;
@@ -15,6 +19,7 @@ interface EditDeliveryPageProps {
     beersData?: BeerData[];
     deliveryData?: DeliveryData;
     canEdit?: boolean;
+    domainAddress?: string | AddressData;
 }
 
 // Generates `/beers/1` and `/beers/2` - used only with SSG
@@ -29,28 +34,34 @@ interface EditDeliveryPageProps {
 
 // `getStaticPaths` requires using `getStaticProps`
 export const getServerSideProps: GetServerSideProps<EditDeliveryPageProps> = async (context) => {
+    const session = await getServerSession(context.req, context.res, authOptions);
+    const { role: userRole, domain } = session?.user ?? {};
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        };
+    }
     try {
-        // console.log("🚀 ~ file: [id].tsx:18 ~ context", context);   
         const { clientId, id: deliveryId } = context.query;
-        // const deliveryId = context.params!.id as string;
         const deliveryData = await getDeliveryData(deliveryId as string);
         let canEdit = false;
 
         if (deliveryData.status === DeliveryStatusEnums.Pending) canEdit = true;
 
-        // const clientId = context.params!.clientId as string;
         const clientData = await getClientData(clientId as string);
-        // console.log("🚀 ~ file: index.tsx:32 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ clientData:", clientData);
+        const domainAddress = await getDomainAddress(clientData.domain);
 
         // TODO: Get user info, for address...
         const userInfo = 'test';
 
 
         const beersData = await getBeersAsync();
-        // console.log("🚀 ~ file: index.tsx:39 ~ constgetServerSideProps:GetServerSideProps<NewDeliveryPageProps>= ~ beersData:", beersData);
         return {
             // Passed to the page component as props
-            props: { deliveryData, beersData, userInfo, clientData, canEdit },
+            props: { deliveryData, beersData, userInfo, clientData, domainAddress, canEdit },
 
         };
 
@@ -68,7 +79,7 @@ export const getServerSideProps: GetServerSideProps<EditDeliveryPageProps> = asy
     }
 };
 
-const NewDelivery = ({ deliveryData, beersData, clientData, userInfo, canEdit }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const NewDelivery = ({ deliveryData, beersData, clientData, domainAddress, userInfo, canEdit }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     return (
         <>
             {deliveryData && beersData &&
@@ -78,6 +89,7 @@ const NewDelivery = ({ deliveryData, beersData, clientData, userInfo, canEdit }:
                     beersData={beersData}
                     deliveryData={deliveryData}
                     canEdit={canEdit}
+                    domainAddress={domainAddress}
                 />
             }
         </>

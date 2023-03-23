@@ -40,11 +40,8 @@ const NewClientForm = (props: Props) => {
 
             }
         };
-        console.log("🚀 ~ file: NewClientForm.tsx:31 ~ onFinish ~ newClientData:", newClientData);
-
         try {
             const res = await createClient(newClientData);
-            console.log("🚀 ~ file: NewClientForm.tsx:56 ~ onFinish ~ res:", res);
 
             if (res.status === 201) {
                 toast.success("Client creation successful");
@@ -66,13 +63,6 @@ const NewClientForm = (props: Props) => {
             });
         }
     };
-
-    useEffect(() => {
-        console.log('form values in useEffect', form.getFieldValue('city'));
-
-    }, [form]);
-
-    console.log('form values', form.getFieldValue('city'));
 
     // TODO: Fix the reset button
     const onReset = () => {

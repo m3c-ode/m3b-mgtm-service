@@ -33,7 +33,7 @@ import { authOptions } from "../auth/[...nextauth]";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const session = await getServerSession(req, res, authOptions);
     if (!session) {
-        res.status(401).json({ message: "You must be logged in." });
+        res.status(401).json({ message: "Access restricted. You must be logged in." });
         return;
     }
     const client = await clientPromise;

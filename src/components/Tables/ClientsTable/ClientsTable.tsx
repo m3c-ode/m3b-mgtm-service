@@ -52,9 +52,6 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title, dom
             dataIndex: 'address',
             key: 'address',
             render(value: AddressData, record, index) {
-                // TODO: check if works
-                // const { street1, street2, city, state, zip, country } = value;
-                // return `${street2 ? street2 + ', ' : ''}${street1}, ${city}, ${state}`;
                 return addressParser(value);
             },
         },
@@ -108,8 +105,6 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title, dom
         return (
 
             <Table
-                // rowKey={(record, index) => (record._id! as string)}
-
                 columns={columns}
                 className={styles.tableContainer + 'ant-table ant-table-default !important'}
                 dataSource={currentData?.filter((client) => client.domain === record._id)}

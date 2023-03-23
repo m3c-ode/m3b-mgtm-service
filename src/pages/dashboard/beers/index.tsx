@@ -27,8 +27,6 @@ interface BeerPageProps {
 }
 
 export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (context) => {
-    // console.log("🚀 ~ file: index.tsx:23 ~ constgetServerSideProps:GetServerSideProps<BeerPageProps>= ~ context:", context);
-
     const session = await getServerSession(context.req, context.res, authOptions);
     const { role: userRole, domain } = session?.user ?? {};
     if (!session) {
@@ -73,37 +71,11 @@ export const getServerSideProps: GetServerSideProps<BeerPageProps> = async (cont
 type Props = {};
 
 const Page = ({ beersList, isLoading, error, domainsList }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    // console.log("🚀 ~ file: dashboard.tsx:76 ~ Page ~ beersList:", beersList);
-
     const session = useSession();
-    console.log("🚀 ~ file: index.tsx:49 ~ Page ~ session:", session);
 
     const setDomainsList = useDomainStore(state => state.setDomainsList);
     domainsList && setDomainsList(domainsList.map(domain => domain._id));
 
-    //  Client Side data fetching
-    // const [beersList, setBeersList] = useState<BeerData[] | null>(null);
-    // const [isLoading, setIsLoading] = useState(true);
-
-    // useEffect(() => {
-    //     const fetchAllBeers = async () => {
-    //         try {
-    //             // setIsLoading(true);
-    //             const beerRes = await getAllBeers();
-    //             console.log("🚀 ~ file: dashboard.tsx:25 ~ fetchAllBeers ~ beerRes", beerRes);
-    //             if (beerRes.data) {
-    //                 setBeersList(beerRes.data);
-    //                 // setIsLoading(false);
-    //             }
-    //         } catch (error: any) {
-    //             console.log("🚀 ~ file: dashboard.tsx:35 ~ fetchAllBeers ~ error", error);
-    //             toast.error('Error fetching beer data');
-    //             // setIsLoading(false);
-    //             throw new Error(error).message;
-    //         }
-    //     };
-    //     fetchAllBeers();
-    // }, []);
 
     if (error) {
         console.log("🚀 ~ file: dashboard.tsx:79 ~ Page ~ error", error);
@@ -146,7 +118,6 @@ const Page = ({ beersList, isLoading, error, domainsList }: InferGetServerSidePr
                 {/* TODO: Add a spinner when loading state */}
 
             </Dashboard>
-            {/* <h2><Link href="/">Back to home</Link></h2> */}
         </>
     );
 };

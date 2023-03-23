@@ -46,8 +46,6 @@ export const getServerSideProps: GetServerSideProps<DeliveryPageProps> = async (
                     deliveriesList,
                     clientsList,
                     domainsList
-                    // deliveriesList: JSON.parse(JSON.stringify(deliveriesList)),
-                    // isLoading
                 },
             };
         }
@@ -74,11 +72,8 @@ export const getServerSideProps: GetServerSideProps<DeliveryPageProps> = async (
 type Props = {};
 
 const DeliveriesPage = ({ deliveriesList, clientsList, isLoading, error, domainsList }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    // console.log("🚀 ~ file: index.tsx:47 ~ DeliveriesPage ~ clientsList:", clientsList);
-    // console.log("🚀 ~ file: index.tsx:47 ~ DeliveriesPage ~ deliveriesList:", deliveriesList);
 
     const { data } = useSession();
-    console.log("🚀 ~ file: index.tsx:80 ~ DeliveriesPage ~ data:", data);
     const userRole = data?.user?.role;
 
     if (error) {

@@ -13,7 +13,6 @@ export const getBeersAsync = async () => {
 
 export const getDbBeersId = async () => {
     const beers = await getBeersAsync();
-    // console.log("🚀 ~ file: beers.ts:36 ~ getDbBeersId ~ beers", beers);
     if (beers.map) {
         return beers.map((beer: BeerData) => {
             return {
@@ -51,7 +50,6 @@ export const updateBeersDomain = async (domain: string) => {
     const collection = await getDbCollection("beers");
     try {
         const res = await collection.updateMany({}, { $set: { domain } });
-        console.log("🚀 ~ file: beers.ts:54 ~ updateBeersDomain ~ res:", res);
 
     } catch (error) {
         console.log("🚀 ~ file: beers.ts:57 ~ updateBeersDomain ~ error:", error);
@@ -76,7 +74,6 @@ export const updateBeerQuantity = async (id: string, qty: BeerVolumes) => {
                 },
                 $currentDate: { updatedOn: true }
             });
-        console.log("🚀 ~ file: beers.ts:60 ~ updateBeerQuantity ~ updateResult:", updateResult);
         const beer = await collection.findOne({ _id: new ObjectId(id) }) as unknown as BeerData;
         if (updateResult.acknowledged && updateResult.matchedCount) return true;
         else return false;
@@ -95,6 +92,5 @@ export const getDomainBeers = async (domain: string) => {
             collation: { locale: 'en', strength: 2 }
         }
     ).toArray();
-    console.log("🚀 ~ file: beers.ts:15 ~ getAllBeersAsync ~ beers:", beers);
     return JSON.parse(JSON.stringify(beers));
 };

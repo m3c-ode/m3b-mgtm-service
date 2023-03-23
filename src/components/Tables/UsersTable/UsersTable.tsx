@@ -10,10 +10,7 @@ import { deleteUser, fetchUsersList } from '../../../pages/api/services/users';
 import { addressParser } from '../../../../lib/functions';
 
 const UsersTable: React.FC<UsersTableProps> = ({ data, isLoading, title, domains }) => {
-    console.log("🚀 ~ file: UsersTable.tsx:13 ~ data:", data);
-
     const [currentData, setCurrentData] = useState(data);
-
 
     const handleDeleteDb = async (id: string) => {
         try {

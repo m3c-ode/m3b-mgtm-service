@@ -33,7 +33,6 @@ function CreateAddressFields({ form, data }: Props) {
         {
             apiKey: PLACES_API_KEY,
             onPlaceSelected: (place, inputRef, something) => {
-                console.log('place selected', place);
                 const address = place.address_components;
                 let { street1, street2, city, state, zip, country }: NewAddressInput = {
                     street1: place.name!,
@@ -44,9 +43,7 @@ function CreateAddressFields({ form, data }: Props) {
                     country: ''
                 };
                 if (address) {
-                    console.log('going through found address');
                     for (const component of address) {
-                        console.log("🚀 ~ file: CreateAddressFields.tsx:63 ~ CreateAddressFields ~ component:", component);
                         const type = component.types[0];
                         switch (type) {
                             // case "street_number":
@@ -85,7 +82,6 @@ function CreateAddressFields({ form, data }: Props) {
                                 break;
                         }
                     }
-                    console.log('results', { street1, street2, city, state, zip, country });
                     form.setFieldsValue({
                         street1, city, state, zip, country
                     });
