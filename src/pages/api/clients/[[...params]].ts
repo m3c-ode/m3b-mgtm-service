@@ -8,8 +8,12 @@ import { UserRolesEnum } from "../../../types/users";
 import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-    const collection = await getDbCollection("clients");
     const session = await getServerSession(req, res, authOptions);
+    if (!session) {
+        res.status(401).json({ message: "You must be logged in." });
+        return;
+    }
+    const collection = await getDbCollection("clients");
     const { role: userRole, domain, email } = session?.user ?? {};
 
     switch (req.method) {

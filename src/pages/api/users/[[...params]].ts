@@ -9,9 +9,12 @@ import { hash } from 'bcrypt';
 // import bcrypt from "bcrypt";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
-    const collection = await getDbCollection("users");
-
     const session = await getServerSession(req, res, authOptions);
+    if (!session) {
+        res.status(401).json({ message: "You must be logged in." });
+        return;
+    } const collection = await getDbCollection("users");
+
     const { role: userRole, domain, email } = session?.user ?? {};
 
     switch (req.method) {
