@@ -1,11 +1,12 @@
-import React from 'react';
-import { Button, Dropdown, Layout, Menu, MenuProps, Tooltip } from 'antd';
+import React, { useState } from 'react';
+import { Button, Dropdown, Layout, Menu, MenuProps, Modal, Tooltip } from 'antd';
 import Image from 'next/image';
 import styles from './styles.module.scss';
 import { AiOutlineMenu, AiOutlineSetting, AiOutlineBell, AiOutlineUserSwitch, AiOutlineUser } from 'react-icons/ai';
 import { MdLogout } from 'react-icons/md';
 import { signOut, useSession } from 'next-auth/react';
-
+import { useUserStore } from '../../stores/user';
+import UserSettingsModal from '../Modal';
 
 
 const { Header } = Layout;
@@ -46,6 +47,12 @@ const topRightItems: MenuProps['items'] = [
 
 const CustomHeader = (props: Props) => {
 
+    const userInfo = useUserStore(state => state.userInfo);
+    console.log("🚀 ~ file: CustomHeader.tsx:51 ~ CustomHeader ~ userInfo:", userInfo);
+
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     // const { data: { user: { email } = {} } = {} } = useSession() || {};
     // const { data: { user: { email } = {} } = {} } = useSession() || {};
 
@@ -53,6 +60,18 @@ const CustomHeader = (props: Props) => {
     // if (session.data) {
     //     const { user: { email } = {} } = session?.data ?? {}
     // }
+
+    const showModal = (props: Props) => {
+        setIsModalOpen(true);
+    };
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     const email = data?.user?.email;
 
@@ -78,6 +97,7 @@ const CustomHeader = (props: Props) => {
                             padding: '5px',
                             cursor: 'pointer',
                         }}
+                        onClick={showModal}
                     />
                 </Tooltip>
             </div>
@@ -121,6 +141,12 @@ const CustomHeader = (props: Props) => {
                     Logout
                 </Button>
             </div>
+            {/* <Modal title="User Settings" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+            </Modal> */}
+            <UserSettingsModal isVisible={isModalOpen} setIsVisible={setIsModalOpen} />
         </Header>
     );
 };

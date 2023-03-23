@@ -13,3 +13,5 @@ export {
 } from './clients';
 
 export { createDelivery, fetchAllDeliveries, updateDeliveryInfo, deleteDelivery } from './deliveries';
+
+export { createUser, fetchUserInfo, fetchUsersList, deleteUser, updateUserInfo } from './users';

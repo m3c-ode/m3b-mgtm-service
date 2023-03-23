@@ -8,4 +8,6 @@ export const deleteUser = (userId: string) => axios.delete(`/api/users/${userId}
 
 export const fetchUsersList = () => axios.get('/api/users');
 
+export const fetchUserInfo = (id: string) => axios.get(`/api/users/${id}`);
+
 export const updateUserInfo = (userId: string, userData: UserData) => axios.patch(`/api/users/${userId}`, { ...userData });

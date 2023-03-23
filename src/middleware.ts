@@ -31,9 +31,10 @@ export default withAuth(
                 // console.log("🚀 ~ file: middleware.ts:16 ~ req.cookies:", req);
                 // const cookie = req.cookies.get("next-auth.csrf-token");
                 // console.log("🚀 ~ file: middleware.ts:17 ~ cookie:", cookie);
-                console.log("🚀 ~ file: middleware.ts:17 ~ token:", token);
-                if (token) { return true; }
-                return false;
+                // console.log("🚀 ~ file: middleware.ts:17 ~ token:", token);
+                // if (token) { return true; }
+                // return false;
+                return true;
             },
         }
     }

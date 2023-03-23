@@ -1,6 +1,6 @@
 import { ObjectId, Timestamp } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
-import { doesDomainExist, doesUserExist, getDomainUsers } from "../../../../lib/users";
+import { doesDomainExist, doesUserExist, getDomainUsers, getUserDataFromId } from "../../../../lib/users";
 import getDbCollection from "../../../../lib/getCollection";
 import { CreateUserInput, UserRolesEnum } from "../../../types/users";
 import { getServerSession } from "next-auth";
@@ -16,6 +16,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } const collection = await getDbCollection("users");
 
     const { role: userRole, domain, email } = session?.user ?? {};
+    // console.log('req params', req.params);
+    const { params } = req.query;
+
+    const [id] = params as string[];
 
     switch (req.method) {
         case 'POST':
@@ -62,6 +66,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'GET':
             try {
                 // if user is Admin, fetchAllUsers
+                if (id) {
+                    // get userinfo with id
+                    const user = await getUserDataFromId(id);
+                    return res.status(200).json(user);
+                }
                 if (userRole === UserRolesEnum.Admin) {
                     const users = await collection.find({}).toArray();
                     res.status(200).json(users);

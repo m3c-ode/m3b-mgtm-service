@@ -112,6 +112,7 @@ export const authOptions: NextAuthOptions = {
             // session.user = session.user ?? {};
             if (token.role && session.user) (session.user.role = token.role);
             if (token.domain && session.user) session.user.domain = token.domain;
+            if (token.sub && session.user) session.user.id = token.sub;
             return session;
         },
 
