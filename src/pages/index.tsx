@@ -82,7 +82,7 @@ export default function Home({
       <section className="py-3">
         <div className="container my-5">
           <div className="row justify-content-center">
-            <div className="col-lg-7">
+            <div className="col-lg-9">
               <h2 className='blue'>Welcome to m3.beer's management system!</h2>
               <p className="lead py-2">This app is a personal project currently part of my portfolio. It's an example of CRUD app tailored for the beer beverage industry. Namely, for beverage companies like breweries to manage their whole business from inventory management to deliveries, to invoicing...</p>
               <p className=''>It is coded using the NextJS Meta framework connected to a MongoDB Database. It's still under progress, as many features could be added.</p>
@@ -103,7 +103,7 @@ export default function Home({
               <p className="mb-2">Useflow:</p>
               <ul>
                 <li>You may login as an Admin user, to have access to all the app's features. From the Admin's access, you may create a new User tenant or domain, with an associated account, and then use the app being another type of user (Business Owner)</li>
-                <li>If you've rceated a new Business Owner, you may log out of the Admin access then login in with your newly created Account. You will have the perspective of a Business owner, being able to interact with the whole application, and creating and managing Business Users (Users attached to the business who are not Owners)</li>
+                <li>If you've created a new Business Owner, you may log out of the Admin access then login in with your newly created Account. You will have the perspective of a Business owner, being able to interact with the whole application, and creating and managing Business Users (Users attached to the business who are not Owners)</li>
                 <li>On the third level, you may create a Business User who will be able to interact with its domain's app, but not manage the Users under the same domain.</li>
               </ul>
             </div>
