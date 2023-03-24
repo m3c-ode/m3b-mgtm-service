@@ -1,14 +1,20 @@
-import { Form, FormInstance, Input } from 'antd';
-import React from 'react';
+import { Checkbox, Form, FormInstance, Input } from 'antd';
+import React, { useState } from 'react';
 import { UserData } from '../../../types/users';
 
 type Props = {
     form: FormInstance<any>;
     data?: UserData;
     admin?: boolean;
+    askPwd?: boolean;
 };
 
-const UserInfoFields = ({ form, data, admin }: Props) => {
+const UserInfoFields = ({ form, data, admin, askPwd }: Props) => {
+
+    const [pwdFields, setPwdFields] = useState(false);
+
+
+
     return (
         <>
             <Form.Item
@@ -25,7 +31,18 @@ const UserInfoFields = ({ form, data, admin }: Props) => {
                     type='email'
                 />
             </Form.Item>
-            {!admin &&
+            {askPwd &&
+                <Checkbox
+                    // className={styles.checkBox}
+                    style={{ paddingLeft: '5%', fontSize: '1rem', paddingBottom: '10px' }}
+                    checked={pwdFields}
+                    onChange={(e) => setPwdFields(e.target.checked)}
+                >
+                    Change Password?
+                </Checkbox>
+
+            }
+            {!admin && pwdFields &&
                 <>
                     <Form.Item
                         label="Password: "
@@ -42,7 +59,7 @@ const UserInfoFields = ({ form, data, admin }: Props) => {
                         name="confirmPwd"
                         dependencies={['password']}
                         hasFeedback
-                        rules={[{ required: true, message: 'Please input a valid email!' },
+                        rules={[{ required: true, message: 'Both password do not match!' },
                         ({ getFieldValue }) => ({
                             validator(rule, value, callback) {
                                 if (!value || getFieldValue('password') === value) {

@@ -91,7 +91,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 delete updateData._id;
                 const [id] = req.query.params as string[];
                 await collection.updateOne({ _id: new ObjectId(id) },
-                    { $set: { ...req.body, updatedOn: new Date() } },
+                    {
+                        $set: {
+                            ...req.body,
+                            pwd: updateData.pwd && await hash(updateData.pwd!, 12),
+                            updatedOn: new Date()
+                        }
+                    },
                     // {
                     // new: true,
                     // }

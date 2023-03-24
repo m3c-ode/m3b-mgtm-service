@@ -66,7 +66,7 @@ const CustomHeader = (props: Props) => {
         // if (!userInfo) {
         try {
             const userRes = await fetchUserInfo(data?.user?.id!);
-            console.log("🚀 ~ file: CustomHeader.tsx:69 ~ showModal ~ userRes:", userRes);
+            // console.log("🚀 ~ file: CustomHeader.tsx:69 ~ showModal ~ userRes:", userRes);
             if (userRes.status === 200) {
                 setUserInfo(userRes.data);
             }
@@ -99,10 +99,9 @@ const CustomHeader = (props: Props) => {
                     width={40}
                     height={40}
                 />
-                {/* TODO: Button with a modal pop-up for settings edit */}
                 <Tooltip
                     color={'blue'}
-                    title="Will pop-up a modal with current settings"
+                    title="Check your user settings"
                 >
                     <AiOutlineSetting
                         style={{
@@ -143,6 +142,7 @@ const CustomHeader = (props: Props) => {
                     }} />}
                     theme="dark" mode="horizontal" defaultSelectedKeys={['1']} items={topRightItems}
                 /> */}
+
                 {/* Replacing Menu for the logout button for now */}
                 <Button
                     icon={<MdLogout />}
@@ -155,11 +155,6 @@ const CustomHeader = (props: Props) => {
                     Logout
                 </Button>
             </div>
-            {/* <Modal title="User Settings" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-            </Modal> */}
             <UserSettingsModal isVisible={isModalOpen} setIsVisible={setIsModalOpen} />
         </Header>
     );
