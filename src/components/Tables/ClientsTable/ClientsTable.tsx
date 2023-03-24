@@ -76,7 +76,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({ data, isLoading, title, dom
                     >
                         <Link
                             className={styles.tableButton}
-                            href={`/dashboard/clients/${record._id}`}>Update Info</Link>
+                            href={`/dashboard/clients/${record._id}`}>Details</Link>
 
                     </Button>
                     <Button

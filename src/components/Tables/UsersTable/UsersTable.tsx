@@ -68,7 +68,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ data, isLoading, title, domains
                     >
                         <Link
                             className={styles.tableButton}
-                            href={`/dashboard/users/${record._id}`}>Update Info</Link>
+                            href={`/dashboard/users/${record._id}`}>Details</Link>
 
                     </Button>
                     {/* <Button
