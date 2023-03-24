@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
 import { useSession, signIn, signOut } from "next-auth/react";
+import { FaLinkedinIn } from 'react-icons/fa';
 
 const APP_NAME = 'm3b - management system';
 
@@ -49,14 +50,14 @@ export default function Home({
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient bg-opacity">
         <div className="container">
           <span className="navbar-brand">m3.code portfolio</span>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
-          {/* <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          {/* <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon">Hello</span>Something</button> */}
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item"><a className="nav-link active" aria-current="page" href="#!">Home</a></li>
-              <li className="nav-item"><a className="nav-link" href="#!">About</a></li>
-              <li className="nav-item"><a className="nav-link" href="#!">Contact</a></li>
+              <li className="nav-item"><a className="nav-link" aria-current="page" href="https://github.com/m3c-ode">Github</a></li>
+              <li className="nav-item"><a className="nav-link" href="https://www.linkedin.com/in/maxime-marechal-mccoy/">LinkedIn</a></li>
+              <li className="nav-item"><a className="nav-link" href="mailto:maxime.marechalmccoy@gmail.com">Contact</a></li>
             </ul>
-          </div> */}
+          </div>
         </div>
       </nav>
       <header className="py-5 bg-image-fluid" style={{
@@ -199,15 +200,18 @@ export default function Home({
       <footer className="py-4 bg-lkght">
         <div className="container">
           <div className='text-center'>
-
             <a
               href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
               target="_blank"
               rel="noopener noreferrer"
+              className='link-secondary'
             >
               Powered by{' '}
               <img src="/vercel.svg" alt="Vercel Logo" className="logo" width={80} />
             </a>
+          </div>
+          <div className="text-center mt-2">
+            <a className='link-primary' href="https://github.com/m3c-ode/m3b-mgtm-service">source code</a>
           </div>
         </div>
       </footer>
