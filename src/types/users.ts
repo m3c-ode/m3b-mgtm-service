@@ -14,9 +14,6 @@ export type UserData = {
     email: string;
     domain?: string;
     pwd?: string;
-    // businessId?: string | ObjectId;
-    // company?: string;
-    // business?: BusinessData;
     addresses?: AddressData[];
     address?: AddressData;
     role: UserRolesEnum;
@@ -38,9 +35,3 @@ export enum UserRolesEnum {
     BUser = 'Business User',
     Client = 'Client'
 }
-
-// export type BusinessData = {
-//     _id: string | ObjectId;
-//     domain: string;
-//     name: string;
-// };

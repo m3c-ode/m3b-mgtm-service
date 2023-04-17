@@ -9,26 +9,20 @@ import { redirect } from "next/dist/server/api-utils";
 import { compare } from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
-    // Configure one or more authentication providers
+    // Maybe include other authentication providers
     providers: [
         // GithubProvider({
         //     clientId: process.env.GITHUB_ID as string,
         //     clientSecret: process.env.GITHUB_SECRET as string,
         // }),
-        // ...add more providers here
         CredentialsProvider({
-            // The name to display on the sign in form (e.g. "Sign in with...")
             name: "Credentials",
-            // `credentials` is used to generate a form on the sign in page.
-            // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-            // e.g. domain, username, password, 2FA token, etc.
-            // You can pass any HTML attribute to the <input> tag through the object.
             credentials: {
                 email: { label: "Email", type: "text", placeholder: "user@example.ca" },
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) {
-                // Add logic here to look up the user from the credentials supplied. We will check against the DB see if the user's exist.
+                // We will check against the DB see if the user's exist.
                 const collection = await getDbCollection("users");
                 // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
                 const { email, password } = credentials as {
@@ -43,7 +37,7 @@ export const authOptions: NextAuthOptions = {
                     console.log("🚀 ~ file: [...nextauth].ts:38 ~ authorize ~ user:", user);
 
                     if (!user) {
-                        // If you return null then an error will be displayed advising the user to check their details.
+                        // Retuning null will display an error to the user. Can also return an Error.
                         throw new Error("Invalid Login - No user found with this email");
                         // return null;
                     }
@@ -67,9 +61,6 @@ export const authOptions: NextAuthOptions = {
                         throw new Error("Invalid Login - Password does not match. Please contact your administrator");
                         // return null;
                     }
-                    // else {
-                    // Maybe not needed with session info
-                    // Any object returned will be saved in `user` property of the JWT
                     return {
                         id: user?._id as string,
                         name: user.name,
@@ -79,8 +70,6 @@ export const authOptions: NextAuthOptions = {
                         // ...user
                     };
 
-                    // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
-                    // }
                 } catch (error) {
                     console.log("🚀 ~ file: [...nextauth].ts:58 ~ authorize ~ error:", error);
                     // throw new Error("Invalid Login");
@@ -89,7 +78,6 @@ export const authOptions: NextAuthOptions = {
             },
         })
     ],
-    // TODO: try without?
     session: {
         strategy: 'jwt'
     },

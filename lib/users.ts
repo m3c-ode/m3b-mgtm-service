@@ -62,7 +62,7 @@ export const getUserDataFromCredentials = async (email: string, password: string
 };
 
 export const getAllUsersAsync = async (): Promise<UserData[]> => {
-    // gettign all the users, but not the admin
+    // getting all the users, but not the admin
     const collection = await getDbCollection('users');
     const users = await collection.find({ role: { $ne: `${UserRolesEnum.Admin}`, $exists: true } }).toArray();
     return JSON.parse(JSON.stringify(users.filter(user => user.role !== 'admin')));
@@ -110,7 +110,7 @@ export const getDomainAddress = async (domain: string)/* : Promise<string> */ =>
 export const getAllDomainsAddresses = async () => {
     const collection = await getDbCollection('users');
     try {
-        // Find all Bowners. Extract the address and send
+        // Find all BOwners. Extract the address and send
         const ownerslist = await collection.find({ role: UserRolesEnum.BOwner }).toArray() as unknown as UserData[];
         const domainsAddresses = ownerslist.map(ownerData => ({ name: ownerData.domain, address: ownerData.address }));
         return JSON.parse(JSON.stringify(domainsAddresses));

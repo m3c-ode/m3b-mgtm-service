@@ -4,7 +4,6 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { UserData } from '../types/users';
 
 interface DomainState {
-    // usersList: UsersTableData[];
     domainsList: string[] | null;
     setDomainsList: (data: string[]) => void;
 }
@@ -17,7 +16,6 @@ export const useDomainStore = create<DomainState>()(
         }),
         {
             name: 'domainsList',
-            // getStorage: () => sessionStorage,
             storage: createJSONStorage(() => sessionStorage),
         }
     )
