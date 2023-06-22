@@ -1,4 +1,4 @@
-# m3b management system
+# m3b brewery management system
 This app is for now intended to be a personal project showcasing some web development skills as part of my portfolio.
 
 It's a CRUD app using :
@@ -20,7 +20,7 @@ This app will be deployed thanks to the vercel platform, clicking on this link:
 To run this app locally, you would need to clone the project then run those commands:
 
 > `npm install`
--  To install the dependancies 
+-  To install the dependencies 
 
 
 > `npm run dev`
