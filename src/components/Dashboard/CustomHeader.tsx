@@ -66,7 +66,7 @@ const CustomHeader = (props: Props) => {
         // if (!userInfo) {
         try {
             const userRes = await fetchUserInfo(data?.user?.id!);
-            // console.log("🚀 ~ file: CustomHeader.tsx:69 ~ showModal ~ userRes:", userRes);
+            console.log("🚀 ~ file: CustomHeader.tsx:69 ~ showModal ~ userRes:", userRes);
             if (userRes.status === 200) {
                 setUserInfo(userRes.data);
             }

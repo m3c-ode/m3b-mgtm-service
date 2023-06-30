@@ -64,9 +64,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const [id] = req.query.params as string[];
                 await collection.updateOne({ _id: new ObjectId(id) },
                     { $set: { ...req.body, updatedOn: new Date() } },
-                    // {
-                    // new: true,
-                    // }
                 );
 
                 const client = await collection.findOne({ _id: new ObjectId(id) });

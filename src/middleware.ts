@@ -6,7 +6,7 @@ export default withAuth(
     },
     {
         callbacks: {
-            authorized: async ({ token, req }) => {
+            authorized: ({ req, token }) => {
                 if (token) { return true; }
                 return false;
                 // return true;

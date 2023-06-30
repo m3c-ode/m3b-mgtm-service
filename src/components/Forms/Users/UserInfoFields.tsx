@@ -11,9 +11,7 @@ type Props = {
 
 const UserInfoFields = ({ form, data, admin, askPwd }: Props) => {
 
-    const [pwdFields, setPwdFields] = useState(false);
-
-
+    const [pwdFields, setPwdFields] = useState(!askPwd);
 
     return (
         <>

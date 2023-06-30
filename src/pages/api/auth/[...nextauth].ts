@@ -24,7 +24,6 @@ export const authOptions: NextAuthOptions = {
             async authorize(credentials, req) {
                 // We will check against the DB see if the user's exist.
                 const collection = await getDbCollection("users");
-                // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
                 const { email, password } = credentials as {
                     email: string;
                     password: string;
@@ -32,9 +31,8 @@ export const authOptions: NextAuthOptions = {
 
                 // HASH password case - do not do it if admin
                 try {
-                    // const user = await collection.findOne({ $and: [{ email: credentials?.email }, { pwd: credentials?.password }] }) as unknown as UserData;
                     const user = await collection.findOne({ email: credentials?.email }) as unknown as UserData;
-                    console.log("🚀 ~ file: [...nextauth].ts:38 ~ authorize ~ user:", user);
+                    // console.log("🚀 ~ file: [...nextauth].ts:38 ~ authorize ~ user:", user);
 
                     if (!user) {
                         // Retuning null will display an error to the user. Can also return an Error.

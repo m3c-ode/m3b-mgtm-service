@@ -82,9 +82,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 delete updateData._id;
                 const [id] = req.query.params as string[];
                 await collection.updateOne({ _id: new ObjectId(id) }, { $set: { ...req.body } },
-                    // {
-                    // new: true,
-                    // }
                 );
 
                 const beer = await collection.findOne({ _id: new ObjectId(id) });

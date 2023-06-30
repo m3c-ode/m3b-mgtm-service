@@ -16,10 +16,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } const collection = await getDbCollection("users");
 
     const { role: userRole, domain, email } = session?.user ?? {};
-    // console.log('req params', req.params);
-    const { params } = req.query;
-
-    const [id] = params as string[];
 
     switch (req.method) {
         case 'POST':
@@ -65,6 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             break;
         case 'GET':
             try {
+                const [id] = req.query.params as string[] ?? [];
                 // if user is Admin, fetchAllUsers
                 if (id) {
                     // get userinfo with id
