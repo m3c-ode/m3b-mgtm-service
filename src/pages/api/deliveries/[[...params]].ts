@@ -61,7 +61,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'PATCH':
             try {
                 const updateData: DeliveryData = req.body;
-                console.log("🚀 ~ file: [[...params]].ts:48 ~ handler ~ updateData:", updateData);
                 delete updateData._id;
                 if (updateData.status === DeliveryStatusEnums.InTransit || updateData.status === DeliveryStatusEnums.Delivered) {
                     await adjustInventoryVolumes(updateData);

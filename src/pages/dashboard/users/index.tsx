@@ -10,7 +10,6 @@ import { IoAddOutline } from 'react-icons/io5';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import { useUserStore } from '../../../stores/user';
-import { useSession } from 'next-auth/react';
 
 interface UserPageProps {
     usersList?: UserData[];
@@ -82,18 +81,14 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (cont
 };
 
 const Users = ({ usersList, isLoading, error, domainsList, currentUserInfo }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    console.log("🚀 ~ file: index.tsx:85 ~ Users ~ currentUserInfo:", currentUserInfo);
-
     // If doesn'T work, pass it as a prop and assign it in component
     const setUserInfo = useUserStore(state => state.setUserInfo);
 
     if (currentUserInfo) setUserInfo(currentUserInfo);
 
-    console.log("🚀 ~ file: index.tsx:68 ~ Users ~ error:", error);
     if (error) {
         toast.error(error);
     }
-    console.log("🚀 ~ file: index.tsx:64 ~ Users ~ usersList:", usersList);
     const TableTitle = () =>
         <TableHeader
             title={'Users'}
@@ -109,7 +104,7 @@ const Users = ({ usersList, isLoading, error, domainsList, currentUserInfo }: In
         />;
     return (
         <Dashboard>
-            {console.log('users list in component', usersList)}
+            {/* {console.log('users list in component', usersList)} */}
             {usersList &&
                 <UsersTable
                     title={TableTitle}

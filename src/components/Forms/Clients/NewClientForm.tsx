@@ -7,6 +7,8 @@ import type { NewClientInput } from '../../../types/clients';
 import Dashboard from '../../Dashboard';
 import ClientInfoFields from './ClientInfoFields';
 import styles from './styles.module.scss';
+import { useUserStore } from '../../../stores/user';
+import { useSession } from 'next-auth/react';
 
 const { Option } = Select;
 
@@ -19,6 +21,8 @@ const NewClientForm = (props: Props) => {
 
     const formRef = useRef<any>(null);
 
+    const { data: sessionData, status }: { data: any, status: string; } = useSession();
+
     const onFinish = async (values: any) => {
         const newClientData: NewClientInput = {
             // clientId: customerId,
@@ -26,7 +30,7 @@ const NewClientForm = (props: Props) => {
             name: values.name,
             email: values.email,
             type: values?.type,
-            domain: values?.domain,
+            domain: values?.domain ? values.domain : sessionData.user.domain,
             address: {
                 company: values.company,
                 street1: values.street1.toUpperCase(),
@@ -50,7 +54,7 @@ const NewClientForm = (props: Props) => {
 
         } catch (error: any) {
             // toast.error(JSON.parse(error.request.responseText).message as string);
-            toast.error(error.response.data.message);
+            toast.error('Error creating new client', error.response.data.message);
             console.log(error.response);
         }
     };

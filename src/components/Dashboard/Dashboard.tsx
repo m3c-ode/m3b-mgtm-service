@@ -33,7 +33,6 @@ const Dashboard: React.FC = ({ children }: Props) => {
 
     const router = useRouter();
     const { pathname } = router;
-    console.log("🚀 ~ file: Dashboard.tsx:30 ~ pathname", pathname);
 
     // TODO: could add href
     const getPathDetails = (pathname: string) => {

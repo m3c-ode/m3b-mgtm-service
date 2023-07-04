@@ -37,9 +37,6 @@ const topRightItems: MenuProps['items'] = [
         onClick: () => signOut(
             {
                 callbackUrl: '/api/auth/signin?callbackUrl=/dashboard/beers'
-                // callbackUrl: `http://localhost:3000/api/auth/signin`
-                // callbackUrl: `${window.location.origin}`
-                // callbackUrl: 'credentials'
             }
 
         )
@@ -49,13 +46,8 @@ const topRightItems: MenuProps['items'] = [
 const CustomHeader = (props: Props) => {
 
     const { userInfo, setUserInfo } = useUserStore((state) => ({ userInfo: state.userInfo, setUserInfo: state.setUserInfo }));
-    // console.log("🚀 ~ file: CustomHeader.tsx:51 ~ CustomHeader ~ userInfo:", userInfo);
-
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    // const { data: { user: { email } = {} } = {} } = useSession() || {};
-    // const { data: { user: { email } = {} } = {} } = useSession() || {};
 
     const { data } = useSession();
     // if (session.data) {
@@ -66,7 +58,6 @@ const CustomHeader = (props: Props) => {
         // if (!userInfo) {
         try {
             const userRes = await fetchUserInfo(data?.user?.id!);
-            console.log("🚀 ~ file: CustomHeader.tsx:69 ~ showModal ~ userRes:", userRes);
             if (userRes.status === 200) {
                 setUserInfo(userRes.data);
             }

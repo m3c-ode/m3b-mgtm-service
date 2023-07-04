@@ -6,7 +6,6 @@ type Props = {};
 
 const SelectDomainField = (props: Props) => {
     const domainsList = useDomainStore(state => state.domainsList);
-    console.log("🚀 ~ file: BeerForm.tsx:31 ~ BeerForm ~ domainsList:", domainsList);
     return (
         <Form.Item
             label="Domain"

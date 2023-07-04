@@ -16,6 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'POST':
             try {
                 const newClient: NewClientInput = req.body;
+                console.log("🚀 ~ file: [[...params]].ts:19 ~ handler ~ newClient:", newClient);
                 const doesExist = await doesClientExist(newClient.name, newClient.email, newClient.address.street1);
                 if (doesExist) {
                     return res.status(409).json({ message: 'Error creating Client: Client with same credentials already exists' });

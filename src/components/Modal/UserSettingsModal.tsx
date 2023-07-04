@@ -5,11 +5,10 @@ import router from 'next/router';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { parsePhoneNumber } from '../../../lib/functions';
-import { fetchUserInfo, updateUserInfo } from '../../pages/api/services';
+import { updateUserInfo } from '../../pages/api/services';
 import { useUserStore } from '../../stores/user';
 import { UserData, UserRolesEnum } from '../../types/users';
 import CreateAddressFields from '../Forms/Clients/CreateAddressFields';
-import EditUserForm from '../Forms/Users/EditUserForm';
 import UserInfoFields from '../Forms/Users/UserInfoFields';
 
 type Props = {
@@ -81,7 +80,6 @@ const UserSettingsModal = ({ isVisible, setIsVisible }: Props) => {
                 notes: values.notes,
             },
         };
-        console.log("🚀 ~ file: UserSettingsModal.tsx:91 ~ onFormSubmit ~ data:", data);
         // DB change
         try {
             await updateUserInfo(_id!, data);
