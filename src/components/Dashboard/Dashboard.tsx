@@ -55,7 +55,18 @@ const Dashboard: React.FC = ({ children }: Props) => {
             <Toaster />
             <CustomHeader />
             <Layout>
-                <Sider width={210} style={{ background: colorBgContainer }}>
+                <Sider
+                    breakpoint="sm"
+                    collapsedWidth="0"
+                    onBreakpoint={(broken) => {
+                        console.log('breakpoint broken', broken);
+                    }}
+                    onCollapse={(collapsed, type) => {
+                        console.log('collapse', collapsed, 'type', type);
+                    }}
+                    width={210}
+                    style={{ background: colorBgContainer }}
+                >
                     <CustomNavigation />
                 </Sider>
                 <Layout style={{ padding: '0 24px 24px' }}>

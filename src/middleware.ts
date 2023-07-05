@@ -7,9 +7,9 @@ export default withAuth(
     {
         callbacks: {
             authorized: ({ req, token }) => {
-                if (token) { return true; }
-                return false;
-                // return true;
+                // if (token) { return true; }
+                // return false;
+                return true;
             },
         }
     }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Dropdown, Layout, Menu, MenuProps, Modal, Tooltip } from 'antd';
+import { Button, Dropdown, Layout, Menu, MenuProps, Modal, Tooltip, Grid } from 'antd';
 import Image from 'next/image';
 import styles from './styles.module.scss';
 import { AiOutlineMenu, AiOutlineSetting, AiOutlineBell, AiOutlineUserSwitch, AiOutlineUser } from 'react-icons/ai';
@@ -11,6 +11,7 @@ import { fetchUserInfo } from '../../pages/api/services';
 
 
 const { Header } = Layout;
+const { useBreakpoint } = Grid;
 
 type Props = {};
 
@@ -54,6 +55,8 @@ const CustomHeader = (props: Props) => {
     //     const { user: { email } = {} } = session?.data ?? {}
     // }
 
+    const { sm } = useBreakpoint();
+
     const showModal = async (props: Props) => {
         // if (!userInfo) {
         try {
@@ -79,6 +82,16 @@ const CustomHeader = (props: Props) => {
     };
 
     const email = data?.user?.email;
+
+    const emailDisplay = sm ? (
+        // Render email text directly on larger screens
+        <div className={styles.emailText}>{email}</div>
+    ) : (
+        // Render email text on small screens
+        <Tooltip title={email} color="blue">
+            <div className={styles.emailText}>{email}</div>
+        </Tooltip>
+    );
 
     return (
         <Header className={styles.header}>
@@ -107,8 +120,8 @@ const CustomHeader = (props: Props) => {
             </div>
             <div className={styles.topRight}>
                 {/* TODO: add a search bar feature? */}
-                <div className={styles.userName}>
-                    {email}
+                <div className={styles.emailContainer}>
+                    {emailDisplay}
                 </div>
                 <Tooltip
                     title='Shows notifications'
@@ -143,7 +156,7 @@ const CustomHeader = (props: Props) => {
                             callbackUrl: '/api/auth/signin?callbackUrl=/dashboard/beers'
                         })}
                 >
-                    Logout
+                    {sm ? 'Logout' : ''}
                 </Button>
             </div>
             <UserSettingsModal isVisible={isModalOpen} setIsVisible={setIsModalOpen} />

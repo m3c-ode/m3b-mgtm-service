@@ -10,32 +10,20 @@
     padding: .25rem 1rem;
 }
 
-// #components-layout-demo-top-side-2 .logo {
-//     float: left;
-//     width: 120px;
-//     height: 31px;
-//     margin: 16px 24px 16px 0;
-//     background: rgba(255, 255, 255, 0.3);
-// }
-
-// .ant-row-rtl #components-layout-demo-top-side-2 .logo {
-//     float: right;
-//     margin: 16px 0 16px 24px;
-// }
-
 .header {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 
+    @media (max-width: 480px) {
+        padding-inline: 5vw !important;
+    }
 }
 
 .logo {
-    // float: left;
-    // width: 120px;
-    // height: 31px;
     margin: 16px 5vw 16px 0;
+
     // background: rgba(255, 255, 255, 0.3);
 }
 
@@ -59,7 +47,14 @@
     // padding: 10px;
 }
 
-.userName {
+.emailText {
     color: white;
-    padding: 10px
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.emailContainer {
+    padding: 10px;
+    max-width: 35vw;
 }
