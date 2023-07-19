@@ -69,7 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     return res.status(200).json(user);
                 }
                 if (userRole === UserRolesEnum.Admin) {
-                    const users = await collection.find({}).toArray();
+                    const users = await collection.find({}, { projection: { pwd: 0 } },).toArray();
                     res.status(200).json(users);
                 }
                 if (userRole === UserRolesEnum.BOwner) {

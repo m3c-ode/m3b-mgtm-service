@@ -28,6 +28,7 @@ const UserSettingsModal = ({ isVisible, setIsVisible }: Props) => {
     const switchMode = ({ disabled }: { disabled: boolean; }) => {
         setIsFormDisabled(disabled);
     };
+    const { status, data } = useSession();
 
     const [userData, setUserData] = useState<UserData | null>(userInfo);
 

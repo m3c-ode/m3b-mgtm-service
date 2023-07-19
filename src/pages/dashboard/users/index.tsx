@@ -43,6 +43,7 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (cont
     }
     try {
         if (userRole === UserRolesEnum.Admin) {
+            console.log('in server side props');
             const usersList = await getAllUsersAsync();
             const domainsList = await getDomainsList();
             return {
@@ -104,7 +105,6 @@ const Users = ({ usersList, isLoading, error, domainsList, currentUserInfo }: In
         />;
     return (
         <Dashboard>
-            {/* {console.log('users list in component', usersList)} */}
             {usersList &&
                 <UsersTable
                     title={TableTitle}

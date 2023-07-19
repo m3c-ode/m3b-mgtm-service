@@ -6,7 +6,10 @@ import getDbCollection from "./getCollection";
 export const getUserDataFromId = async (userId: string): Promise<UserData> => {
     try {
         const collection = await getDbCollection("users");
-        const client = await collection.findOne({ _id: new ObjectId(userId) });
+        const client = await collection.findOne(
+            { _id: new ObjectId(userId) },
+            { projection: { pwd: 0 } }
+        );
         return JSON.parse(JSON.stringify(client));
     } catch (error) {
         console.log("🚀 ~ file: users.ts:12 ~ getUserDataFromId ~ error:", error);
@@ -64,15 +67,20 @@ export const getUserDataFromCredentials = async (email: string, password: string
 export const getAllUsersAsync = async (): Promise<UserData[]> => {
     // getting all the users, but not the admin
     const collection = await getDbCollection('users');
-    const users = await collection.find({ role: { $ne: `${UserRolesEnum.Admin}`, $exists: true } }).toArray();
+    const users = await collection.find(
+        { role: { $ne: `${UserRolesEnum.Admin}`, $exists: true } },
+        { projection: { pwd: 0 } },
+    ).toArray();
     return JSON.parse(JSON.stringify(users.filter(user => user.role !== 'admin')));
 };
 
 export const getDomainUsers = async (domain: string): Promise<UserData[]> => {
     // get all the users, but per domain
     const collection = await getDbCollection('users');
-    const users = await collection.find({ domain: { $eq: `${domain}`, $exists: true } },
+    const users = await collection.find(
+        { domain: { $eq: `${domain}`, $exists: true } },
         {
+            projection: { pwd: 0 },
             collation: { locale: 'en', strength: 2 }
         }
     ).toArray();

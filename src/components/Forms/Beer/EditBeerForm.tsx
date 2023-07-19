@@ -28,7 +28,6 @@ const numbersLayout = {
 };
 
 const EditBeerForm = ({ data }: Props) => {
-    // console.log("🚀 ~ file: EditBeerForm.tsx:25 ~ data:", data);
     const [form] = Form.useForm();
 
     const [isFormDisabled, setIsFormDisabled] = useState(true);
